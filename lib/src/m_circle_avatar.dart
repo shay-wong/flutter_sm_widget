@@ -46,6 +46,7 @@ class MCircleAvatar extends StatelessWidget {
         backgroundImage: MImage.provider(
           url,
           placeholder: placeholder ?? 'assets/images/icons/avatar.png',
+          package: 'flutter_sm_widget',
         ),
       );
 }
