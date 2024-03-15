@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sm_widget/sm_widget.dart';
 
 class MCircleAvatar extends StatelessWidget {
-  const MCircleAvatar(
-    this.source, {
+  const MCircleAvatar({
     super.key,
+    this.source,
     this.child,
     this.backgroundColor,
     this.backgroundImage,

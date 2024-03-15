@@ -4,6 +4,7 @@ export 'package:flutter_sm_image/sm_image.dart';
 
 export 'generated/locales.g.dart' show SMWidgetAppTranslation;
 export 'src/m_app_bar.dart';
+export 'src/m_button.dart';
 export 'src/m_circle_avatar.dart';
 export 'src/m_container.dart';
 export 'src/m_refresh.dart';

@@ -12,7 +12,7 @@ class ExamplePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             MCircleAvatar(
-              'assets/images/avatar1.png',
+              source: 'assets/images/avatar1.png',
               package: 'example_package',
             ),
             Text('Example Page'),

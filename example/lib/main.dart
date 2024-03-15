@@ -1,3 +1,4 @@
+import 'package:example/button_example.dart';
 import 'package:example/circle_avatar_example.dart';
 import 'package:example/container_example.dart';
 import 'package:example/text_example.dart';
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
         const MContainerExample(),
         const MTextExample(),
         const MCircleAvatarExample(),
+        const MButtonExample(),
       ];
 
   @override

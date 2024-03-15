@@ -11,7 +11,7 @@ class MCircleAvatarExample extends StatelessWidget {
       body: Column(
         children: [
           MCircleAvatar(
-            '',
+            source: '',
             // placeholder: 'assets/images/avatar.png',
           ),
           Expanded(child: ExamplePage()),
