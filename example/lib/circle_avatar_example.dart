@@ -1,3 +1,4 @@
+import 'package:example_package/example_package.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sm_widget/sm_widget.dart';
 
@@ -13,6 +14,7 @@ class MCircleAvatarExample extends StatelessWidget {
             '',
             // placeholder: 'assets/images/avatar.png',
           ),
+          Expanded(child: ExamplePage()),
         ],
       ),
     );
