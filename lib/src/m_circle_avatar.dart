@@ -160,8 +160,11 @@ class MCircleAvatar extends StatelessWidget {
       return DecorationImage(
         image: MImage.provider(
           source,
-          placeholder: placeholder ?? 'assets/images/icons/avatar.png',
-          package: package ?? (placeholder == null ? 'flutter_sm_widget' : null),
+          placeholderImage: MImage.provider(
+            placeholder ?? 'assets/images/icons/avatar.png',
+            package: placeholder == null ? 'flutter_sm_widget' : package,
+          ),
+          package: package,
           bundle: bundle,
         ),
         onError: onBackgroundImageError,
