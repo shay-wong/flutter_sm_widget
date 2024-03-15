@@ -7,18 +7,38 @@ class MButtonExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const MText('MButtonExample'),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          MButton(
-            onPressed: () {},
-            clearPadding: true,
-            width: 100,
-            height: 50,
-            radius: 10,
-            // noSplash: true,
-            // noHighlight: true,
-            child: const MText('12311111111'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              MButton(
+                onPressed: () {},
+                clearPadding: true,
+                width: 100,
+                height: 50,
+                radius: 10,
+                // noSplash: true,
+                // noHighlight: true,
+                child: const MText('这是一个按钮'),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              for (var i = 0; i < 4; i++)
+                MButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.face),
+                  label: const MText('笑脸'),
+                  alignment: MButtonIconAlignment.values[i],
+                ),
+            ],
           ),
         ],
       ),

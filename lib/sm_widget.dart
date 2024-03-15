@@ -7,6 +7,8 @@ export 'src/m_app_bar.dart';
 export 'src/m_button.dart';
 export 'src/m_circle_avatar.dart';
 export 'src/m_container.dart';
+export 'src/m_dialog.dart';
+export 'src/m_list_tile.dart';
 export 'src/m_refresh.dart';
 export 'src/m_rich_text.dart';
 export 'src/m_scaffold.dart';

@@ -3,6 +3,11 @@ import 'package:example/circle_avatar_example.dart';
 import 'package:example/container_example.dart';
 import 'package:example/text_example.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sm_widget/sm_widget.dart';
+import 'package:get/get.dart';
+
+import 'dialog_example.dart';
+import 'list_tile_example.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,16 +16,22 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  List get itemList => [
+  List<Widget> get itemList => [
         const MContainerExample(),
         const MTextExample(),
-        const MCircleAvatarExample(),
         const MButtonExample(),
+        const MCircleAvatarExample(),
+        const MDialogExample(),
+        const MListTileExample(),
       ];
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      theme: ThemeData(
+        colorSchemeSeed: const Color(0xff6750a4),
+        useMaterial3: true,
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('SMWidget Example'),
@@ -28,19 +39,14 @@ class MyApp extends StatelessWidget {
         body: ListView.separated(
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(itemList[index].runtimeType.toString()),
+              title: MText(itemList[index].runtimeType.toString()),
               trailing: const Icon(
                 Icons.arrow_forward_ios,
                 size: 15,
                 color: Colors.grey,
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => itemList[index],
-                  ),
-                );
+                Get.to(() => itemList[index]);
               },
             );
           },
