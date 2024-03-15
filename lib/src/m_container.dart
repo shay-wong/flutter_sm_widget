@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_sm_widget/sm_widget.dart';
 
 enum MBoxShape {
   rectangle,
@@ -75,6 +76,9 @@ class MContainer extends StatelessWidget {
     this.minHeight,
     this.minWidth,
     this.shape,
+    this.bundle,
+    this.package,
+    this.headers,
   })  : assert(margin == null || margin.isNonNegative),
         assert(padding == null || padding.isNonNegative),
         assert(decoration == null || decoration.debugAssertIsValid()),
@@ -143,7 +147,7 @@ class MContainer extends StatelessWidget {
   /// [image] 重复模式
   final ImageRepeat repeat;
 
-  /// [image] 拉伸因子
+  /// [image] 的 [ImageInfo] 对象中的缩放比例。
   final double scale;
 
   /// 阴影
@@ -154,6 +158,15 @@ class MContainer extends StatelessWidget {
 
   /// 边框
   final BorderSide? side;
+
+  /// 包含图片的软件包名称。详情请查看 [AssetImage] 类本身的文档。
+  final String? package;
+
+  /// 获取图像的包。
+  final AssetBundle? bundle;
+
+  /// 用于 [HttpClient.get] 从网络获取图片的 HTTP 标头。在网络上运行 Flutter 时，不使用标头。
+  final Map<String, String>? headers;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -189,12 +202,13 @@ class MContainer extends StatelessWidget {
       final image = this.image;
 
       if (imageProvider == null && image != null && image.isNotEmpty) {
-        final uri = Uri.tryParse(image);
-        if (uri != null && uri.hasScheme) {
-          imageProvider = NetworkImage(image);
-        } else {
-          imageProvider = AssetImage(image);
-        }
+        imageProvider = MImage.provider(
+          image,
+          package: package,
+          bundle: bundle,
+          headers: headers,
+          scale: scale,
+        );
       }
 
       DecorationImage? decorationImage;
