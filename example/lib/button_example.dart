@@ -26,6 +26,14 @@ class MButtonExample extends StatelessWidget {
                 // noHighlight: true,
                 child: const MText('这是一个按钮'),
               ),
+              MButton.icon(
+                icon: const Icon(Icons.face),
+                onPressed: () {},
+              ),
+              MIconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.face),
+              )
             ],
           ),
           Row(
@@ -40,6 +48,29 @@ class MButtonExample extends StatelessWidget {
                 ),
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              MElevatedButton(
+                onPressed: () {},
+                child: const MText(
+                  '这是一个按钮',
+                ),
+              ),
+              MFilledButton(
+                onPressed: () {},
+                child: const MText(
+                  '这是一个按钮',
+                ),
+              ),
+              MOutlinedButton(
+                onPressed: () {},
+                child: const MText(
+                  '这是一个按钮',
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

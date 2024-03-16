@@ -4,7 +4,6 @@ export 'package:flutter_sm_image/sm_image.dart';
 
 export 'generated/locales.g.dart' show SMWidgetAppTranslation;
 export 'src/m_app_bar.dart';
-export 'src/m_button.dart';
 export 'src/m_circle_avatar.dart';
 export 'src/m_container.dart';
 export 'src/m_dialog.dart';
@@ -15,4 +14,5 @@ export 'src/m_scaffold.dart';
 export 'src/m_text.dart';
 export 'src/m_text_field.dart';
 export 'src/m_text_span.dart';
+export 'src/sm_button/sm_button.dart';
 export 'src/text_style_extension.dart';

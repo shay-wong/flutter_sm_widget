@@ -54,7 +54,7 @@ class MButton extends ButtonStyleButton {
     Clip? clipBehavior,
     MaterialStatesController? statesController,
     required Widget icon,
-    required Widget label,
+    Widget label,
     MButtonIconAlignment? alignment,
   }) = _MButtonWithIcon;
 
@@ -101,29 +101,29 @@ class MButton extends ButtonStyleButton {
 
     return Theme.of(context).useMaterial3
         ? _MTextButtonDefaultsM3(
-            context,
-            backgroundColor,
-            borderRadius,
-            clearPadding,
-            disabledForegroundColor,
-            elevation,
-            fixedSize,
-            foregroundColor,
-            height,
-            maximumSize,
-            minimumSize,
-            noHighlight,
-            noSplash,
-            overlayColor,
-            padding,
-            radius,
-            shadowColor,
-            shape,
-            side,
-            splashFactory,
-            tapTargetSize,
-            textStyle,
-            width,
+            context: context,
+            backgroundColor: backgroundColor,
+            borderRadius: borderRadius,
+            clearPadding: clearPadding,
+            disabledForegroundColor: disabledForegroundColor,
+            elevation: elevation,
+            fixedSize: fixedSize,
+            foregroundColor: foregroundColor,
+            height: height,
+            maximumSize: maximumSize,
+            minimumSize: minimumSize,
+            noHighlight: noHighlight,
+            noSplash: noSplash,
+            overlayColor: overlayColor,
+            padding: padding,
+            radius: radius,
+            shadowColor: shadowColor,
+            shape: shape,
+            side: side,
+            splashFactory: splashFactory,
+            tapTargetSize: tapTargetSize,
+            textStyle: textStyle,
+            width: width,
           )
         : _MTextButtonDefaultsM2(
             foregroundColor: foregroundColor ?? colorScheme.primary,
@@ -247,7 +247,7 @@ class _MButtonWithIcon extends MButton {
     Clip? clipBehavior,
     super.statesController,
     required Widget icon,
-    required Widget label,
+    Widget? label,
     MButtonIconAlignment? alignment,
   })  : alignment = alignment ?? MButtonIconAlignment.start,
         super(
@@ -303,17 +303,20 @@ extension _MButtonIconAlignmentExt on MButtonIconAlignment {
 
 class _MButtonWithIconChild extends StatelessWidget {
   const _MButtonWithIconChild({
-    required this.label,
+    this.label,
     required this.icon,
-    required this.alignment,
+    this.alignment = MButtonIconAlignment.start,
   });
 
   final Widget icon;
-  final Widget label;
+  final Widget? label;
   final MButtonIconAlignment alignment;
 
   @override
   Widget build(BuildContext context) {
+    if (label == null) {
+      return icon;
+    }
     // TODO: 删除弃用成员
     // ignore: deprecated_member_use
     final double scale = MediaQuery.textScalerOf(context).textScaleFactor;
@@ -321,7 +324,7 @@ class _MButtonWithIconChild extends StatelessWidget {
     final double effectiveGap = scale <= 1 ? gap : lerpDouble(gap, gap / 2, math.min(scale - 1, 1))!;
     final effectiveIcon = Flexible(child: icon);
     final effectiveSpace = alignment.isVertical ? SizedBox(height: effectiveGap) : SizedBox(width: effectiveGap);
-    final effectiveLabel = Flexible(child: label);
+    final effectiveLabel = Flexible(child: label!);
 
     List<Widget> children = <Widget>[
       effectiveIcon,
@@ -504,31 +507,45 @@ ButtonStyle _MTextButtonDefaultsM2({
 }
 
 class _MTextButtonDefaultsM3 extends ButtonStyle {
-  _MTextButtonDefaultsM3(
-    this.context,
-    this._backgroundColor,
+  _MTextButtonDefaultsM3({
+    required this.context,
     this.borderRadius,
-    this.clearPadding,
+    this.clearPadding = false,
     this.disabledForegroundColor,
-    this._elevation,
-    this._fixedSize,
-    this._foregroundColor,
     this.height,
-    this._maximumSize,
-    this._minimumSize,
-    this.noHighlight,
-    this.noSplash,
-    this._overlayColor,
-    this._padding,
+    this.noHighlight = false,
+    this.noSplash = false,
     this.radius,
-    this._shadowColor,
-    this._shape,
-    this._side,
-    this._splashFactory,
-    this._tapTargetSize,
-    this._textStyle,
     this.width,
-  ) : super(
+    Color? backgroundColor,
+    double? elevation,
+    Size? fixedSize,
+    Color? foregroundColor,
+    Size? maximumSize,
+    Size? minimumSize,
+    Color? overlayColor,
+    EdgeInsetsGeometry? padding,
+    Color? shadowColor,
+    OutlinedBorder? shape,
+    BorderSide? side,
+    InteractiveInkFeatureFactory? splashFactory,
+    MaterialTapTargetSize? tapTargetSize,
+    TextStyle? textStyle,
+  })  : _backgroundColor = backgroundColor,
+        _elevation = elevation,
+        _fixedSize = fixedSize,
+        _foregroundColor = foregroundColor,
+        _maximumSize = maximumSize,
+        _minimumSize = minimumSize,
+        _overlayColor = overlayColor,
+        _padding = padding,
+        _shadowColor = shadowColor,
+        _shape = shape,
+        _side = side,
+        _splashFactory = splashFactory,
+        _tapTargetSize = tapTargetSize,
+        _textStyle = textStyle,
+        super(
           animationDuration: kThemeChangeDuration,
           enableFeedback: true,
           alignment: Alignment.center,

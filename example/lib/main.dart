@@ -3,6 +3,7 @@ import 'package:example/circle_avatar_example.dart';
 import 'package:example/container_example.dart';
 import 'package:example/text_example.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sm_widget/generated/locales.g.dart';
 import 'package:flutter_sm_widget/sm_widget.dart';
 import 'package:get/get.dart';
 
