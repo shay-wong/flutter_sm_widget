@@ -11,13 +11,19 @@ class MCircleAvatarExample extends StatelessWidget {
       appBar: AppBar(
         title: const MText('MCircleAvatarExample'),
       ),
-      body: const Column(
+      body: Column(
         children: [
           MCircleAvatar(
-            source: '',
-            // placeholder: 'assets/images/avatar.png',
+            source: '123',
+            placeholder: 'assets/images/avatar.png',
+            diameter: 100,
+            backgroundColor: Colors.amber,
+            onBackgroundImageError: (exception, stackTrace) {
+              debugPrint(exception.toString());
+              debugPrintStack(stackTrace: stackTrace);
+            },
           ),
-          Expanded(child: ExamplePage()),
+          const Expanded(child: ExamplePage()),
         ],
       ),
     );

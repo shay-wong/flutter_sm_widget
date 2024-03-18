@@ -12,16 +12,19 @@ class MCircleAvatar extends StatelessWidget {
     this.onBackgroundImageError,
     this.onForegroundImageError,
     this.foregroundColor,
-    this.radius,
+    double? radius,
     this.minRadius,
     this.maxRadius,
     this.placeholder,
     this.onTap,
     this.package,
     this.bundle,
-  })  : assert(radius == null || (minRadius == null && maxRadius == null)),
-        assert(backgroundImage != null || onBackgroundImageError == null),
-        assert(foregroundImage != null || onForegroundImageError == null);
+    double? diameter,
+    this.fit,
+  })  : assert(radius == null || diameter == null || (minRadius == null && maxRadius == null)),
+        assert(source != null || backgroundImage != null || onBackgroundImageError == null),
+        assert(foregroundImage != null || onForegroundImageError == null),
+        diameter = diameter ?? (radius != null ? radius * 2.0 : null);
 
   final Color? backgroundColor;
   final ImageProvider? backgroundImage;
@@ -36,8 +39,9 @@ class MCircleAvatar extends StatelessWidget {
   final VoidCallback? onTap;
   final String? package;
   final String? placeholder;
-  final double? radius;
+  final double? diameter;
   final String? source;
+  final BoxFit? fit;
 
   // The default max if only the min is specified.
   static const double _defaultMaxRadius = double.infinity;
@@ -49,17 +53,17 @@ class MCircleAvatar extends StatelessWidget {
   static const double _defaultRadius = 20.0;
 
   double get _maxDiameter {
-    if (radius == null && minRadius == null && maxRadius == null) {
+    if (diameter == null && minRadius == null && maxRadius == null) {
       return _defaultRadius * 2.0;
     }
-    return 2.0 * (radius ?? maxRadius ?? _defaultMaxRadius);
+    return diameter ?? 2.0 * (maxRadius ?? _defaultMaxRadius);
   }
 
   double get _minDiameter {
-    if (radius == null && minRadius == null && maxRadius == null) {
+    if (diameter == null && minRadius == null && maxRadius == null) {
       return _defaultRadius * 2.0;
     }
-    return 2.0 * (radius ?? minRadius ?? _defaultMinRadius);
+    return diameter ?? 2.0 * (minRadius ?? _defaultMinRadius);
   }
 
   @override
@@ -108,7 +112,7 @@ class MCircleAvatar extends StatelessWidget {
               image: DecorationImage(
                 image: foregroundImage!,
                 onError: onForegroundImageError,
-                fit: BoxFit.cover,
+                fit: fit ?? BoxFit.cover,
               ),
               shape: BoxShape.circle,
             )
@@ -140,11 +144,11 @@ class MCircleAvatar extends StatelessWidget {
   }
 
   DecorationImage? get _effectiveBackgroundImage {
-    if (backgroundColor != null) {
+    if (backgroundImage != null) {
       return DecorationImage(
         image: backgroundImage!,
         onError: onBackgroundImageError,
-        fit: BoxFit.cover,
+        fit: fit ?? BoxFit.cover,
       );
     }
     if (source != null) {
@@ -159,7 +163,7 @@ class MCircleAvatar extends StatelessWidget {
           bundle: bundle,
         ),
         onError: onBackgroundImageError,
-        fit: BoxFit.cover,
+        fit: fit ?? BoxFit.cover,
       );
     }
     return null;

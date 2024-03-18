@@ -160,6 +160,8 @@ class MTextField extends StatefulWidget {
     this.suffixStyle,
     this.suffixIconColor,
     this.suffixIconConstraints,
+    this.suffixPadding,
+    this.suffixIconPadding,
     this.counter,
     this.counterText,
     this.counterStyle,
@@ -294,6 +296,7 @@ class MTextField extends StatefulWidget {
   /// 如果 [border] 的 `isOutline` 属性为 true，
   /// 则当 [isDense] 为 true 时，[contentPadding] 为 `EdgeInsets.fromLTRB(12, 20, 12, 12)`；
   /// 当 [isDense] 为 false 时，[contentPadding] 为 `EdgeInsets.fromLTRB(12, 24, 12, 16)`。
+  /// 如果设置了 [suffix] 相关属性，则此属性的 [EdgeInsetsGeometry.right] 将被忽略
   final EdgeInsetsGeometry? contentPadding;
 
   /// 计数器
@@ -469,8 +472,14 @@ class MTextField extends StatefulWidget {
   /// 后缀的样式
   final TextStyle? suffixStyle;
 
-  /// 后缀的文本
+  /// 后缀的文本, 如果和 [suffixIcon] 一起使用，会显示在图标的前面
   final String? suffixText;
+
+  /// 后缀的边距
+  final EdgeInsetsGeometry? suffixPadding;
+
+  /// 后缀图标的边距
+  final EdgeInsetsGeometry? suffixIconPadding;
 
   /// 默认文本
   final String? text;
@@ -537,6 +546,7 @@ class MTextField extends StatefulWidget {
     properties.add(DiagnosticsProperty<List<String>>(
         'contentCommitMimeTypes', contentInsertionConfiguration?.allowedMimeTypes ?? const <String>[],
         defaultValue: contentInsertionConfiguration == null ? const <String>[] : kDefaultContentInsertionMimeTypes));
+    // TODO: add custom properties
   }
 
   bool get selectionEnabled => enableInteractiveSelection;
@@ -718,7 +728,14 @@ class _MTextFieldState extends State<MTextField>
   InputBorder? get _defaultBorder {
     if (widget.borderRadius != null || widget.radius != null || widget.side != null) {
       final borderRadius = widget.borderRadius ?? BorderRadius.circular(widget.radius ?? 0);
-      final borderSide = widget.side ?? BorderSide.none; // 默认无边框
+      // 默认无边框.
+      // NOTE: 如果使用 [BorderSide.none] 在 UnderlineInputBorder 下也会展示出黑线, 因为 [BorderSide] 的 color 默认是黑色, 可能是 flutter 的 bug? 所以这里直接把颜色设置为透明.
+      final borderSide = widget.side ??
+          const BorderSide(
+            color: Colors.transparent,
+            width: 0,
+            style: BorderStyle.none,
+          );
 
       if (widget.borderStyle == MTextFieldBorderStyle.outline) {
         return OutlineInputBorder(
@@ -752,6 +769,15 @@ class _MTextFieldState extends State<MTextField>
             BoxConstraints.tightFor(width: widget.width, height: widget.height)
         : widget.constraints;
 
+    var suffix = widget.suffix;
+    if (widget.suffixPadding != null && widget.suffix != null) {
+      suffix = Padding(padding: widget.suffixPadding!, child: widget.suffix);
+    }
+    var suffixIcon = widget.suffixIcon;
+    if (widget.suffixIconPadding != null && widget.suffixIcon != null) {
+      suffixIcon = Padding(padding: widget.suffixIconPadding!, child: widget.suffixIcon);
+    }
+
     return InputDecoration(
       icon: widget.icon,
       iconColor: widget.iconColor,
@@ -782,8 +808,8 @@ class _MTextFieldState extends State<MTextField>
       prefixText: widget.prefixText,
       prefixStyle: widget.prefixStyle,
       prefixIconColor: widget.prefixIconColor,
-      suffixIcon: widget.suffixIcon,
-      suffix: widget.suffix,
+      suffixIcon: suffixIcon,
+      suffix: suffix,
       suffixText: widget.suffixText,
       suffixStyle: widget.suffixStyle,
       suffixIconColor: widget.suffixIconColor,

@@ -1,3 +1,4 @@
+import 'package:example/cupertino_dialog_example.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sm_widget/sm_widget.dart';
 import 'package:get/get.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         const MButtonExample(),
         const MCircleAvatarExample(),
         const MDialogExample(),
+        const MCupertinoDialogExample(),
         const MListTileExample(),
         const ExpandableExample(),
         const MTextFieldExample(),
