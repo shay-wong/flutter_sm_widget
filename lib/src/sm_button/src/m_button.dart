@@ -4,6 +4,13 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+enum MButtonIconAlignment {
+  start,
+  top,
+  end,
+  bottom,
+}
+
 class MButton extends ButtonStyleButton {
   const MButton({
     super.key,
@@ -21,11 +28,10 @@ class MButton extends ButtonStyleButton {
     this.backgroundColor,
     this.borderRadius,
     this.clearPadding = false,
-    this.disabledForegroundColor,
+    this.disabledColor,
     this.elevation,
     this.fixedSize,
     this.foregroundColor,
-    this.height,
     this.maximumSize,
     this.minimumSize,
     this.noHighlight = false,
@@ -39,8 +45,12 @@ class MButton extends ButtonStyleButton {
     this.splashFactory,
     this.tapTargetSize,
     this.textStyle,
-    this.width,
-  });
+    double? width,
+    double? height,
+    double? size,
+  })  : width = width ?? size,
+        height = height ?? size,
+        isSelected = null;
 
   factory MButton.icon({
     Key? key,
@@ -60,7 +70,7 @@ class MButton extends ButtonStyleButton {
 
   final Color? backgroundColor;
   final BorderRadius? borderRadius;
-  final Color? disabledForegroundColor;
+  final Color? disabledColor;
   final double? elevation;
   final Color? foregroundColor;
   final double? height;
@@ -80,6 +90,10 @@ class MButton extends ButtonStyleButton {
 
   /// 如果设置了 [fixedSize] 则 [width] 和 [height] 无效
   final Size? fixedSize;
+
+  // TODO: 暂时无效
+  /// 是否选中
+  final bool? isSelected;
 
   // !!!: 注意使用
   // TODO: minimumSize 在手机浏览器上显示有问题!! 那么 maximumSize 呢?
@@ -105,7 +119,7 @@ class MButton extends ButtonStyleButton {
             backgroundColor: backgroundColor,
             borderRadius: borderRadius,
             clearPadding: clearPadding,
-            disabledForegroundColor: disabledForegroundColor,
+            disabledForegroundColor: disabledColor,
             elevation: elevation,
             fixedSize: fixedSize,
             foregroundColor: foregroundColor,
@@ -127,7 +141,7 @@ class MButton extends ButtonStyleButton {
           )
         : _MTextButtonDefaultsM2(
             foregroundColor: foregroundColor ?? colorScheme.primary,
-            disabledForegroundColor: disabledForegroundColor ?? colorScheme.onSurface.withOpacity(0.38),
+            disabledForegroundColor: disabledColor ?? colorScheme.onSurface.withOpacity(0.38),
             backgroundColor: backgroundColor ?? Colors.transparent,
             disabledBackgroundColor: Colors.transparent,
             shadowColor: shadowColor ?? theme.shadowColor,
@@ -284,13 +298,6 @@ class _MButtonWithIcon extends MButton {
   }
 }
 
-enum MButtonIconAlignment {
-  start,
-  top,
-  end,
-  bottom,
-}
-
 extension _MButtonIconAlignmentExt on MButtonIconAlignment {
   bool get isVertical {
     return this == MButtonIconAlignment.top || this == MButtonIconAlignment.bottom;
@@ -308,9 +315,9 @@ class _MButtonWithIconChild extends StatelessWidget {
     this.alignment = MButtonIconAlignment.start,
   });
 
+  final MButtonIconAlignment alignment;
   final Widget icon;
   final Widget? label;
-  final MButtonIconAlignment alignment;
 
   @override
   Widget build(BuildContext context) {

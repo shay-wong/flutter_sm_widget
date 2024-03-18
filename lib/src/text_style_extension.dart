@@ -2,6 +2,12 @@ import 'package:flutter/painting.dart';
 
 const String _kDefaultDebugLabel = 'unknown';
 
+const String _kColorForegroundWarning = 'Cannot provide both a color and a foreground\n'
+    'The color argument is just a shorthand for "foreground: Paint()..color = color".';
+
+const String _kColorBackgroundWarning = 'Cannot provide both a backgroundColor and a background\n'
+    'The backgroundColor argument is just a shorthand for "background: Paint()..color = color".';
+
 extension SMFontWeight on FontWeight {
   static const FontWeight thin = FontWeight.w300;
   static const FontWeight extraLight = FontWeight.w200;
@@ -15,13 +21,10 @@ extension SMFontWeight on FontWeight {
 }
 
 extension TextStyleEx on TextStyle {
-  /// Returns a copy of this TextStyle where the non-null fields in [style]
-  /// have replaced the corresponding null fields in this TextStyle.
-  /// !!! _package fields is private, unable to replace package fields.
-  ///
-  /// In other words, [style] is used to fill in unspecified (null) fields
-  /// this TextStyle.
-  TextStyle mergeNonNull(TextStyle? other) {
+  /// 返回此 [TextStyle] 的副本，其中 [other] 中的非空字段替换了此 [TextStyle] 中相应的空字段。
+  /// 换句话说，[other] 用于填充此 [TextStyle] 中的未指定（空）字段。
+  /// !!!: [_package] 字段是私有的，无法获取 [package], 所以不能替换 package 字段。
+  TextStyle combine(TextStyle? other) {
     if (other == null) {
       return this;
     }
@@ -29,10 +32,11 @@ extension TextStyleEx on TextStyle {
       return other;
     }
 
-    String? mergedDebugLabel;
+    String? combinedDebugLabel;
     assert(() {
       if (other.debugLabel != null || debugLabel != null) {
-        mergedDebugLabel = '(${debugLabel ?? _kDefaultDebugLabel}).merge(${other.debugLabel ?? _kDefaultDebugLabel})';
+        combinedDebugLabel =
+            '(${debugLabel ?? _kDefaultDebugLabel}).combine(${other.debugLabel ?? _kDefaultDebugLabel})';
       }
       return true;
     }());
@@ -58,10 +62,80 @@ extension TextStyleEx on TextStyle {
       decorationColor: decorationColor ?? other.decorationColor,
       decorationStyle: decorationStyle ?? other.decorationStyle,
       decorationThickness: decorationThickness ?? other.decorationThickness,
-      debugLabel: debugLabel ?? mergedDebugLabel,
+      debugLabel: debugLabel ?? combinedDebugLabel,
       fontFamily: fontFamily ?? other.fontFamily,
       fontFamilyFallback: fontFamilyFallback ?? other.fontFamilyFallback,
       overflow: overflow ?? other.overflow,
+    );
+  }
+
+  /// 返回此 [TextStyle] 的副本，其中 [other] 中的非空字段替换了此 [TextStyle] 中相应的空字段。
+  /// 换句话说，[other] 用于填充此 [TextStyle] 中的未指定（空）字段。
+  /// !!!: [_package] 字段是私有的，无法获取 [package], 所以会直接替换 package 字段。
+  TextStyle combineWith({
+    bool? inherit,
+    Color? color,
+    Color? backgroundColor,
+    double? fontSize,
+    FontWeight? fontWeight,
+    FontStyle? fontStyle,
+    double? letterSpacing,
+    double? wordSpacing,
+    TextBaseline? textBaseline,
+    double? height,
+    TextLeadingDistribution? leadingDistribution,
+    Locale? locale,
+    Paint? foreground,
+    Paint? background,
+    List<Shadow>? shadows,
+    List<FontFeature>? fontFeatures,
+    List<FontVariation>? fontVariations,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    TextDecorationStyle? decorationStyle,
+    double? decorationThickness,
+    String? debugLabel,
+    String? fontFamily,
+    List<String>? fontFamilyFallback,
+    String? package,
+    TextOverflow? overflow,
+  }) {
+    assert(color == null || foreground == null, _kColorForegroundWarning);
+    assert(backgroundColor == null || background == null, _kColorBackgroundWarning);
+    String? newDebugLabel;
+    assert(() {
+      if (this.debugLabel != null) {
+        newDebugLabel = debugLabel ?? '(${this.debugLabel}).combineWith';
+      }
+      return true;
+    }());
+
+    return copyWith(
+      color: this.color ?? color,
+      backgroundColor: this.backgroundColor ?? backgroundColor,
+      fontSize: this.fontSize ?? fontSize,
+      fontWeight: this.fontWeight ?? fontWeight,
+      fontStyle: this.fontStyle ?? fontStyle,
+      letterSpacing: this.letterSpacing ?? letterSpacing,
+      wordSpacing: this.wordSpacing ?? wordSpacing,
+      textBaseline: this.textBaseline ?? textBaseline,
+      height: this.height ?? height,
+      leadingDistribution: this.leadingDistribution ?? leadingDistribution,
+      locale: this.locale ?? locale,
+      foreground: this.foreground ?? foreground,
+      background: this.background ?? background,
+      shadows: this.shadows ?? shadows,
+      fontFeatures: this.fontFeatures ?? fontFeatures,
+      fontVariations: this.fontVariations ?? fontVariations,
+      decoration: this.decoration ?? decoration,
+      decorationColor: this.decorationColor ?? decorationColor,
+      decorationStyle: this.decorationStyle ?? decorationStyle,
+      decorationThickness: this.decorationThickness ?? decorationThickness,
+      debugLabel: newDebugLabel ?? debugLabel,
+      fontFamily: this.fontFamily ?? fontFamily,
+      fontFamilyFallback: this.fontFamilyFallback ?? fontFamilyFallback,
+      overflow: this.overflow ?? overflow,
+      package: package,
     );
   }
 }

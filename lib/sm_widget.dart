@@ -15,4 +15,5 @@ export 'src/m_text.dart';
 export 'src/m_text_field.dart';
 export 'src/m_text_span.dart';
 export 'src/sm_button/sm_button.dart';
+export 'src/sm_expandable/sm_expandable.dart';
 export 'src/text_style_extension.dart';

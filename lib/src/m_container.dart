@@ -10,10 +10,10 @@ enum MBoxShape {
 }
 
 class MContainer extends StatelessWidget {
-  /// Container 组件, 可以设置宽高，边框，圆角等属性
-  /// [MContainer]
+  /// 创建一个 [Container] 组件, 可以设置宽高，边框，圆角等属性
   /// [width] 宽度
   /// [height] 高度
+  /// [size] 尺寸
   /// [child] 子组件
   /// [alignment] 对齐方式
   /// [border] 边框
@@ -26,7 +26,7 @@ class MContainer extends StatelessWidget {
   /// [gradient] 渐变
   /// [image] 图片
   /// [imageAlignment] 图片对齐方式
-  /// [imageSource] 图片来源
+  /// [imageProvider] 图片提供者
   /// [margin] 外边距
   /// [padding] 内边距
   /// [radius] 圆角
@@ -45,6 +45,7 @@ class MContainer extends StatelessWidget {
   /// [constraints] 约束
   MContainer({
     super.key,
+    double? size,
     double? width,
     double? height,
     BoxConstraints? constraints,
@@ -84,26 +85,22 @@ class MContainer extends StatelessWidget {
         assert(decoration == null || decoration.debugAssertIsValid()),
         assert(constraints == null || constraints.debugAssertIsValid()),
         assert(decoration != null || clipBehavior == Clip.none),
-        constraints = (width != null || height != null)
-            ? constraints?.tighten(width: width, height: height) ??
-                BoxConstraints.tightFor(width: width, height: height)
+        constraints = (width != null || height != null || size != null)
+            ? constraints?.tighten(width: width ?? size, height: height ?? size) ??
+                BoxConstraints.tightFor(width: width ?? size, height: height ?? size)
             : constraints;
 
+  /// 对齐方式
   final AlignmentGeometry? alignment;
+
+  /// 边框, 适用于 [MBoxShape.rectangle]
   final BoxBorder? border;
-  final Widget? child;
-  final Clip clipBehavior;
-  final BoxConstraints? constraints;
-  final Decoration? decoration;
-  final Decoration? foregroundDecoration;
-  final ImageProvider? imageProvider;
-  final EdgeInsetsGeometry? margin;
-  final EdgeInsetsGeometry? padding;
-  final Matrix4? transform;
-  final AlignmentGeometry? transformAlignment;
 
   /// 圆角, 适用于 [MBoxShape.rectangle]
   final BorderRadius? borderRadius;
+
+  /// 获取 [image] 的包, 只在设置 [image] 时生效。详情请查看 [AssetImage] 类本身的文档。
+  final AssetBundle? bundle;
 
   /// 九片图像的中心切片, 设置切片拉伸区域, Rect 是根据图片的原始大小来定位中心切片区域。
   /// 中心切片内的图像区域将被水平和垂直拉伸，以使图像适合其目标。
@@ -114,25 +111,49 @@ class MContainer extends StatelessWidget {
   /// 不扭曲目标图像大小的 [BoxFit] 的值将导致 [centerSlice] 没有效果 (因为图像的九个区域将以相同的缩放比例呈现，就像未指定一样)。
   final Rect? centerSlice;
 
+  /// 子组件
+  final Widget? child;
+
+  /// 裁剪
+  final Clip clipBehavior;
+
   /// 颜色可以和 [decoration] 一起使用, 如果有 [decoration], 则会覆盖 [color]
   final Color? color;
+
+  /// 约束
+  final BoxConstraints? constraints;
+
+  /// 装饰, 一旦设置了 [decoration], 则会覆盖所有 [decoration] 相关的属性
+  final Decoration? decoration;
 
   /// [image] 填充模式
   final BoxFit? fit;
 
+  /// 前景装饰
+  final Decoration? foregroundDecoration;
+
   /// 背景渐变
   final Gradient? gradient;
 
-  /// [image] 的对齐方式
-  final AlignmentGeometry? imageAlignment;
+  /// 用于 [HttpClient.get] 从网络获取图片的 HTTP 标头。在网络上运行 Flutter 时，不使用标头。
+  final Map<String, String>? headers;
 
   /// [image] 来源
   final String? image;
 
-  /// 设置宽高最大值, 不设置为无穷大, 当设置 [width] 或 [height] 或 [constraints] 时无效
+  /// [image] 的对齐方式
+  final AlignmentGeometry? imageAlignment;
+
+  /// 图片提供者
+  final ImageProvider? imageProvider;
+
+  /// 外边距
+  final EdgeInsetsGeometry? margin;
+
+  /// 设置宽高最大值, 不设置为无穷大, 当设置 [width] 或 [height] 或 [size] 或 [constraints] 时无效
   final double? maxHeight;
 
-  /// 设置宽高最小值, 不设置为无穷大, 当设置 [width] 或 [height] 或 [constraints] 时无效
+  /// 设置宽高最小值, 不设置为无穷大, 当设置 [width] 或 [height] 或 [size] 或 [constraints] 时无效
   final double? maxWidth;
 
   /// 设置宽高最小值, 不设置为 0
@@ -141,7 +162,13 @@ class MContainer extends StatelessWidget {
   /// 设置宽高最小值, 不设置为 0
   final double? minWidth;
 
-  /// 圆角
+  /// 包含 [image] 的软件包名称, 只在设置 [image] 时生效。详情请查看 [AssetImage] 类本身的文档。
+  final String? package;
+
+  /// 内边距
+  final EdgeInsetsGeometry? padding;
+
+  /// [borderRadius] 圆角值
   final double? radius;
 
   /// [image] 重复模式
@@ -153,20 +180,17 @@ class MContainer extends StatelessWidget {
   /// 阴影
   final List<BoxShadow>? shadows;
 
-  /// [MBoxShape]
+  /// 形状
   final MBoxShape? shape;
 
-  /// 边框
+  /// 边框轮廓的颜色和粗细。
   final BorderSide? side;
 
-  /// 包含图片的软件包名称。详情请查看 [AssetImage] 类本身的文档。
-  final String? package;
+  /// 变换
+  final Matrix4? transform;
 
-  /// 获取图像的包。
-  final AssetBundle? bundle;
-
-  /// 用于 [HttpClient.get] 从网络获取图片的 HTTP 标头。在网络上运行 Flutter 时，不使用标头。
-  final Map<String, String>? headers;
+  /// 变换对齐方式
+  final AlignmentGeometry? transformAlignment;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -198,8 +222,8 @@ class MContainer extends StatelessWidget {
         shape != null ||
         gradient != null ||
         shadows != null) {
-      var imageProvider = this.imageProvider;
       final image = this.image;
+      var imageProvider = this.imageProvider;
 
       if (imageProvider == null && image != null && image.isNotEmpty) {
         imageProvider = MImage.provider(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'm_text.dart';
+import 'sm_button/sm_button.dart';
 
 class MAppBar extends AppBar {
   MAppBar({
@@ -57,8 +58,9 @@ class MAppBar extends AppBar {
           leading: leading ??
               (isRoot
                   ? null
-                  : IconButton(
-                      onPressed: onBack,
+                  // TODO: 为什么放 AppBar 上和 IconButton 的点击大小会不一样?
+                  : MIconButton(
+                      onPressed: onBack ?? () => Get.back(),
                       icon: Icon(
                         backIconData ?? Icons.arrow_back_ios_new_rounded,
                         size: backIconSize ?? 18,

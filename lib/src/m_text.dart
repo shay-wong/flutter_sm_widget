@@ -212,7 +212,7 @@ class MText extends StatelessWidget {
 }
 
 extension MTextToSpanExt on MText {
-  TextSpan toTextSpan() {
+  TextSpan get toTextSpan {
     return TextSpan(
       text: data,
       style: style ??
@@ -223,5 +223,9 @@ extension MTextToSpanExt on MText {
           ),
       children: textSpan != null ? <InlineSpan>[textSpan!] : null,
     );
+  }
+
+  InlineSpan get toSpan {
+    return WidgetSpan(child: this);
   }
 }

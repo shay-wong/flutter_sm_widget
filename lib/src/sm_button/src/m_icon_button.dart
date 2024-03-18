@@ -294,6 +294,20 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
+    this.backgroundColor,
+    this.clearPadding = false,
+    this.elevation,
+    this.fixedSize,
+    this.maximumSize,
+    this.minimumSize,
+    this.noHighlight = false,
+    this.noSplash = false,
+    this.overlayColor,
+    this.shadowColor,
+    this.shape,
+    this.side,
+    this.splashFactory,
+    this.tapTargetSize,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.standard;
 
@@ -321,6 +335,20 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
+    this.backgroundColor,
+    this.clearPadding = false,
+    this.elevation,
+    this.fixedSize,
+    this.maximumSize,
+    this.minimumSize,
+    this.noHighlight = false,
+    this.noSplash = false,
+    this.overlayColor,
+    this.shadowColor,
+    this.shape,
+    this.side,
+    this.splashFactory,
+    this.tapTargetSize,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.filled;
 
@@ -348,6 +376,20 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
+    this.backgroundColor,
+    this.clearPadding = false,
+    this.elevation,
+    this.fixedSize,
+    this.maximumSize,
+    this.minimumSize,
+    this.noHighlight = false,
+    this.noSplash = false,
+    this.overlayColor,
+    this.shadowColor,
+    this.shape,
+    this.side,
+    this.splashFactory,
+    this.tapTargetSize,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.filledTonal;
 
@@ -375,14 +417,33 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
+    this.backgroundColor,
+    this.clearPadding = false,
+    this.elevation,
+    this.fixedSize,
+    this.maximumSize,
+    this.minimumSize,
+    this.noHighlight = false,
+    this.noSplash = false,
+    this.overlayColor,
+    this.shadowColor,
+    this.shape,
+    this.side,
+    this.splashFactory,
+    this.tapTargetSize,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.outlined;
 
   final AlignmentGeometry? alignment;
   final bool autofocus;
+
+  /// 背景颜色, 只在 Material 3 生效
+  final Color? backgroundColor;
+  /// 即 foregroundColor
   final Color? color;
   final BoxConstraints? constraints;
   final Color? disabledColor;
+  final double? elevation;
   final bool? enableFeedback;
   final Color? focusColor;
   final FocusNode? focusNode;
@@ -391,15 +452,54 @@ class MIconButton extends StatelessWidget {
   final Widget icon;
   final double? iconSize;
   final bool? isSelected;
+  final Size? maximumSize;
   final MouseCursor? mouseCursor;
   final VoidCallback? onPressed;
-  final EdgeInsetsGeometry? padding;
   final Widget? selectedIcon;
+
+  /// 只在 Material 3 生效
+  final Color? shadowColor;
+
+  /// 只在 Material 3 生效
+  final OutlinedBorder? shape;
+
+  /// 只在 Material 3 生效
+  final BorderSide? side;
   final Color? splashColor;
+
+  /// 只在 Material 2 生效
   final double? splashRadius;
   final ButtonStyle? style;
+
+  /// 只在 Material 3 生效
+  final MaterialTapTargetSize? tapTargetSize;
   final String? tooltip;
   final VisualDensity? visualDensity;
+
+  /// 是否去除边距
+  final bool clearPadding;
+
+  /// 限制大小
+  final double? fixedSize;
+
+  // !!!: 注意使用
+  // TODO: minimumSize 在手机浏览器上显示有问题!! 那么 maximumSize 呢?
+  final Size? minimumSize;
+
+  /// 只去除默认的高亮颜色, 如果设置了 [highlightColor] 或 [overlayColor] 则 [noHighlight] 无效
+  final bool noHighlight;
+
+  /// 只去除默认的飞溅效果, 如果设置了 [splashColor] 或 [splashFactory] 则 [noSplash] 无效
+  final bool noSplash;
+
+  /// 如果设置了 [overlayColor] 则 [noHighlight] 无效
+  final Color? overlayColor;
+
+  /// 如果设置了 [padding] 则 [clearPadding] 无效
+  final EdgeInsetsGeometry? padding;
+
+  /// 如果设置了 [splashFactory] 则 [noSplash] 无效
+  final InteractiveInkFeatureFactory? splashFactory;
 
   final _MIconButtonVariant _variant;
 
@@ -417,6 +517,7 @@ class MIconButton extends StatelessWidget {
     properties.add(ColorProperty('splashColor', splashColor, defaultValue: null));
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding, defaultValue: null));
     properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode, defaultValue: null));
+    // TODO: add custom properties
   }
 
   static ButtonStyle styleFrom({
@@ -445,6 +546,7 @@ class MIconButton extends StatelessWidget {
     bool? enableFeedback,
     AlignmentGeometry? alignment,
     InteractiveInkFeatureFactory? splashFactory,
+    Color? overlayColor,
   }) {
     final MaterialStateProperty<Color?>? buttonBackgroundColor =
         (backgroundColor == null && disabledBackgroundColor == null)
@@ -454,17 +556,20 @@ class MIconButton extends StatelessWidget {
         (foregroundColor == null && disabledForegroundColor == null)
             ? null
             : _MIconButtonDefaultForeground(foregroundColor, disabledForegroundColor);
-    final MaterialStateProperty<Color?>? overlayColor =
-        (foregroundColor == null && hoverColor == null && focusColor == null && highlightColor == null)
-            ? null
-            : _MIconButtonDefaultOverlay(foregroundColor, focusColor, hoverColor, highlightColor);
+    final MaterialStateProperty<Color?>? effectiveOverlayColor = (overlayColor == null &&
+            foregroundColor == null &&
+            hoverColor == null &&
+            focusColor == null &&
+            highlightColor == null)
+        ? null
+        : _MIconButtonDefaultOverlay(foregroundColor, focusColor, hoverColor, highlightColor, overlayColor);
     final MaterialStateProperty<MouseCursor?> mouseCursor =
         _MIconButtonDefaultMouseCursor(enabledMouseCursor, disabledMouseCursor);
 
     return ButtonStyle(
       backgroundColor: buttonBackgroundColor,
       foregroundColor: buttonForegroundColor,
-      overlayColor: overlayColor,
+      overlayColor: effectiveOverlayColor,
       shadowColor: ButtonStyleButton.allOrNull<Color>(shadowColor),
       surfaceTintColor: ButtonStyleButton.allOrNull<Color>(surfaceTintColor),
       elevation: ButtonStyleButton.allOrNull<double>(elevation),
@@ -490,8 +595,8 @@ class MIconButton extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     if (theme.useMaterial3) {
-      final Size? minSize = constraints == null ? null : Size(constraints!.minWidth, constraints!.minHeight);
-      final Size? maxSize = constraints == null ? null : Size(constraints!.maxWidth, constraints!.maxHeight);
+      final Size? minSize = constraints == null ? minimumSize : Size(constraints!.minWidth, constraints!.minHeight);
+      final Size? maxSize = constraints == null ? maximumSize : Size(constraints!.maxWidth, constraints!.maxHeight);
 
       ButtonStyle adjustedStyle = styleFrom(
         visualDensity: visualDensity,
@@ -500,14 +605,23 @@ class MIconButton extends StatelessWidget {
         focusColor: focusColor,
         hoverColor: hoverColor,
         highlightColor: highlightColor,
-        padding: padding,
-        minimumSize: minSize,
+        padding: padding ?? (clearPadding ? EdgeInsets.zero : null),
+        minimumSize: minSize ?? (clearPadding ? Size.zero : null),
         maximumSize: maxSize,
         iconSize: iconSize,
         alignment: alignment,
         enabledMouseCursor: mouseCursor,
         disabledMouseCursor: mouseCursor,
         enableFeedback: enableFeedback,
+        backgroundColor: backgroundColor,
+        elevation: elevation,
+        fixedSize: fixedSize == null ? null : Size(fixedSize!, fixedSize!),
+        shape: shape,
+        shadowColor: shadowColor,
+        side: side,
+        splashFactory: splashFactory ?? (noSplash ? NoSplash.splashFactory : null),
+        tapTargetSize: tapTargetSize ?? (clearPadding ? MaterialTapTargetSize.shrinkWrap : null),
+        overlayColor: overlayColor ?? (noHighlight ? Colors.transparent : null), // TODO: 没有高亮暂时用透明色
       );
       if (style != null) {
         adjustedStyle = style!.merge(adjustedStyle);
@@ -536,7 +650,6 @@ class MIconButton extends StatelessWidget {
         child: iconButton,
       );
     }
-
     assert(debugCheckHasMaterial(context));
 
     Color? currentColor;
@@ -549,13 +662,15 @@ class MIconButton extends StatelessWidget {
     final VisualDensity effectiveVisualDensity = visualDensity ?? theme.visualDensity;
 
     final BoxConstraints unadjustedConstraints = constraints ??
-        const BoxConstraints(
-          minWidth: _kMinButtonSize,
-          minHeight: _kMinButtonSize,
+        BoxConstraints(
+          minWidth: minimumSize?.width ?? _kMinButtonSize,
+          minHeight: minimumSize?.height ?? _kMinButtonSize,
+          maxWidth: maximumSize?.width ?? double.infinity,
+          maxHeight: maximumSize?.height ?? double.infinity,
         );
     final BoxConstraints adjustedConstraints = effectiveVisualDensity.effectiveConstraints(unadjustedConstraints);
-    final double effectiveIconSize = iconSize ?? IconTheme.of(context).size ?? 24.0;
-    final EdgeInsetsGeometry effectivePadding = padding ?? const EdgeInsets.all(8.0);
+    final double effectiveIconSize = iconSize ?? fixedSize ?? IconTheme.of(context).size ?? 24.0;
+    final EdgeInsetsGeometry effectivePadding = padding ?? (clearPadding ? EdgeInsets.zero : const EdgeInsets.all(8.0));
     final AlignmentGeometry effectiveAlignment = alignment ?? Alignment.center;
     final bool effectiveEnableFeedback = enableFeedback ?? true;
 
@@ -599,14 +714,23 @@ class MIconButton extends StatelessWidget {
         enableFeedback: effectiveEnableFeedback,
         focusColor: focusColor ?? theme.focusColor,
         hoverColor: hoverColor ?? theme.hoverColor,
-        highlightColor: highlightColor ?? theme.highlightColor,
-        splashColor: splashColor ?? theme.splashColor,
+        highlightColor: highlightColor ?? (noHighlight ? null : theme.highlightColor),
+        splashColor: splashColor ?? (noSplash ? null : theme.splashColor),
+        splashFactory: splashFactory ?? (noSplash ? NoSplash.splashFactory : null),
         radius: splashRadius ??
-            math.max(
-              Material.defaultSplashRadius,
-              (effectiveIconSize + math.min(effectivePadding.horizontal, effectivePadding.vertical)) * 0.7,
-              // x 0.5 for diameter -> radius and + 40% overflow derived from other Material apps.
-            ),
+            (noSplash &&
+                    noHighlight &&
+                    highlightColor == null &&
+                    splashColor == null &&
+                    splashFactory == null &&
+                    focusColor == null &&
+                    hoverColor == null
+                ? 0.0
+                : math.max(
+                    Material.defaultSplashRadius,
+                    (effectiveIconSize + math.min(effectivePadding.horizontal, effectivePadding.vertical)) * 0.7,
+                    // x 0.5 for diameter -> radius and + 40% overflow derived from other Material apps.
+                  )),
         child: result,
       ),
     );
@@ -673,34 +797,41 @@ class _MIconButtonDefaultMouseCursor extends MaterialStateProperty<MouseCursor?>
 
 @immutable
 class _MIconButtonDefaultOverlay extends MaterialStateProperty<Color?> {
-  _MIconButtonDefaultOverlay(this.foregroundColor, this.focusColor, this.hoverColor, this.highlightColor);
+  _MIconButtonDefaultOverlay(
+    this.foregroundColor,
+    this.focusColor,
+    this.hoverColor,
+    this.highlightColor,
+    this.overlayColor,
+  );
 
   final Color? focusColor;
   final Color? foregroundColor;
   final Color? highlightColor;
   final Color? hoverColor;
+  final Color? overlayColor;
 
   @override
   Color? resolve(Set<MaterialState> states) {
     if (states.contains(MaterialState.selected)) {
       if (states.contains(MaterialState.pressed)) {
-        return highlightColor ?? foregroundColor?.withOpacity(0.12);
+        return highlightColor ?? overlayColor ?? foregroundColor?.withOpacity(0.12);
       }
       if (states.contains(MaterialState.hovered)) {
-        return hoverColor ?? foregroundColor?.withOpacity(0.08);
+        return hoverColor ?? overlayColor ?? foregroundColor?.withOpacity(0.08);
       }
       if (states.contains(MaterialState.focused)) {
-        return focusColor ?? foregroundColor?.withOpacity(0.12);
+        return focusColor ?? overlayColor ?? foregroundColor?.withOpacity(0.12);
       }
     }
     if (states.contains(MaterialState.pressed)) {
-      return highlightColor ?? foregroundColor?.withOpacity(0.12);
+      return highlightColor ?? overlayColor ?? foregroundColor?.withOpacity(0.12);
     }
     if (states.contains(MaterialState.hovered)) {
-      return hoverColor ?? foregroundColor?.withOpacity(0.08);
+      return hoverColor ?? overlayColor ?? foregroundColor?.withOpacity(0.08);
     }
     if (states.contains(MaterialState.focused)) {
-      return focusColor ?? foregroundColor?.withOpacity(0.08);
+      return focusColor ?? overlayColor ?? foregroundColor?.withOpacity(0.08);
     }
     return null;
   }

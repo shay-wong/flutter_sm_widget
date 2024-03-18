@@ -57,7 +57,7 @@ class MTextExample extends StatelessWidget {
             isBold: true,
             fontSize: 30,
           ),
-          MText.rich(
+          const MText.rich(
             color: Colors.red,
             isBold: true,
             fontSize: 20,
@@ -70,7 +70,7 @@ class MTextExample extends StatelessWidget {
               ),
             ],
           ),
-          Text.rich(
+          const Text.rich(
             TextSpan(
               children: [
                 MTextSpan(text: 'Hello World,'),
@@ -80,7 +80,7 @@ class MTextExample extends StatelessWidget {
                   fontSize: 30,
                 ),
               ],
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.red,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -96,7 +96,7 @@ class MTextExample extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
               children: [
-                TextSpan(text: 'Hello World,'),
+                MTextSpan(text: 'Hello World,'),
                 TextSpan(
                   text: 'I am RichText',
                   style: TextStyle(
@@ -107,7 +107,7 @@ class MTextExample extends StatelessWidget {
               ],
             ),
           ),
-          MRichText(
+          const MRichText(
             color: Colors.red,
             isBold: true,
             fontSize: 20,

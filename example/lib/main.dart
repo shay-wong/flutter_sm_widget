@@ -1,14 +1,15 @@
-import 'package:example/button_example.dart';
-import 'package:example/circle_avatar_example.dart';
-import 'package:example/container_example.dart';
-import 'package:example/text_example.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sm_widget/generated/locales.g.dart';
 import 'package:flutter_sm_widget/sm_widget.dart';
 import 'package:get/get.dart';
 
+import 'button_example.dart';
+import 'circle_avatar_example.dart';
+import 'container_example.dart';
 import 'dialog_example.dart';
+import 'expandable_example.dart';
 import 'list_tile_example.dart';
+import 'text_example.dart';
+import 'text_field_example.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,6 +25,8 @@ class MyApp extends StatelessWidget {
         const MCircleAvatarExample(),
         const MDialogExample(),
         const MListTileExample(),
+        const ExpandableExample(),
+        const MTextFieldExample(),
       ];
 
   @override
@@ -31,6 +34,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(
         colorSchemeSeed: const Color(0xff6750a4),
+        // useMaterial3: false,
         useMaterial3: true,
       ),
       home: Scaffold(

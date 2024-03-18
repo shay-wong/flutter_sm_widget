@@ -30,7 +30,13 @@ TextStyle? _m3StateInputStyle(BuildContext context) => MaterialStateTextStyle.re
       return TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color);
     });
 
+enum MTextFieldBorderStyle {
+  underline,
+  outline,
+}
+
 class MTextField extends StatefulWidget {
+  /// Creates a Material Design [TextField].
   const MTextField({
     super.key,
     this.controller,
@@ -101,14 +107,66 @@ class MTextField extends StatefulWidget {
     this.color,
     this.isBold = false,
     this.forceStrutHeight = false,
-    this.contentPadding,
-    this.fillColor,
     this.filled,
+    this.errorBorder,
+    this.focusedBorder,
+    this.focusedErrorBorder,
+    this.disabledBorder,
+    this.enabledBorder,
     this.border,
-    this.placeholder,
-    this.placeholderColor,
-    this.hintStyle,
     this.text,
+    this.fillColor,
+    this.width,
+    this.height,
+    this.constraints,
+    this.borderRadius,
+    this.radius,
+    this.side,
+    this.borderStyle = MTextFieldBorderStyle.underline,
+    this.gapPadding,
+    this.icon,
+    this.iconColor,
+    this.label,
+    this.labelText,
+    this.labelStyle,
+    this.floatingLabelStyle,
+    this.helperText,
+    this.helperStyle,
+    this.helperMaxLines,
+    this.hintText,
+    this.hintColor,
+    this.hintStyle,
+    this.hintTextDirection,
+    this.hintMaxLines,
+    this.hintFadeDuration,
+    this.error,
+    this.errorText,
+    this.errorStyle,
+    this.errorMaxLines,
+    this.floatingLabelBehavior,
+    this.floatingLabelAlignment,
+    this.isCollapsed,
+    this.isDense,
+    this.contentPadding,
+    this.prefixIcon,
+    this.prefixIconConstraints,
+    this.prefix,
+    this.prefixText,
+    this.prefixStyle,
+    this.prefixIconColor,
+    this.suffixIcon,
+    this.suffix,
+    this.suffixText,
+    this.suffixStyle,
+    this.suffixIconColor,
+    this.suffixIconConstraints,
+    this.counter,
+    this.counterText,
+    this.counterStyle,
+    this.alignLabelWithHint,
+    this.focusColor,
+    this.hoverColor,
+    this.semanticCounterText,
   })  : assert(obscuringCharacter.length == 1),
         smartDashesType = smartDashesType ?? (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ?? (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
@@ -162,7 +220,6 @@ class MTextField extends StatefulWidget {
   final bool enableIMEPersonalizedLearning;
   final bool enableInteractiveSelection;
   final bool enableSuggestions;
-  final bool? enabled;
   final bool expands;
   final FocusNode? focusNode;
   final List<TextInputFormatter>? inputFormatters;
@@ -206,44 +263,220 @@ class MTextField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final UndoHistoryController? undoController;
 
-  /// 自定义属性
+  /// 如果 [labelText] 或者 [helperText] 存在，则将此标签与它们对齐
+  final bool? alignLabelWithHint;
+
+  /// 输入框的边框, 默认情况下为 [InputBorder.none].
+  /// 如果设置了[borderRadius] 或 [radius] 或 [side] 或 [gapPadding], 则根据 [borderStyle] 重新计算边框
   final InputBorder? border;
 
-  /// 自定义属性
+  /// 圆角
+  final BorderRadius? borderRadius;
+
+  /// 边框样式, 默认 [MTextFieldBorderStyle.underline]
+  final MTextFieldBorderStyle borderStyle;
+
+  /// 字体颜色
   final Color? color;
 
-  /// 自定义属性
+  /// 输入框的大小约束
+  final BoxConstraints? constraints;
+
+  /// 内容的内边距
+  /// 默认情况下，[contentPadding] 反映 [isDense] 和 [border] 的类型。
+  /// 如果 [isCollapsed] 为true，那么 [contentPadding] 就是 [EdgeInsets.zero]。
+  /// 如果 [border] 的 `isOutline` 属性为假，且 [filled] 为真，
+  /// 则当 [isDense] 为真时，[contentPadding] 为 `EdgeInsets.fromLTRB(12, 8, 12, 8)`；
+  /// 当 [isDense] 为假时，[contentPadding] 为 `EdgeInsets.fromLTRB(12, 12, 12, 12)`。
+  /// 如果 [border] 的 `isOutline` 属性为 false，且 [filled] 为 false，
+  /// 则当 [isDense] 为真时，[contentPadding] 为 `EdgeInsets.fromLTRB(0, 8, 0, 8)`；
+  /// 当 [isDense] 为假时，[contentPadding] 为 `EdgeInsets.fromLTRB(0, 12, 0, 12)`。
+  /// 如果 [border] 的 `isOutline` 属性为 true，
+  /// 则当 [isDense] 为 true 时，[contentPadding] 为 `EdgeInsets.fromLTRB(12, 20, 12, 12)`；
+  /// 当 [isDense] 为 false 时，[contentPadding] 为 `EdgeInsets.fromLTRB(12, 24, 12, 16)`。
   final EdgeInsetsGeometry? contentPadding;
 
-  /// 自定义属性
+  /// 计数器
+  final Widget? counter;
+
+  /// 计数器的样式
+  final TextStyle? counterStyle;
+
+  /// 计数器的文本
+  final String? counterText;
+
+  /// 禁用状态下的边框
+  final InputBorder? disabledBorder;
+
+  /// 是否启用输入框
+  final bool? enabled;
+
+  /// 启用状态下的边框
+  final InputBorder? enabledBorder;
+
+  /// 错误提示
+  final Widget? error;
+
+  /// 错误状态下的边框
+  final InputBorder? errorBorder;
+
+  /// 错误提示的最大行数
+  final int? errorMaxLines;
+
+  /// 错误提示的样式
+  final TextStyle? errorStyle;
+
+  /// 错误提示的文本
+  final String? errorText;
+
+  /// 输入框填充的颜色
   final Color? fillColor;
 
-  /// 自定义属性
+  /// 是否填充输入框
+  /// 如果为 "true"，装饰的容器将被填充为 [fillColor]。
+  /// 默认为 "false", 当 [fillColor] 不为 null 时默认为 "true".
   final bool? filled;
 
-  /// 自定义属性
+  /// 标签的对齐方式
+  final FloatingLabelAlignment? floatingLabelAlignment;
+
+  /// 标签的行为
+  final FloatingLabelBehavior? floatingLabelBehavior;
+
+  /// 标签的样式
+  final TextStyle? floatingLabelStyle;
+
+  /// 输入框获取焦点时的颜色
+  final Color? focusColor;
+
+  /// 获取焦点时的边框
+  final InputBorder? focusedBorder;
+
+  /// 获取焦点时的错误边框
+  final InputBorder? focusedErrorBorder;
+
+  /// 字体大小
   final double? fontSize;
 
-  /// 自定义属性
+  /// 字体粗细
   final FontWeight? fontWeight;
 
-  /// 自定义属性
+  /// 是否强制设置支柱高度。默认值为 false。
   final bool forceStrutHeight;
 
-  /// 自定义属性
+  /// 边框两侧的水平填充, 默认值为 4.0
+  /// [InputDecoration.labelText] 宽度间隙.
+  ///
+  /// 此值由[paint]方法用于计算实际间隙宽度.
+  final double? gapPadding;
+
+  /// 文本高度
+  final double? height;
+
+  /// 帮助提示的最大行数
+  final int? helperMaxLines;
+
+  /// 帮助提示的样式
+  final TextStyle? helperStyle;
+
+  /// 帮助提示的文本
+  final String? helperText;
+
+  /// 提示文字淡出动画的持续时间
+  final Duration? hintFadeDuration;
+
+  /// 提示文字的最大行数
+  final int? hintMaxLines;
+
+  /// 提示文字的样式
   final TextStyle? hintStyle;
 
-  /// 自定义属性
+  /// 提示文字的文本
+  final String? hintText;
+
+  /// 提示文字的方向
+  final TextDirection? hintTextDirection;
+
+  /// 鼠标悬浮时的颜色
+  final Color? hoverColor;
+
+  /// 前缀图标
+  final Widget? icon;
+
+  /// 前缀图标的颜色
+  final Color? iconColor;
+
+  /// 是否为粗体
   final bool isBold;
 
-  /// 自定义属性
-  final String? placeholder;
+  /// 是否折叠
+  final bool? isCollapsed;
 
-  /// 自定义属性
-  final Color? placeholderColor;
+  /// 是否紧凑
+  final bool? isDense;
 
-  /// 自定义属性
+  /// 标签
+  final Widget? label;
+
+  /// 标签的样式
+  final TextStyle? labelStyle;
+
+  /// 标签的文本
+  final String? labelText;
+
+  /// 提示颜色
+  final Color? hintColor;
+
+  /// 前缀
+  final Widget? prefix;
+
+  /// 前缀图标
+  final Widget? prefixIcon;
+
+  /// 前缀图标的颜色
+  final Color? prefixIconColor;
+
+  /// 前缀图标的约束
+  final BoxConstraints? prefixIconConstraints;
+
+  /// 前缀的样式
+  final TextStyle? prefixStyle;
+
+  /// 前缀的文本
+  final String? prefixText;
+
+  /// 圆角半径
+  final double? radius;
+
+  /// 统计信息的文本，用于读屏软件
+  final String? semanticCounterText;
+
+  /// 边框颜色粗细等样式
+  final BorderSide? side;
+
+  /// 后缀
+  final Widget? suffix;
+
+  /// 后缀图标
+  final Widget? suffixIcon;
+
+  /// 后缀图标的颜色
+  final Color? suffixIconColor;
+
+  /// 后缀图标的约束, 比如限制宽高
+  final BoxConstraints? suffixIconConstraints;
+
+  /// 后缀的样式
+  final TextStyle? suffixStyle;
+
+  /// 后缀的文本
+  final String? suffixText;
+
+  /// 默认文本
   final String? text;
+
+  /// 文本宽度
+  final double? width;
 
   @override
   State<MTextField> createState() => _MTextFieldState();
@@ -464,7 +697,7 @@ class _MTextFieldState extends State<MTextField>
             uniqueIdentifier: autofillId,
             autofillHints: autofillHints,
             currentEditingValue: _effectiveController.value,
-            hintText: (widget.decoration ?? _defaultDecoration()).hintText,
+            hintText: (widget.decoration ?? _defaultDecoration).hintText,
           )
         : AutofillConfiguration.disabled;
 
@@ -482,6 +715,111 @@ class _MTextFieldState extends State<MTextField>
   }
 
   int get _currentLength => _effectiveController.value.text.characters.length;
+  InputBorder? get _defaultBorder {
+    if (widget.borderRadius != null || widget.radius != null || widget.side != null) {
+      final borderRadius = widget.borderRadius ?? BorderRadius.circular(widget.radius ?? 0);
+      final borderSide = widget.side ?? BorderSide.none; // 默认无边框
+
+      if (widget.borderStyle == MTextFieldBorderStyle.outline) {
+        return OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: borderSide,
+          gapPadding: widget.gapPadding ?? 4.0,
+        );
+      }
+      // 默认底部边框
+      return UnderlineInputBorder(
+        borderRadius: borderRadius,
+        borderSide: borderSide,
+      );
+    }
+
+    return InputBorder.none;
+  }
+
+  // 默认装饰
+  InputDecoration get _defaultDecoration {
+    final hintTheme = _hintStyle;
+
+    final hintStyle = hintTheme.copyWith(
+      fontSize: widget.fontSize,
+      color: widget.hintColor,
+      inherit: true,
+    );
+
+    final constraints = (widget.width != null || widget.height != null)
+        ? widget.constraints?.tighten(width: widget.width, height: widget.height) ??
+            BoxConstraints.tightFor(width: widget.width, height: widget.height)
+        : widget.constraints;
+
+    return InputDecoration(
+      icon: widget.icon,
+      iconColor: widget.iconColor,
+      label: widget.label,
+      labelText: widget.labelText,
+      labelStyle: widget.labelStyle,
+      floatingLabelStyle: widget.floatingLabelStyle,
+      helperText: widget.helperText,
+      helperStyle: widget.helperStyle,
+      helperMaxLines: widget.helperMaxLines,
+      hintText: widget.hintText,
+      hintStyle: widget.hintStyle?.combine(hintStyle) ?? hintStyle,
+      hintTextDirection: widget.hintTextDirection,
+      hintMaxLines: widget.hintMaxLines,
+      hintFadeDuration: widget.hintFadeDuration,
+      error: widget.error,
+      errorText: widget.errorText,
+      errorStyle: widget.errorStyle,
+      errorMaxLines: widget.errorMaxLines,
+      floatingLabelBehavior: widget.floatingLabelBehavior,
+      floatingLabelAlignment: widget.floatingLabelAlignment,
+      isCollapsed: widget.isCollapsed,
+      isDense: widget.isDense,
+      contentPadding: widget.contentPadding, // 无边距
+      prefixIcon: widget.prefixIcon,
+      prefixIconConstraints: widget.prefixIconConstraints,
+      prefix: widget.prefix,
+      prefixText: widget.prefixText,
+      prefixStyle: widget.prefixStyle,
+      prefixIconColor: widget.prefixIconColor,
+      suffixIcon: widget.suffixIcon,
+      suffix: widget.suffix,
+      suffixText: widget.suffixText,
+      suffixStyle: widget.suffixStyle,
+      suffixIconColor: widget.suffixIconColor,
+      suffixIconConstraints: widget.suffixIconConstraints,
+      counter: widget.counter,
+      counterText: widget.counterText,
+      counterStyle: widget.counterStyle,
+      filled: widget.filled ?? widget.fillColor != null,
+      fillColor: widget.fillColor,
+      focusColor: widget.focusColor,
+      hoverColor: widget.hoverColor,
+      errorBorder: widget.errorBorder ?? _defaultBorder,
+      focusedBorder: widget.focusedBorder ?? _defaultBorder,
+      focusedErrorBorder: widget.focusedErrorBorder ?? _defaultBorder,
+      disabledBorder: widget.disabledBorder ?? _defaultBorder,
+      enabledBorder: widget.enabledBorder ?? _defaultBorder,
+      border: widget.border ?? _defaultBorder,
+      enabled: widget.enabled ?? true,
+      semanticCounterText: widget.semanticCounterText,
+      alignLabelWithHint: widget.alignLabelWithHint,
+      constraints: constraints,
+    );
+  }
+
+  TextStyle? get _defaultTextStyle {
+    if (widget.color != null || widget.fontSize != null || widget.fontWeight != null || widget.isBold) {
+      return TextStyle(
+        color: widget.color,
+        fontSize: widget.fontSize,
+        fontWeight: widget.fontWeight ?? (widget.isBold ? FontWeight.bold : null),
+        inherit: true,
+      );
+    }
+    return null;
+  }
+
   EditableTextState? get _editableText => editableTextKey.currentState;
   TextEditingController get _effectiveController => widget.controller ?? _controller!.value;
   FocusNode get _effectiveFocusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
@@ -499,6 +837,16 @@ class _MTextFieldState extends State<MTextField>
       (widget.controller == null
           ? !restorePending && _effectiveController.value.text.characters.length > widget.maxLength!
           : _effectiveController.value.text.characters.length > widget.maxLength!);
+
+  // 自定义方法
+  TextStyle get _hintStyle => MaterialStateTextStyle.resolveWith(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return TextStyle(color: Theme.of(context).disabledColor);
+          }
+          return TextStyle(color: Theme.of(context).hintColor);
+        },
+      );
 
   // End of API for TextSelectionGestureDetectorBuilderDelegate.
 
@@ -519,40 +867,11 @@ class _MTextFieldState extends State<MTextField>
     }
   }
 
-  // 自定义方法 默认装饰
-  InputDecoration _defaultDecoration() {
-    final hintTheme = _hintStyle;
-
-    final hintStyle = hintTheme.copyWith(
-      fontSize: widget.fontSize,
-      color: widget.placeholderColor,
-      inherit: true,
-    );
-    return InputDecoration(
-      contentPadding: widget.contentPadding ?? EdgeInsets.zero, // 无边距
-      fillColor: widget.fillColor,
-      filled: widget.filled ?? widget.fillColor != null,
-      border: widget.border ?? InputBorder.none, // 无边框
-      hintText: widget.placeholder,
-      hintStyle: widget.hintStyle?.mergeNonNull(hintStyle) ?? hintStyle,
-    );
-  }
-
-  // 自定义方法
-  TextStyle get _hintStyle => MaterialStateTextStyle.resolveWith(
-        (Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled)) {
-            return TextStyle(color: Theme.of(context).disabledColor);
-          }
-          return TextStyle(color: Theme.of(context).hintColor);
-        },
-      );
-
   InputDecoration _getEffectiveDecoration() {
     final MaterialLocalizations localizations = MaterialLocalizations.of(context);
     final ThemeData themeData = Theme.of(context);
     final InputDecoration effectiveDecoration =
-        (widget.decoration ?? _defaultDecoration()).applyDefaults(themeData.inputDecorationTheme).copyWith(
+        (widget.decoration ?? _defaultDecoration).applyDefaults(themeData.inputDecorationTheme).copyWith(
               enabled: _isEnabled,
               hintMaxLines: widget.decoration?.hintMaxLines ?? widget.maxLines,
             );
@@ -751,17 +1070,12 @@ class _MTextFieldState extends State<MTextField>
 
     final ThemeData theme = Theme.of(context);
     final DefaultSelectionStyle selectionStyle = DefaultSelectionStyle.of(context);
-    final TextStyle? providedStyle = MaterialStateProperty.resolveAs(widget.style, _statesController.value);
+    final TextStyle? providedStyle =
+        MaterialStateProperty.resolveAs(widget.style, _statesController.value)?.combine(_defaultTextStyle) ??
+            _defaultTextStyle;
     final TextStyle style =
         _getInputStyleForState(theme.useMaterial3 ? _m3InputStyle(context) : theme.textTheme.titleMedium!)
-            .merge(providedStyle)
-            .mergeNonNull(
-              TextStyle(
-                color: widget.color,
-                fontSize: widget.fontSize,
-                fontWeight: widget.fontWeight ?? (widget.isBold ? FontWeight.bold : null),
-              ),
-            );
+            .merge(providedStyle);
     final strutStyle = (widget.strutStyle == null && widget.forceStrutHeight)
         ? StrutStyle.fromTextStyle(style, forceStrutHeight: true)
         : widget.strutStyle;

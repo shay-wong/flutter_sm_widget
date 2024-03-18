@@ -32,8 +32,63 @@ class MButtonExample extends StatelessWidget {
               ),
               MIconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.face),
-              )
+                icon: const Icon(
+                  Icons.face,
+                  size: 100,
+                ),
+                clearPadding: true,
+                noSplash: true,
+                noHighlight: true,
+                backgroundColor: Colors.amber,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.face,
+                  size: 100,
+                ),
+                style: IconButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  minimumSize: Size.zero,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              MIconButton(
+                onPressed: () {},
+                icon: const MImage(
+                  'assets/images/avatar.png',
+                  fit: BoxFit.fill,
+                  size: 100,
+                ),
+                iconSize: 100,
+                clearPadding: true,
+                // noSplash: true,
+                noHighlight: true,
+                backgroundColor: Colors.amber,
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const MImage(
+                  'assets/images/avatar.png',
+                  fit: BoxFit.fill,
+                  size: 100,
+                ),
+                iconSize: 100,
+                style: IconButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  minimumSize: Size.zero,
+                  backgroundColor: Colors.amber,
+                  highlightColor: Colors.blue,
+                  splashFactory: NoSplash.splashFactory,
+                ),
+                splashColor: Colors.transparent,
+                highlightColor: Colors.blue,
+              ),
             ],
           ),
           Row(
@@ -70,7 +125,7 @@ class MButtonExample extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

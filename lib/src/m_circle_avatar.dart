@@ -15,18 +15,13 @@ class MCircleAvatar extends StatelessWidget {
     this.radius,
     this.minRadius,
     this.maxRadius,
-    double? width,
-    double? height,
-    double? size,
     this.placeholder,
     this.onTap,
     this.package,
     this.bundle,
   })  : assert(radius == null || (minRadius == null && maxRadius == null)),
         assert(backgroundImage != null || onBackgroundImageError == null),
-        assert(foregroundImage != null || onForegroundImageError == null),
-        width = width ?? size,
-        height = height ?? size;
+        assert(foregroundImage != null || onForegroundImageError == null);
 
   final Color? backgroundColor;
   final ImageProvider? backgroundImage;
@@ -34,7 +29,6 @@ class MCircleAvatar extends StatelessWidget {
   final Widget? child;
   final Color? foregroundColor;
   final ImageProvider? foregroundImage;
-  final double? height;
   final double? maxRadius;
   final double? minRadius;
   final ImageErrorListener? onBackgroundImageError;
@@ -44,7 +38,6 @@ class MCircleAvatar extends StatelessWidget {
   final String? placeholder;
   final double? radius;
   final String? source;
-  final double? width;
 
   // The default max if only the min is specified.
   static const double _defaultMaxRadius = double.infinity;
@@ -98,8 +91,6 @@ class MCircleAvatar extends StatelessWidget {
     final double minDiameter = _minDiameter;
     final double maxDiameter = _maxDiameter;
     Widget widget = AnimatedContainer(
-      width: width,
-      height: height,
       constraints: BoxConstraints(
         minHeight: minDiameter,
         minWidth: minDiameter,
