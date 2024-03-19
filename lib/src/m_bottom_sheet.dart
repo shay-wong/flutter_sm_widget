@@ -30,11 +30,13 @@ class MBottomSheet extends StatefulWidget {
     this.constraints,
     this.onClosing,
     this.builder,
+    this.child,
   }) : assert(elevation == null || elevation >= 0.0);
 
   final AnimationController? animationController;
   final Color? backgroundColor;
   final WidgetBuilder? builder;
+  final Widget? child;
   final Clip? clipBehavior;
   final BoxConstraints? constraints;
   final Color? dragHandleColor;
@@ -305,14 +307,14 @@ class _MBottomSheetState extends State<MBottomSheet> {
       child: NotificationListener<DraggableScrollableNotification>(
         onNotification: extentChanged,
         child: !showDragHandle
-            ? widget.builder?.call(context) ?? const SizedBox.shrink()
+            ? widget.builder?.call(context) ?? widget.child ?? const SizedBox.shrink()
             : Stack(
                 alignment: Alignment.topCenter,
                 children: <Widget>[
                   dragHandle!,
                   Padding(
                     padding: const EdgeInsets.only(top: kMinInteractiveDimension),
-                    child: widget.builder?.call(context),
+                    child: widget.builder?.call(context) ?? widget.child,
                   ),
                 ],
               ),

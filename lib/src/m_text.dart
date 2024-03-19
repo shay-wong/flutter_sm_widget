@@ -19,6 +19,7 @@ class MText extends StatelessWidget {
     this.isBold = false,
     this.isDeleted = false,
     this.isItalic = false,
+    this.height,
     this.lineHeight,
     this.locale,
     this.maxLines,
@@ -52,6 +53,7 @@ class MText extends StatelessWidget {
     this.isBold = false,
     this.isDeleted = false,
     this.isItalic = false,
+    this.height,
     this.lineHeight,
     this.locale,
     this.maxLines,
@@ -71,35 +73,80 @@ class MText extends StatelessWidget {
         textSpan = text,
         assert(text == null || children == null);
 
-  final List<InlineSpan>? children;
-  final Color? color;
-  final String? data;
   final TextDecoration? decoration;
-  final String? fontFamily;
-  final double? fontSize;
-  final FontStyle? fontStyle;
-  final FontWeight? fontWeight;
-  final bool forceStrutHeight;
-  final Paint? foreground;
-  final bool isBold;
-  final bool isDeleted;
-  final bool isItalic;
-  final double? lineHeight;
   final Locale? locale;
-  final int? maxLines;
-  final TextOverflow? overflow;
   final Color? selectionColor;
   final String? semanticsLabel;
   final List<Shadow>? shadows;
   final bool? softWrap;
-  final StrutStyle? strutStyle;
-  final TextStyle? style;
-  final TextAlign? textAlign;
-  final TextDirection? textDirection;
   final ui.TextHeightBehavior? textHeightBehavior;
-  final TextScaler? textScaler;
-  final InlineSpan? textSpan;
   final TextWidthBasis? textWidthBasis;
+
+  /// 文本片段集合
+  final List<InlineSpan>? children;
+
+  /// 文本颜色
+  final Color? color;
+
+  /// 文本内容
+  final String? data;
+
+  /// 字体
+  final String? fontFamily;
+
+  /// 字体大小
+  final double? fontSize;
+
+  /// 字体风格
+  final FontStyle? fontStyle;
+
+  /// 字体粗细
+  final FontWeight? fontWeight;
+
+  /// 是否强制使用高度
+  final bool forceStrutHeight;
+
+  /// 前景
+  final Paint? foreground;
+
+  /// 文本垂直支撑的最小高度，是对应 [fontSize] 的倍数。
+  final double? height;
+
+  /// 是否加粗
+  final bool isBold;
+
+  /// 是否显示删除线
+  final bool isDeleted;
+
+  /// 是否斜体
+  final bool isItalic;
+
+  /// 行高, 自动除以 [fontSize] 来计算, 如果设置 [height] 则会忽略此值.
+  final double? lineHeight;
+
+  /// 文本最大行数
+  final int? maxLines;
+
+  /// 文本溢出模式
+  final TextOverflow? overflow;
+
+  /// 文本支撑样式, 定义文本的垂直布局属性
+  final StrutStyle? strutStyle;
+
+  /// 文本样式
+  final TextStyle? style;
+
+  /// 文本对齐
+  final TextAlign? textAlign;
+
+  /// 文本方向
+  final TextDirection? textDirection;
+
+  /// 文本缩放
+  final TextScaler? textScaler;
+
+  /// 文本片段
+  final InlineSpan? textSpan;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -156,10 +203,14 @@ class MText extends StatelessWidget {
     final TextScaler textScaler = this.textScaler ?? MediaQuery.textScalerOf(context);
 
     StrutStyle? effectiveStrutStyle = strutStyle;
-    if (strutStyle == null && forceStrutHeight || lineHeight != null) {
+    if (strutStyle == null && forceStrutHeight || lineHeight != null || height != null) {
+      var effectiveHeight = height;
+      if (lineHeight != null && effectiveTextStyle!.fontSize != null) {
+        effectiveHeight = lineHeight! / effectiveTextStyle.fontSize!;
+      }
       effectiveStrutStyle = StrutStyle.fromTextStyle(
         effectiveTextStyle!,
-        height: lineHeight,
+        height: effectiveHeight,
         forceStrutHeight: true,
       );
     }
@@ -212,6 +263,10 @@ class MText extends StatelessWidget {
 }
 
 extension MTextToSpanExt on MText {
+  InlineSpan get toSpan {
+    return WidgetSpan(child: this);
+  }
+
   TextSpan get toTextSpan {
     return TextSpan(
       text: data,
@@ -223,9 +278,5 @@ extension MTextToSpanExt on MText {
           ),
       children: textSpan != null ? <InlineSpan>[textSpan!] : null,
     );
-  }
-
-  InlineSpan get toSpan {
-    return WidgetSpan(child: this);
   }
 }

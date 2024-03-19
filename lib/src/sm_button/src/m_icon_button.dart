@@ -297,7 +297,7 @@ class MIconButton extends StatelessWidget {
     this.backgroundColor,
     this.clearPadding = false,
     this.elevation,
-    this.fixedSize,
+    this.size,
     this.maximumSize,
     this.minimumSize,
     this.noHighlight = false,
@@ -338,7 +338,7 @@ class MIconButton extends StatelessWidget {
     this.backgroundColor,
     this.clearPadding = false,
     this.elevation,
-    this.fixedSize,
+    this.size,
     this.maximumSize,
     this.minimumSize,
     this.noHighlight = false,
@@ -379,7 +379,7 @@ class MIconButton extends StatelessWidget {
     this.backgroundColor,
     this.clearPadding = false,
     this.elevation,
-    this.fixedSize,
+    this.size,
     this.maximumSize,
     this.minimumSize,
     this.noHighlight = false,
@@ -420,7 +420,7 @@ class MIconButton extends StatelessWidget {
     this.backgroundColor,
     this.clearPadding = false,
     this.elevation,
-    this.fixedSize,
+    this.size,
     this.maximumSize,
     this.minimumSize,
     this.noHighlight = false,
@@ -436,11 +436,6 @@ class MIconButton extends StatelessWidget {
 
   final AlignmentGeometry? alignment;
   final bool autofocus;
-
-  /// 背景颜色, 只在 Material 3 生效
-  final Color? backgroundColor;
-  /// 即 foregroundColor
-  final Color? color;
   final BoxConstraints? constraints;
   final Color? disabledColor;
   final double? elevation;
@@ -452,38 +447,33 @@ class MIconButton extends StatelessWidget {
   final Widget icon;
   final double? iconSize;
   final bool? isSelected;
-  final Size? maximumSize;
   final MouseCursor? mouseCursor;
   final VoidCallback? onPressed;
   final Widget? selectedIcon;
-
-  /// 只在 Material 3 生效
-  final Color? shadowColor;
-
-  /// 只在 Material 3 生效
-  final OutlinedBorder? shape;
-
-  /// 只在 Material 3 生效
-  final BorderSide? side;
   final Color? splashColor;
-
-  /// 只在 Material 2 生效
-  final double? splashRadius;
   final ButtonStyle? style;
-
-  /// 只在 Material 3 生效
-  final MaterialTapTargetSize? tapTargetSize;
   final String? tooltip;
   final VisualDensity? visualDensity;
+
+  /// 背景颜色, 只在 Material 3 生效
+  final Color? backgroundColor;
 
   /// 是否去除边距
   final bool clearPadding;
 
-  /// 限制大小
-  final double? fixedSize;
+  /// 即 foregroundColor
+  final Color? color;
 
-  // !!!: 注意使用
-  // TODO: minimumSize 在手机浏览器上显示有问题!! 那么 maximumSize 呢?
+  /// 限制大小
+  final double? size;
+
+  /// 最大尺寸
+  /// !!!: 注意 [Material 3] 下 [minimumSize] 默认为 40x40.
+  /// !!!: 如果设置了 [maximumSize] 不设置 [minimumSize], 并且 [maximumSize] 小于 [minimumSize], 则会导致约束冲突.
+  /// BoxConstraints has both width and height constraints non-normalized.
+  final Size? maximumSize;
+
+  /// 最小尺寸
   final Size? minimumSize;
 
   /// 只去除默认的高亮颜色, 如果设置了 [highlightColor] 或 [overlayColor] 则 [noHighlight] 无效
@@ -498,8 +488,23 @@ class MIconButton extends StatelessWidget {
   /// 如果设置了 [padding] 则 [clearPadding] 无效
   final EdgeInsetsGeometry? padding;
 
+  /// 只在 Material 3 生效
+  final Color? shadowColor;
+
+  /// 只在 Material 3 生效
+  final OutlinedBorder? shape;
+
+  /// 只在 Material 3 生效
+  final BorderSide? side;
+
   /// 如果设置了 [splashFactory] 则 [noSplash] 无效
   final InteractiveInkFeatureFactory? splashFactory;
+
+  /// 只在 Material 2 生效
+  final double? splashRadius;
+
+  /// 只在 Material 3 生效
+  final MaterialTapTargetSize? tapTargetSize;
 
   final _MIconButtonVariant _variant;
 
@@ -615,7 +620,7 @@ class MIconButton extends StatelessWidget {
         enableFeedback: enableFeedback,
         backgroundColor: backgroundColor,
         elevation: elevation,
-        fixedSize: fixedSize == null ? null : Size(fixedSize!, fixedSize!),
+        fixedSize: size == null ? null : Size(size!, size!),
         shape: shape,
         shadowColor: shadowColor,
         side: side,
@@ -669,7 +674,7 @@ class MIconButton extends StatelessWidget {
           maxHeight: maximumSize?.height ?? double.infinity,
         );
     final BoxConstraints adjustedConstraints = effectiveVisualDensity.effectiveConstraints(unadjustedConstraints);
-    final double effectiveIconSize = iconSize ?? fixedSize ?? IconTheme.of(context).size ?? 24.0;
+    final double effectiveIconSize = iconSize ?? size ?? IconTheme.of(context).size ?? 24.0;
     final EdgeInsetsGeometry effectivePadding = padding ?? (clearPadding ? EdgeInsets.zero : const EdgeInsets.all(8.0));
     final AlignmentGeometry effectiveAlignment = alignment ?? Alignment.center;
     final bool effectiveEnableFeedback = enableFeedback ?? true;
@@ -990,7 +995,9 @@ class _MIconButtonM3 extends ButtonStyleButton {
     final bool isDefaultSize = iconTheme.size == const IconThemeData.fallback().size;
 
     final ButtonStyle iconThemeStyle = MIconButton.styleFrom(
-        foregroundColor: isDefaultColor ? null : iconTheme.color, iconSize: isDefaultSize ? null : iconTheme.size);
+      foregroundColor: isDefaultColor ? null : iconTheme.color,
+      iconSize: isDefaultSize ? null : iconTheme.size,
+    );
 
     return IconButtonTheme.of(context).style?.merge(iconThemeStyle) ?? iconThemeStyle;
   }

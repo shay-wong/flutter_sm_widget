@@ -8,7 +8,7 @@ const String _kColorForegroundWarning = 'Cannot provide both a color and a foreg
 const String _kColorBackgroundWarning = 'Cannot provide both a backgroundColor and a background\n'
     'The backgroundColor argument is just a shorthand for "background: Paint()..color = color".';
 
-extension SMFontWeight on FontWeight {
+extension MFontWeight on FontWeight {
   static const FontWeight thin = FontWeight.w300;
   static const FontWeight extraLight = FontWeight.w200;
   static const FontWeight light = FontWeight.w300;

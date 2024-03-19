@@ -8,13 +8,17 @@ class MTextFieldExample extends StatelessWidget {
   Widget build(BuildContext context) {
     return MScaffold(
       title: 'MTextFieldExample',
-      body: const Center(
+      bottomSheet: MContainer(
+        height: 100,
+        color: Colors.red,
+      ),
+      body: Center(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 100,
             ),
-            MTextField(
+            const MTextField(
               hintText: '请输入内容',
               contentPadding: EdgeInsets.symmetric(horizontal: 30),
               fillColor: Colors.white,
@@ -52,10 +56,10 @@ class MTextFieldExample extends StatelessWidget {
               suffixIconPadding: EdgeInsetsDirectional.symmetric(horizontal: 20),
               suffixIconConstraints: BoxConstraints(maxHeight: 30),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            TextField(
+            const TextField(
               // style: TextStyle(fontSize: 80),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(20),
@@ -109,8 +113,7 @@ class MTextFieldExample extends StatelessWidget {
                 ),
               ),
             ),
-
-            TextField(
+            const TextField(
               // style: TextStyle(fontSize: 80),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(20),
@@ -162,8 +165,8 @@ class MTextFieldExample extends StatelessWidget {
             ),
             Row(
               children: [
-                SizedBox(width: 20),
-                MIconButton(
+                const SizedBox(width: 20),
+                const MIconButton(
                   icon: MImage(
                     'assets/images/avatar1.png',
                     package: 'example_package',
@@ -174,18 +177,74 @@ class MTextFieldExample extends StatelessWidget {
                 MTextField(
                   width: 300,
                   hintText: '请输入消息...',
-                  hintColor: Color(0xFFD0D0D0),
+                  hintColor: const Color(0xFFD0D0D0),
                   fontSize: 14,
                   fillColor: Colors.white,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  suffixIcon: Icon(Icons.face),
-                  suffixIconConstraints: BoxConstraints(
-                    maxWidth: 23,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  suffix: MIconButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return MContainer(
+                            size: 200,
+                            color: Colors.red,
+                          );
+                        },
+                      );
+                    },
+                    icon: const MImage(
+                      'assets/images/avatar1.png',
+                      package: 'example_package',
+                      width: 22,
+                      height: 28,
+                    ),
+                  ),
+                  suffixIconConstraints: const BoxConstraints(
                     maxHeight: 23,
                   ),
                   border: InputBorder.none,
                   radius: 25,
                   // borderStyle: MTextFieldBorderStyle.outline,
+                  maxLines: 4,
+                  minLines: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const SizedBox(width: 20),
+                const MIconButton(
+                  icon: MImage(
+                    'assets/images/avatar1.png',
+                    package: 'example_package',
+                    width: 22,
+                    height: 28,
+                  ),
+                ),
+                TextField(
+                  style: const TextStyle(fontSize: 14),
+                  decoration: InputDecoration(
+                    constraints: const BoxConstraints(maxWidth: 300),
+                    hintText: '请输入消息...',
+                    hintStyle: const TextStyle(
+                      color: Color(0xFFD0D0D0),
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    suffix: MIconButton(
+                      onPressed: () {},
+                      icon: const MImage(
+                        'assets/images/avatar1.png',
+                        package: 'example_package',
+                      ),
+                      style:
+                          IconButton.styleFrom(maximumSize: const Size.square(39), minimumSize: const Size.square(20)),
+                      // maximumSize: const Size.square(23),
+                    ),
+                    border: InputBorder.none,
+                  ),
                   maxLines: 4,
                   minLines: 1,
                 ),

@@ -66,6 +66,30 @@ class MButton extends ButtonStyleButton {
     required Widget icon,
     Widget label,
     MButtonIconAlignment? alignment,
+    Color? backgroundColor,
+    BorderRadius? borderRadius,
+    bool clearPadding,
+    Color? disabledColor,
+    double? elevation,
+    Size? fixedSize,
+    Color? foregroundColor,
+    Size? maximumSize,
+    Size? minimumSize,
+    bool noHighlight,
+    bool noSplash,
+    Color? overlayColor,
+    EdgeInsetsGeometry? padding,
+    double? radius,
+    Color? shadowColor,
+    OutlinedBorder? shape,
+    BorderSide? side,
+    InteractiveInkFeatureFactory? splashFactory,
+    MaterialTapTargetSize? tapTargetSize,
+    TextStyle? textStyle,
+    double? width,
+    double? height,
+    double? size,
+    double? space,
   }) = _MButtonWithIcon;
 
   final Color? backgroundColor;
@@ -95,8 +119,7 @@ class MButton extends ButtonStyleButton {
   /// 是否选中
   final bool? isSelected;
 
-  // !!!: 注意使用
-  // TODO: minimumSize 在手机浏览器上显示有问题!! 那么 maximumSize 呢?
+  /// 如果设置了 [fixedSize] 则 [maximumSize] 无效
   final Size? minimumSize;
 
   /// 如果设置了 [overlayColor] 则 [noHighlight] 无效
@@ -263,6 +286,30 @@ class _MButtonWithIcon extends MButton {
     required Widget icon,
     Widget? label,
     MButtonIconAlignment? alignment,
+    super.backgroundColor,
+    super.borderRadius,
+    super.clearPadding = false,
+    super.disabledColor,
+    super.elevation,
+    super.fixedSize,
+    super.foregroundColor,
+    super.maximumSize,
+    super.minimumSize,
+    super.noHighlight = false,
+    super.noSplash = false,
+    super.overlayColor,
+    super.padding,
+    super.radius,
+    super.shadowColor,
+    super.shape,
+    super.side,
+    super.splashFactory,
+    super.tapTargetSize,
+    super.textStyle,
+    super.width,
+    super.height,
+    super.size,
+    double? space,
   })  : alignment = alignment ?? MButtonIconAlignment.start,
         super(
           autofocus: autofocus ?? false,
@@ -270,6 +317,7 @@ class _MButtonWithIcon extends MButton {
           child: _MButtonWithIconChild(
             icon: icon,
             label: label,
+            space: space,
             alignment: alignment ?? MButtonIconAlignment.start,
           ),
         );
@@ -282,23 +330,30 @@ class _MButtonWithIcon extends MButton {
     final ButtonStyle buttonStyle = super.defaultStyleOf(context);
     final double defaultFontSize = buttonStyle.textStyle?.resolve(const <MaterialState>{})?.fontSize ?? 14.0;
     final double effectiveTextScale = MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
-    final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
-      useMaterial3
-          ? alignment.isVertical
-              ? const EdgeInsetsDirectional.fromSTEB(8, 12, 8, 16)
-              : const EdgeInsetsDirectional.fromSTEB(12, 8, 16, 8)
-          : const EdgeInsets.all(8),
-      alignment.isVertical ? const EdgeInsets.symmetric(vertical: 4) : const EdgeInsets.symmetric(horizontal: 4),
-      alignment.isVertical ? const EdgeInsets.symmetric(vertical: 4) : const EdgeInsets.symmetric(horizontal: 4),
-      effectiveTextScale,
-    );
+    final EdgeInsetsGeometry scaledPadding = padding ??
+        (clearPadding
+            ? EdgeInsets.zero
+            : ButtonStyleButton.scaledPadding(
+                useMaterial3
+                    ? alignment.isVertical
+                        ? const EdgeInsetsDirectional.fromSTEB(8, 12, 8, 16)
+                        : const EdgeInsetsDirectional.fromSTEB(12, 8, 16, 8)
+                    : const EdgeInsets.all(8),
+                alignment.isVertical
+                    ? const EdgeInsets.symmetric(vertical: 4)
+                    : const EdgeInsets.symmetric(horizontal: 4),
+                alignment.isVertical
+                    ? const EdgeInsets.symmetric(vertical: 4)
+                    : const EdgeInsets.symmetric(horizontal: 4),
+                effectiveTextScale,
+              ));
     return buttonStyle.copyWith(
       padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(scaledPadding),
     );
   }
 }
 
-extension _MButtonIconAlignmentExt on MButtonIconAlignment {
+extension MButtonIconAlignmentExt on MButtonIconAlignment {
   bool get isVertical {
     return this == MButtonIconAlignment.top || this == MButtonIconAlignment.bottom;
   }
@@ -312,12 +367,14 @@ class _MButtonWithIconChild extends StatelessWidget {
   const _MButtonWithIconChild({
     this.label,
     required this.icon,
+    this.space,
     this.alignment = MButtonIconAlignment.start,
   });
 
   final MButtonIconAlignment alignment;
   final Widget icon;
   final Widget? label;
+  final double? space;
 
   @override
   Widget build(BuildContext context) {
@@ -327,8 +384,9 @@ class _MButtonWithIconChild extends StatelessWidget {
     // TODO: 删除弃用成员
     // ignore: deprecated_member_use
     final double scale = MediaQuery.textScalerOf(context).textScaleFactor;
+    // [icon] 和 [label] 的默认间距
     final gap = alignment.isVertical ? 6.0 : 8.0;
-    final double effectiveGap = scale <= 1 ? gap : lerpDouble(gap, gap / 2, math.min(scale - 1, 1))!;
+    final double effectiveGap = space ?? (scale <= 1 ? gap : lerpDouble(gap, gap / 2, math.min(scale - 1, 1))!);
     final effectiveIcon = Flexible(child: icon);
     final effectiveSpace = alignment.isVertical ? SizedBox(height: effectiveGap) : SizedBox(width: effectiveGap);
     final effectiveLabel = Flexible(child: label!);
@@ -515,15 +573,15 @@ ButtonStyle _MTextButtonDefaultsM2({
 
 class _MTextButtonDefaultsM3 extends ButtonStyle {
   _MTextButtonDefaultsM3({
-    required this.context,
-    this.borderRadius,
-    this.clearPadding = false,
-    this.disabledForegroundColor,
-    this.height,
-    this.noHighlight = false,
-    this.noSplash = false,
-    this.radius,
-    this.width,
+    required BuildContext context,
+    BorderRadius? borderRadius,
+    bool clearPadding = false,
+    Color? disabledForegroundColor,
+    double? height,
+    bool noHighlight = false,
+    bool noSplash = false,
+    double? radius,
+    double? width,
     Color? backgroundColor,
     double? elevation,
     Size? fixedSize,
@@ -538,143 +596,67 @@ class _MTextButtonDefaultsM3 extends ButtonStyle {
     InteractiveInkFeatureFactory? splashFactory,
     MaterialTapTargetSize? tapTargetSize,
     TextStyle? textStyle,
-  })  : _backgroundColor = backgroundColor,
-        _elevation = elevation,
-        _fixedSize = fixedSize,
-        _foregroundColor = foregroundColor,
-        _maximumSize = maximumSize,
-        _minimumSize = minimumSize,
-        _overlayColor = overlayColor,
-        _padding = padding,
-        _shadowColor = shadowColor,
-        _shape = shape,
-        _side = side,
-        _splashFactory = splashFactory,
-        _tapTargetSize = tapTargetSize,
-        _textStyle = textStyle,
-        super(
+  }) : super(
           animationDuration: kThemeChangeDuration,
           enableFeedback: true,
           alignment: Alignment.center,
+          backgroundColor: MaterialStatePropertyAll<Color>(backgroundColor ?? Colors.transparent),
+          elevation: MaterialStatePropertyAll<double>(elevation ?? 0.0),
+          fixedSize: fixedSize != null || width != null || height != null
+              ? MaterialStatePropertyAll<Size>(fixedSize ?? Size(width ?? double.infinity, height ?? double.infinity))
+              : null,
+          foregroundColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+            if (states.contains(MaterialState.disabled)) {
+              return disabledForegroundColor ?? Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
+            }
+            return foregroundColor ?? Theme.of(context).colorScheme.primary;
+          }),
+          maximumSize: MaterialStatePropertyAll<Size>(maximumSize ?? Size.infinite),
+          minimumSize: MaterialStatePropertyAll<Size>(
+            minimumSize ?? (clearPadding ? Size.zero : const Size(64.0, 40.0)),
+          ),
+          mouseCursor: MaterialStateProperty.resolveWith(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return SystemMouseCursors.basic;
+              }
+              return SystemMouseCursors.click;
+            },
+          ),
+          overlayColor: overlayColor == null && noHighlight
+              ? null
+              : MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+                  if (states.contains(MaterialState.pressed)) {
+                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.12);
+                  }
+                  if (states.contains(MaterialState.hovered)) {
+                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.08);
+                  }
+                  if (states.contains(MaterialState.focused)) {
+                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.12);
+                  }
+                  return null;
+                }),
+          padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
+            padding ?? (clearPadding ? EdgeInsets.zero : _scaledPadding(context)),
+          ),
+          shadowColor: MaterialStatePropertyAll<Color>(shadowColor ?? Colors.transparent),
+          shape: MaterialStatePropertyAll<OutlinedBorder>(
+            shape ??
+                (radius == null && borderRadius == null
+                    ? const StadiumBorder()
+                    : RoundedRectangleBorder(
+                        borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(radius ?? 4.0)),
+                      )),
+          ),
+          side: side == null ? null : MaterialStatePropertyAll<BorderSide>(side),
+          splashFactory: splashFactory ?? (noSplash ? NoSplash.splashFactory : Theme.of(context).splashFactory),
+          surfaceTintColor: const MaterialStatePropertyAll<Color>(Colors.transparent),
+          tapTargetSize: tapTargetSize ??
+              (clearPadding ? MaterialTapTargetSize.shrinkWrap : Theme.of(context).materialTapTargetSize),
+          textStyle: MaterialStatePropertyAll<TextStyle?>(textStyle ?? Theme.of(context).textTheme.labelLarge),
+          visualDensity: Theme.of(context).visualDensity,
         );
-
-  final BorderRadius? borderRadius;
-  final bool clearPadding;
-  final BuildContext context;
-  final Color? disabledForegroundColor;
-  final double? height;
-  final bool noHighlight;
-  final bool noSplash;
-  final double? radius;
-  final double? width;
-
-  final Color? _backgroundColor;
-  late final ColorScheme _colors = Theme.of(context).colorScheme;
-  final double? _elevation;
-  final Size? _fixedSize;
-  final Color? _foregroundColor;
-  final Size? _maximumSize;
-  final Size? _minimumSize;
-  final Color? _overlayColor;
-  final EdgeInsetsGeometry? _padding;
-  final Color? _shadowColor;
-  final OutlinedBorder? _shape;
-  final BorderSide? _side;
-  final InteractiveInkFeatureFactory? _splashFactory;
-  final MaterialTapTargetSize? _tapTargetSize;
-  final TextStyle? _textStyle;
-
-  @override
-  MaterialStateProperty<Color?>? get backgroundColor =>
-      MaterialStatePropertyAll<Color>(_backgroundColor ?? Colors.transparent);
-
-  @override
-  MaterialStateProperty<double>? get elevation => MaterialStatePropertyAll<double>(_elevation ?? 0.0);
-
-  // No default fixedSize
-  @override
-  MaterialStateProperty<Size?>? get fixedSize => _fixedSize != null || width != null || height != null
-      ? MaterialStatePropertyAll<Size>(_fixedSize ?? Size(width ?? double.infinity, height ?? double.infinity))
-      : null;
-
-  @override
-  MaterialStateProperty<Color?>? get foregroundColor => MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return _colors.onSurface.withOpacity(0.38);
-        }
-        return _foregroundColor ?? _colors.primary;
-      });
-
-  @override
-  MaterialStateProperty<Size>? get maximumSize => MaterialStatePropertyAll<Size>(_maximumSize ?? Size.infinite);
-
-  @override
-  MaterialStateProperty<Size>? get minimumSize =>
-      MaterialStatePropertyAll<Size>(_minimumSize ?? (clearPadding ? Size.zero : const Size(64.0, 40.0)));
-
-  @override
-  MaterialStateProperty<MouseCursor?>? get mouseCursor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return SystemMouseCursors.basic;
-        }
-        return SystemMouseCursors.click;
-      });
-
-  @override
-  MaterialStateProperty<Color?>? get overlayColor => _overlayColor == null && noHighlight
-      ? null
-      : MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-          if (states.contains(MaterialState.pressed)) {
-            return (_overlayColor ?? _colors.primary).withOpacity(0.12);
-          }
-          if (states.contains(MaterialState.hovered)) {
-            return (_overlayColor ?? _colors.primary).withOpacity(0.08);
-          }
-          if (states.contains(MaterialState.focused)) {
-            return (_overlayColor ?? _colors.primary).withOpacity(0.12);
-          }
-          return null;
-        });
-
-  @override
-  MaterialStateProperty<EdgeInsetsGeometry>? get padding => MaterialStatePropertyAll<EdgeInsetsGeometry>(
-      _padding ?? (clearPadding ? EdgeInsets.zero : _scaledPadding(context)));
-
-  @override
-  MaterialStateProperty<Color>? get shadowColor => MaterialStatePropertyAll<Color>(_shadowColor ?? Colors.transparent);
-
-  @override
-  MaterialStateProperty<OutlinedBorder>? get shape => MaterialStatePropertyAll<OutlinedBorder>(
-        _shape ??
-            (radius == null && borderRadius == null
-                ? const StadiumBorder()
-                : RoundedRectangleBorder(
-                    borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(radius ?? 4.0)),
-                  )),
-      );
-
-  // No default side
-  @override
-  MaterialStateProperty<BorderSide?>? get side => _side == null ? null : MaterialStatePropertyAll<BorderSide>(_side);
-
-  @override
-  InteractiveInkFeatureFactory? get splashFactory =>
-      _splashFactory ?? (noSplash ? NoSplash.splashFactory : Theme.of(context).splashFactory);
-
-  @override
-  MaterialStateProperty<Color>? get surfaceTintColor => const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialTapTargetSize? get tapTargetSize =>
-      _tapTargetSize ?? (clearPadding ? MaterialTapTargetSize.shrinkWrap : Theme.of(context).materialTapTargetSize);
-
-  @override
-  MaterialStateProperty<TextStyle?> get textStyle =>
-      MaterialStatePropertyAll<TextStyle?>(_textStyle ?? Theme.of(context).textTheme.labelLarge);
-
-  @override
-  VisualDensity? get visualDensity => Theme.of(context).visualDensity;
 }
 
 @immutable

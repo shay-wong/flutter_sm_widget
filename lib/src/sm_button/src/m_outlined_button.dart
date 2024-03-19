@@ -4,6 +4,8 @@ import 'dart:ui' show lerpDouble;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'm_button.dart';
+
 class MOutlinedButton extends ButtonStyleButton {
   const MOutlinedButton({
     super.key,
@@ -17,7 +19,32 @@ class MOutlinedButton extends ButtonStyleButton {
     super.clipBehavior = Clip.none,
     super.statesController,
     required super.child,
-  });
+    this.backgroundColor,
+    this.borderRadius,
+    this.clearPadding = false,
+    this.disabledColor,
+    this.elevation,
+    this.fixedSize,
+    this.foregroundColor,
+    this.maximumSize,
+    this.minimumSize,
+    this.noHighlight = false,
+    this.noSplash = false,
+    this.overlayColor,
+    this.padding,
+    this.radius,
+    this.shadowColor,
+    this.shape,
+    this.side,
+    this.splashFactory,
+    this.tapTargetSize,
+    this.textStyle,
+    double? width,
+    double? height,
+    double? size,
+  })  : width = width ?? size,
+        height = height ?? size,
+        isSelected = null;
 
   factory MOutlinedButton.icon({
     Key? key,
@@ -29,72 +56,72 @@ class MOutlinedButton extends ButtonStyleButton {
     Clip? clipBehavior,
     MaterialStatesController? statesController,
     required Widget icon,
-    required Widget label,
+    Widget label,
+    MButtonIconAlignment? alignment,
+    Color? backgroundColor,
+    BorderRadius? borderRadius,
+    bool clearPadding,
+    Color? disabledColor,
+    double? elevation,
+    Size? fixedSize,
+    Color? foregroundColor,
+    Size? maximumSize,
+    Size? minimumSize,
+    bool noHighlight,
+    bool noSplash,
+    Color? overlayColor,
+    EdgeInsetsGeometry? padding,
+    double? radius,
+    Color? shadowColor,
+    OutlinedBorder? shape,
+    BorderSide? side,
+    InteractiveInkFeatureFactory? splashFactory,
+    MaterialTapTargetSize? tapTargetSize,
+    TextStyle? textStyle,
+    double? width,
+    double? height,
+    double? size,
+    double? space,
   }) = _MOutlinedButtonWithIcon;
 
-  static ButtonStyle styleFrom({
-    Color? foregroundColor,
-    Color? backgroundColor,
-    Color? disabledForegroundColor,
-    Color? disabledBackgroundColor,
-    Color? shadowColor,
-    Color? surfaceTintColor,
-    double? elevation,
-    TextStyle? textStyle,
-    EdgeInsetsGeometry? padding,
-    Size? minimumSize,
-    Size? fixedSize,
-    Size? maximumSize,
-    BorderSide? side,
-    OutlinedBorder? shape,
-    MouseCursor? enabledMouseCursor,
-    MouseCursor? disabledMouseCursor,
-    VisualDensity? visualDensity,
-    MaterialTapTargetSize? tapTargetSize,
-    Duration? animationDuration,
-    bool? enableFeedback,
-    AlignmentGeometry? alignment,
-    InteractiveInkFeatureFactory? splashFactory,
-  }) {
-    final Color? foreground = foregroundColor;
-    final Color? disabledForeground = disabledForegroundColor;
-    final MaterialStateProperty<Color?>? foregroundColorProp = (foreground == null && disabledForeground == null)
-        ? null
-        : _MOutlinedButtonDefaultColor(foreground, disabledForeground);
-    final MaterialStateProperty<Color?>? backgroundColorProp =
-        (backgroundColor == null && disabledBackgroundColor == null)
-            ? null
-            : disabledBackgroundColor == null
-                ? ButtonStyleButton.allOrNull<Color?>(backgroundColor)
-                : _MOutlinedButtonDefaultColor(backgroundColor, disabledBackgroundColor);
-    final MaterialStateProperty<Color?>? overlayColor =
-        (foreground == null) ? null : _MOutlinedButtonDefaultOverlay(foreground);
-    final MaterialStateProperty<MouseCursor?> mouseCursor =
-        _MOutlinedButtonDefaultMouseCursor(enabledMouseCursor, disabledMouseCursor);
+  final Color? backgroundColor;
+  final BorderRadius? borderRadius;
+  final Color? disabledColor;
+  final double? elevation;
+  final Color? foregroundColor;
+  final double? height;
+  final Size? maximumSize;
+  final bool noHighlight;
+  final bool noSplash;
+  final double? radius;
+  final Color? shadowColor;
+  final OutlinedBorder? shape;
+  final BorderSide? side;
+  final MaterialTapTargetSize? tapTargetSize;
+  final TextStyle? textStyle;
+  final double? width;
 
-    return ButtonStyle(
-      textStyle: ButtonStyleButton.allOrNull<TextStyle>(textStyle),
-      foregroundColor: foregroundColorProp,
-      backgroundColor: backgroundColorProp,
-      overlayColor: overlayColor,
-      shadowColor: ButtonStyleButton.allOrNull<Color>(shadowColor),
-      surfaceTintColor: ButtonStyleButton.allOrNull<Color>(surfaceTintColor),
-      elevation: ButtonStyleButton.allOrNull<double>(elevation),
-      padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(padding),
-      minimumSize: ButtonStyleButton.allOrNull<Size>(minimumSize),
-      fixedSize: ButtonStyleButton.allOrNull<Size>(fixedSize),
-      maximumSize: ButtonStyleButton.allOrNull<Size>(maximumSize),
-      side: ButtonStyleButton.allOrNull<BorderSide>(side),
-      shape: ButtonStyleButton.allOrNull<OutlinedBorder>(shape),
-      mouseCursor: mouseCursor,
-      visualDensity: visualDensity,
-      tapTargetSize: tapTargetSize,
-      animationDuration: animationDuration,
-      enableFeedback: enableFeedback,
-      alignment: alignment,
-      splashFactory: splashFactory,
-    );
-  }
+  /// 是否去除边距
+  final bool clearPadding;
+
+  /// 如果设置了 [fixedSize] 则 [width] 和 [height] 无效
+  final Size? fixedSize;
+
+  // TODO: 暂时无效
+  /// 是否选中
+  final bool? isSelected;
+
+  /// 如果设置了 [fixedSize] 则 [maximumSize] 无效
+  final Size? minimumSize;
+
+  /// 如果设置了 [overlayColor] 则 [noHighlight] 无效
+  final Color? overlayColor;
+
+  /// 如果设置了 [padding] 则 [clearPadding] 无效
+  final EdgeInsetsGeometry? padding;
+
+  /// 如果设置了 [splashFactory] 则 [noSplash] 无效
+  final InteractiveInkFeatureFactory? splashFactory;
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
@@ -102,7 +129,31 @@ class MOutlinedButton extends ButtonStyleButton {
     final ColorScheme colorScheme = theme.colorScheme;
 
     return Theme.of(context).useMaterial3
-        ? _MOutlinedButtonDefaultsM3(context)
+        ? _MOutlinedButtonDefaultsM3(
+            context: context,
+            backgroundColor: backgroundColor,
+            borderRadius: borderRadius,
+            clearPadding: clearPadding,
+            disabledForegroundColor: disabledColor,
+            elevation: elevation,
+            fixedSize: fixedSize,
+            foregroundColor: foregroundColor,
+            height: height,
+            maximumSize: maximumSize,
+            minimumSize: minimumSize,
+            noHighlight: noHighlight,
+            noSplash: noSplash,
+            overlayColor: overlayColor,
+            padding: padding,
+            radius: radius,
+            shadowColor: shadowColor,
+            shape: shape,
+            side: side,
+            splashFactory: splashFactory,
+            tapTargetSize: tapTargetSize,
+            textStyle: textStyle,
+            width: width,
+          )
         : styleFrom(
             foregroundColor: colorScheme.primary,
             disabledForegroundColor: colorScheme.onSurface.withOpacity(0.38),
@@ -132,6 +183,72 @@ class MOutlinedButton extends ButtonStyleButton {
   @override
   ButtonStyle? themeStyleOf(BuildContext context) {
     return OutlinedButtonTheme.of(context).style;
+  }
+
+  static ButtonStyle styleFrom({
+    Color? foregroundColor,
+    Color? backgroundColor,
+    Color? disabledForegroundColor,
+    Color? disabledBackgroundColor,
+    Color? shadowColor,
+    Color? surfaceTintColor,
+    double? elevation,
+    TextStyle? textStyle,
+    EdgeInsetsGeometry? padding,
+    Size? minimumSize,
+    Size? fixedSize,
+    Size? maximumSize,
+    BorderSide? side,
+    OutlinedBorder? shape,
+    MouseCursor? enabledMouseCursor,
+    MouseCursor? disabledMouseCursor,
+    VisualDensity? visualDensity,
+    MaterialTapTargetSize? tapTargetSize,
+    Duration? animationDuration,
+    bool? enableFeedback,
+    AlignmentGeometry? alignment,
+    InteractiveInkFeatureFactory? splashFactory,
+    Color? overlayColor,
+  }) {
+    final Color? foreground = foregroundColor;
+    final Color? disabledForeground = disabledForegroundColor;
+    final MaterialStateProperty<Color?>? foregroundColorProp = (foreground == null && disabledForeground == null)
+        ? null
+        : _MOutlinedButtonDefaultColor(foreground, disabledForeground);
+    final MaterialStateProperty<Color?>? backgroundColorProp =
+        (backgroundColor == null && disabledBackgroundColor == null)
+            ? null
+            : disabledBackgroundColor == null
+                ? ButtonStyleButton.allOrNull<Color?>(backgroundColor)
+                : _MOutlinedButtonDefaultColor(backgroundColor, disabledBackgroundColor);
+    MaterialStateProperty<Color?>? effectiveOverlayColor = (overlayColor != null || foreground != null)
+        ? _MOutlinedButtonDefaultOverlay(overlayColor ?? foreground!)
+        : null;
+    final MaterialStateProperty<MouseCursor?> mouseCursor =
+        _MOutlinedButtonDefaultMouseCursor(enabledMouseCursor, disabledMouseCursor);
+
+    return ButtonStyle(
+      textStyle: ButtonStyleButton.allOrNull<TextStyle>(textStyle),
+      foregroundColor: foregroundColorProp,
+      backgroundColor: backgroundColorProp,
+      overlayColor: effectiveOverlayColor,
+      shadowColor: ButtonStyleButton.allOrNull<Color>(shadowColor),
+      surfaceTintColor: ButtonStyleButton.allOrNull<Color>(surfaceTintColor),
+      elevation: ButtonStyleButton.allOrNull<double>(elevation),
+      padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(padding),
+      minimumSize: ButtonStyleButton.allOrNull<Size>(minimumSize),
+      fixedSize: ButtonStyleButton.allOrNull<Size>(fixedSize),
+      maximumSize: ButtonStyleButton.allOrNull<Size>(maximumSize),
+      side: ButtonStyleButton.allOrNull<BorderSide>(side),
+      shape: ButtonStyleButton.allOrNull<OutlinedBorder>(shape),
+      mouseCursor: mouseCursor,
+      visualDensity: visualDensity,
+      tapTargetSize: tapTargetSize,
+      animationDuration: animationDuration,
+      enableFeedback: enableFeedback,
+      alignment: alignment,
+      splashFactory: splashFactory,
+    );
   }
 }
 
@@ -165,6 +282,22 @@ class _MOutlinedButtonDefaultColor extends MaterialStateProperty<Color?> with Di
 }
 
 @immutable
+class _MOutlinedButtonDefaultMouseCursor extends MaterialStateProperty<MouseCursor?> with Diagnosticable {
+  _MOutlinedButtonDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
+
+  final MouseCursor? disabledCursor;
+  final MouseCursor? enabledCursor;
+
+  @override
+  MouseCursor? resolve(Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return disabledCursor;
+    }
+    return enabledCursor;
+  }
+}
+
+@immutable
 class _MOutlinedButtonDefaultOverlay extends MaterialStateProperty<Color?> with Diagnosticable {
   _MOutlinedButtonDefaultOverlay(this.foreground);
 
@@ -185,21 +318,105 @@ class _MOutlinedButtonDefaultOverlay extends MaterialStateProperty<Color?> with 
   }
 }
 
-@immutable
-class _MOutlinedButtonDefaultMouseCursor extends MaterialStateProperty<MouseCursor?> with Diagnosticable {
-  _MOutlinedButtonDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
-
-  final MouseCursor? enabledCursor;
-  final MouseCursor? disabledCursor;
-
-  @override
-  MouseCursor? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return disabledCursor;
-    }
-    return enabledCursor;
-  }
+class _MOutlinedButtonDefaultsM3 extends ButtonStyle {
+  _MOutlinedButtonDefaultsM3({
+    required BuildContext context,
+    BorderRadius? borderRadius,
+    bool clearPadding = false,
+    Color? disabledForegroundColor,
+    double? height,
+    bool noHighlight = false,
+    bool noSplash = false,
+    double? radius,
+    double? width,
+    Color? backgroundColor,
+    double? elevation,
+    Size? fixedSize,
+    Color? foregroundColor,
+    Size? maximumSize,
+    Size? minimumSize,
+    Color? overlayColor,
+    EdgeInsetsGeometry? padding,
+    Color? shadowColor,
+    OutlinedBorder? shape,
+    BorderSide? side,
+    InteractiveInkFeatureFactory? splashFactory,
+    MaterialTapTargetSize? tapTargetSize,
+    TextStyle? textStyle,
+  }) : super(
+          animationDuration: kThemeChangeDuration,
+          enableFeedback: true,
+          alignment: Alignment.center,
+          backgroundColor: MaterialStatePropertyAll<Color>(backgroundColor ?? Colors.transparent),
+          elevation: MaterialStatePropertyAll<double>(elevation ?? 0.0),
+          fixedSize: fixedSize != null || width != null || height != null
+              ? MaterialStatePropertyAll<Size>(fixedSize ?? Size(width ?? double.infinity, height ?? double.infinity))
+              : null,
+          foregroundColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+            if (states.contains(MaterialState.disabled)) {
+              return disabledForegroundColor ?? Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
+            }
+            return foregroundColor ?? Theme.of(context).colorScheme.primary;
+          }),
+          maximumSize: MaterialStatePropertyAll<Size>(maximumSize ?? Size.infinite),
+          minimumSize: MaterialStatePropertyAll<Size>(
+            minimumSize ?? (clearPadding ? Size.zero : const Size(64.0, 40.0)),
+          ),
+          mouseCursor: MaterialStateProperty.resolveWith(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return SystemMouseCursors.basic;
+              }
+              return SystemMouseCursors.click;
+            },
+          ),
+          overlayColor: overlayColor == null && noHighlight
+              ? null
+              : MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+                  if (states.contains(MaterialState.pressed)) {
+                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.12);
+                  }
+                  if (states.contains(MaterialState.hovered)) {
+                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.08);
+                  }
+                  if (states.contains(MaterialState.focused)) {
+                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.12);
+                  }
+                  return null;
+                }),
+          padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
+            padding ?? (clearPadding ? EdgeInsets.zero : _scaledPadding(context)),
+          ),
+          shadowColor: MaterialStatePropertyAll<Color>(shadowColor ?? Colors.transparent),
+          shape: MaterialStatePropertyAll<OutlinedBorder>(
+            shape ??
+                (radius == null && borderRadius == null
+                    ? const StadiumBorder()
+                    : RoundedRectangleBorder(
+                        borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(radius ?? 4.0)),
+                      )),
+          ),
+          side: side == null
+              ? MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return BorderSide(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.12));
+                  }
+                  if (states.contains(MaterialState.focused)) {
+                    return BorderSide(color: Theme.of(context).colorScheme.primary);
+                  }
+                  return BorderSide(color: Theme.of(context).colorScheme.outline);
+                })
+              : MaterialStatePropertyAll<BorderSide>(side),
+          splashFactory: splashFactory ?? (noSplash ? NoSplash.splashFactory : Theme.of(context).splashFactory),
+          surfaceTintColor: const MaterialStatePropertyAll<Color>(Colors.transparent),
+          tapTargetSize: tapTargetSize ??
+              (clearPadding ? MaterialTapTargetSize.shrinkWrap : Theme.of(context).materialTapTargetSize),
+          textStyle: MaterialStatePropertyAll<TextStyle?>(textStyle ?? Theme.of(context).textTheme.labelLarge),
+          visualDensity: Theme.of(context).visualDensity,
+        );
 }
+
+
 
 class _MOutlinedButtonWithIcon extends MOutlinedButton {
   _MOutlinedButtonWithIcon({
@@ -212,12 +429,45 @@ class _MOutlinedButtonWithIcon extends MOutlinedButton {
     Clip? clipBehavior,
     super.statesController,
     required Widget icon,
-    required Widget label,
-  }) : super(
+    Widget? label,
+    MButtonIconAlignment? alignment,
+    super.backgroundColor,
+    super.borderRadius,
+    super.clearPadding = false,
+    super.disabledColor,
+    super.elevation,
+    super.fixedSize,
+    super.foregroundColor,
+    super.maximumSize,
+    super.minimumSize,
+    super.noHighlight = false,
+    super.noSplash = false,
+    super.overlayColor,
+    super.padding,
+    super.radius,
+    super.shadowColor,
+    super.shape,
+    super.side,
+    super.splashFactory,
+    super.tapTargetSize,
+    super.textStyle,
+    super.width,
+    super.height,
+    super.size,
+    double? space,
+  })  : alignment = alignment ?? MButtonIconAlignment.start,
+        super(
           autofocus: autofocus ?? false,
           clipBehavior: clipBehavior ?? Clip.none,
-          child: _MOutlinedButtonWithIconChild(icon: icon, label: label),
+          child: _MOutlinedButtonWithIconChild(
+            icon: icon,
+            label: label,
+            space: space,
+            alignment: alignment ?? MButtonIconAlignment.start,
+          ),
         );
+
+  final MButtonIconAlignment alignment;
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
@@ -228,12 +478,15 @@ class _MOutlinedButtonWithIcon extends MOutlinedButton {
     final ButtonStyle buttonStyle = super.defaultStyleOf(context);
     final double defaultFontSize = buttonStyle.textStyle?.resolve(const <MaterialState>{})?.fontSize ?? 14.0;
     final double effectiveTextScale = MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
-    final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
-      const EdgeInsetsDirectional.fromSTEB(16, 0, 24, 0),
-      const EdgeInsetsDirectional.fromSTEB(8, 0, 12, 0),
-      const EdgeInsetsDirectional.fromSTEB(4, 0, 6, 0),
-      effectiveTextScale,
-    );
+    final EdgeInsetsGeometry scaledPadding = padding ??
+        (clearPadding
+            ? EdgeInsets.zero
+            : ButtonStyleButton.scaledPadding(
+                const EdgeInsetsDirectional.fromSTEB(16, 0, 24, 0),
+                const EdgeInsetsDirectional.fromSTEB(8, 0, 12, 0),
+                const EdgeInsetsDirectional.fromSTEB(4, 0, 6, 0),
+                effectiveTextScale,
+              ));
     return buttonStyle.copyWith(
       padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(scaledPadding),
     );
@@ -242,116 +495,49 @@ class _MOutlinedButtonWithIcon extends MOutlinedButton {
 
 class _MOutlinedButtonWithIconChild extends StatelessWidget {
   const _MOutlinedButtonWithIconChild({
-    required this.label,
+    this.label,
     required this.icon,
+    this.space,
+    this.alignment = MButtonIconAlignment.start,
   });
 
-  final Widget label;
+  final MButtonIconAlignment alignment;
   final Widget icon;
+  final Widget? label;
+  final double? space;
 
   @override
   Widget build(BuildContext context) {
+    if (label == null) {
+      return icon;
+    }
     // TODO: 删除弃用成员
     // ignore: deprecated_member_use
     final double scale = MediaQuery.textScalerOf(context).textScaleFactor;
-    final double gap = scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1))!;
+    // [icon] 和 [label] 的默认间距
+    final gap = alignment.isVertical ? 6.0 : 8.0;
+    final double effectiveGap = space ?? (scale <= 1 ? gap : lerpDouble(gap, gap / 2, math.min(scale - 1, 1))!);
+    final effectiveIcon = Flexible(child: icon);
+    final effectiveSpace = alignment.isVertical ? SizedBox(height: effectiveGap) : SizedBox(width: effectiveGap);
+    final effectiveLabel = Flexible(child: label!);
+
+    List<Widget> children = <Widget>[
+      effectiveIcon,
+      effectiveSpace,
+      effectiveLabel,
+    ];
+    if (alignment.isTerminus) {
+      children = children.reversed.toList();
+    }
+    if (alignment.isVertical) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: children,
+      );
+    }
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[icon, SizedBox(width: gap), Flexible(child: label)],
+      children: children,
     );
   }
-}
-
-class _MOutlinedButtonDefaultsM3 extends ButtonStyle {
-  _MOutlinedButtonDefaultsM3(this.context)
-      : super(
-          animationDuration: kThemeChangeDuration,
-          enableFeedback: true,
-          alignment: Alignment.center,
-        );
-
-  final BuildContext context;
-  late final ColorScheme _colors = Theme.of(context).colorScheme;
-
-  @override
-  MaterialStateProperty<TextStyle?> get textStyle =>
-      MaterialStatePropertyAll<TextStyle?>(Theme.of(context).textTheme.labelLarge);
-
-  @override
-  MaterialStateProperty<Color?>? get backgroundColor => const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialStateProperty<Color?>? get foregroundColor => MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return _colors.onSurface.withOpacity(0.38);
-        }
-        return _colors.primary;
-      });
-
-  @override
-  MaterialStateProperty<Color?>? get overlayColor => MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.pressed)) {
-          return _colors.primary.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.hovered)) {
-          return _colors.primary.withOpacity(0.08);
-        }
-        if (states.contains(MaterialState.focused)) {
-          return _colors.primary.withOpacity(0.12);
-        }
-        return null;
-      });
-
-  @override
-  MaterialStateProperty<Color>? get shadowColor => const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialStateProperty<Color>? get surfaceTintColor => const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialStateProperty<double>? get elevation => const MaterialStatePropertyAll<double>(0.0);
-
-  @override
-  MaterialStateProperty<EdgeInsetsGeometry>? get padding =>
-      MaterialStatePropertyAll<EdgeInsetsGeometry>(_scaledPadding(context));
-
-  @override
-  MaterialStateProperty<Size>? get minimumSize => const MaterialStatePropertyAll<Size>(Size(64.0, 40.0));
-
-  // No default fixedSize
-
-  @override
-  MaterialStateProperty<Size>? get maximumSize => const MaterialStatePropertyAll<Size>(Size.infinite);
-
-  @override
-  MaterialStateProperty<BorderSide>? get side => MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return BorderSide(color: _colors.onSurface.withOpacity(0.12));
-        }
-        if (states.contains(MaterialState.focused)) {
-          return BorderSide(color: _colors.primary);
-        }
-        return BorderSide(color: _colors.outline);
-      });
-
-  @override
-  MaterialStateProperty<OutlinedBorder>? get shape => const MaterialStatePropertyAll<OutlinedBorder>(StadiumBorder());
-
-  @override
-  MaterialStateProperty<MouseCursor?>? get mouseCursor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return SystemMouseCursors.basic;
-        }
-        return SystemMouseCursors.click;
-      });
-
-  @override
-  VisualDensity? get visualDensity => Theme.of(context).visualDensity;
-
-  @override
-  MaterialTapTargetSize? get tapTargetSize => Theme.of(context).materialTapTargetSize;
-
-  @override
-  InteractiveInkFeatureFactory? get splashFactory => Theme.of(context).splashFactory;
 }

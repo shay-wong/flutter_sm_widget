@@ -34,6 +34,20 @@ class MCupertinoDialogExample extends StatelessWidget {
                   ),
                 );
               },
+            ),
+            MButton(
+              child: const MText('showModalBottomSheet'),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return MContainer(
+                      size: 200,
+                      color: Colors.red,
+                    );
+                  },
+                );
+              },
             )
           ],
         ),

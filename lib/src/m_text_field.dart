@@ -373,7 +373,9 @@ class MTextField extends StatefulWidget {
   /// 此值由[paint]方法用于计算实际间隙宽度.
   final double? gapPadding;
 
-  /// 文本高度
+  /// 限定文本高度, 会限定 [MTextField] 高度为 [height],
+  /// 如果想设置初始高度, 在 [maxLines] > 1, 并且希望 [MTextField] 自适应高度的情况下,
+  /// 推荐设置 [isDense] 为 true, 配合 [contentPadding] 来控制初始高度
   final double? height;
 
   /// 帮助提示的最大行数

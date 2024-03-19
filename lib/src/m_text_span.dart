@@ -56,7 +56,7 @@ class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotat
     if (super != other) {
       return false;
     }
-    return other is TextSpan &&
+    return other is MTextSpan &&
         other.text == text &&
         other.recognizer == recognizer &&
         other.semanticsLabel == semanticsLabel &&
@@ -86,7 +86,7 @@ class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotat
     if (other.runtimeType != runtimeType) {
       return RenderComparison.layout;
     }
-    final TextSpan textSpan = other as TextSpan;
+    final MTextSpan textSpan = other as MTextSpan;
     if (textSpan.text != text ||
         children?.length != textSpan.children?.length ||
         (style == null) != (textSpan.style == null)) {
@@ -144,7 +144,7 @@ class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotat
     final List<InlineSpan>? children = this.children;
     if (children != null) {
       for (final InlineSpan child in children) {
-        if (child is TextSpan) {
+        if (child is MTextSpan) {
           child.computeSemanticsInformation(
             collector,
             inheritedLocale: effectiveLocale,
@@ -292,7 +292,7 @@ class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotat
       );
 
   @override
-  String toStringShort() => objectRuntimeType(this, 'TextSpan');
+  String toStringShort() => objectRuntimeType(this, 'MTextSpan');
 
   @override
   bool get validForMouseTracker => true;
@@ -363,7 +363,7 @@ class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotat
           exception: exception,
           stack: stack,
           library: 'painting library',
-          context: ErrorDescription('while building a TextSpan'),
+          context: ErrorDescription('while building a MTextSpan'),
           silent: true,
         ));
         // Use a Unicode replacement character as a substitute for invalid text.
