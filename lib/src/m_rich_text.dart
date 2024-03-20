@@ -50,7 +50,7 @@ class MRichText extends StatelessWidget {
   final TextHeightBehavior? textHeightBehavior;
   final TextWidthBasis textWidthBasis;
 
-  // NOTE: [TextScaler.noScaling] 导致 [Text] 和 [RichText] 设置相同 [fontSize] 显示大小不一致, [Text] 默认不是 [TextScaler.noScaling], 但是如果 [Text] 设置了 [TextScaler.noScaling], 还是会有细微的宽度差别, 宽高都会更大一点, 应该是有其他影响到了(猜测可能是有内边距?), 暂时没找到原因.
+  // NOTE: [TextScaler.noScaling] 导致 [Text] 和 [RichText] 设置相同 [fontSize] 显示大小不一致, [Text] 默认不是 [TextScaler.noScaling], 但是如果 [Text] 设置了 [TextScaler.noScaling], 在 Material 3 下还是会有细微的宽度差别, 宽高都会更大一点, 应该是有其他影响到了(猜测可能是有内边距?), 暂时没找到原因, 后面在看看.
   final TextScaler textScaler;
 
   @override

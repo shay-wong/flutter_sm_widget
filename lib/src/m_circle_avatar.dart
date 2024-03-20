@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sm_widget/sm_widget.dart';
 
+import '../generated/assets.gen.dart';
+
 class MCircleAvatar extends StatelessWidget {
   const MCircleAvatar({
     super.key,
@@ -156,8 +158,8 @@ class MCircleAvatar extends StatelessWidget {
         image: MImage.provider(
           source,
           placeholderImage: MImage.provider(
-            placeholder ?? 'assets/images/icons/avatar.png',
-            package: placeholder == null ? 'flutter_sm_widget' : package,
+            placeholder ?? Assets.images.avatar.path,
+            package: placeholder == null ? Assets.package : package,
           ),
           package: package,
           bundle: bundle,
