@@ -1,4 +1,10 @@
-import 'dart:ui' as ui show Locale, LocaleStringAttribute, ParagraphBuilder, SpellOutStringAttribute, StringAttribute;
+import 'dart:ui' as ui
+    show
+        Locale,
+        LocaleStringAttribute,
+        ParagraphBuilder,
+        SpellOutStringAttribute,
+        StringAttribute;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -6,7 +12,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 @immutable
-class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotation {
+class MTextSpan extends InlineSpan
+    implements HitTestTarget, MouseTrackerAnnotation {
   const MTextSpan({
     this.text,
     this.children,
@@ -23,7 +30,8 @@ class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotat
     this.isBold = false,
     this.fontWeight,
     this.overflow,
-  })  : mouseCursor = mouseCursor ?? (recognizer == null ? MouseCursor.defer : SystemMouseCursors.click),
+  })  : mouseCursor = mouseCursor ??
+            (recognizer == null ? MouseCursor.defer : SystemMouseCursors.click),
         assert(!(text == null && semanticsLabel != null));
 
   final List<InlineSpan>? children;
@@ -92,8 +100,9 @@ class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotat
         (style == null) != (textSpan.style == null)) {
       return RenderComparison.layout;
     }
-    RenderComparison result =
-        recognizer == textSpan.recognizer ? RenderComparison.identical : RenderComparison.metadata;
+    RenderComparison result = recognizer == textSpan.recognizer
+        ? RenderComparison.identical
+        : RenderComparison.metadata;
     if (style != null) {
       final RenderComparison candidate = style!.compareTo(textSpan.style!);
       if (candidate.index > result.index) {
@@ -105,7 +114,8 @@ class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotat
     }
     if (children != null) {
       for (int index = 0; index < children!.length; index += 1) {
-        final RenderComparison candidate = children![index].compareTo(textSpan.children![index]);
+        final RenderComparison candidate =
+            children![index].compareTo(textSpan.children![index]);
         if (candidate.index > result.index) {
           result = candidate;
         }
@@ -133,9 +143,12 @@ class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotat
         text!,
         stringAttributes: <ui.StringAttribute>[
           if (effectiveSpellOut && textLength > 0)
-            ui.SpellOutStringAttribute(range: TextRange(start: 0, end: textLength)),
+            ui.SpellOutStringAttribute(
+                range: TextRange(start: 0, end: textLength)),
           if (effectiveLocale != null && textLength > 0)
-            ui.LocaleStringAttribute(locale: effectiveLocale, range: TextRange(start: 0, end: textLength)),
+            ui.LocaleStringAttribute(
+                locale: effectiveLocale,
+                range: TextRange(start: 0, end: textLength)),
         ],
         semanticsLabel: semanticsLabel,
         recognizer: recognizer,
@@ -235,7 +248,8 @@ class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotat
         'exit': onExit,
       },
     ));
-    properties.add(DiagnosticsProperty<MouseCursor>('mouseCursor', cursor, defaultValue: MouseCursor.defer));
+    properties.add(DiagnosticsProperty<MouseCursor>('mouseCursor', cursor,
+        defaultValue: MouseCursor.defer));
 
     if (semanticsLabel != null) {
       properties.add(StringProperty('semanticsLabel', semanticsLabel));
@@ -243,7 +257,8 @@ class MTextSpan extends InlineSpan implements HitTestTarget, MouseTrackerAnnotat
   }
 
   @override
-  InlineSpan? getSpanForPositionVisitor(TextPosition position, Accumulator offset) {
+  InlineSpan? getSpanForPositionVisitor(
+      TextPosition position, Accumulator offset) {
     final String? text = this.text;
     if (text == null || text.isEmpty) {
       return null;

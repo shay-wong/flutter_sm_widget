@@ -143,7 +143,8 @@ class MDialogExample extends StatelessWidget {
   }
 
   @pragma('vm:entry-point')
-  static Route<Object?> _dialogBuilder(BuildContext context, Object? arguments) {
+  static Route<Object?> _dialogBuilder(
+      BuildContext context, Object? arguments) {
     return DialogRoute<void>(
       context: context,
       builder: (BuildContext context) {
@@ -180,7 +181,10 @@ class MDialogExample extends StatelessWidget {
     );
   }
 
-  Widget adaptiveAction({required BuildContext context, required VoidCallback onPressed, required Widget child}) {
+  Widget adaptiveAction(
+      {required BuildContext context,
+      required VoidCallback onPressed,
+      required Widget child}) {
     final ThemeData theme = Theme.of(context);
     switch (theme.platform) {
       case TargetPlatform.android:

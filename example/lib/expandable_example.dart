@@ -122,7 +122,8 @@ class Card1 extends StatelessWidget {
                   ),
                   builder: (_, collapsed, expanded) {
                     return Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, bottom: 10),
                       child: MExpandable(
                         collapsed: collapsed,
                         expanded: expanded,
@@ -157,20 +158,22 @@ class Card2 extends StatelessWidget {
     }
 
     buildCollapsed1() {
-      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Expandable",
-                style: Theme.of(context).textTheme.bodyLarge,
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Expandable",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ]);
+            ),
+          ]);
     }
 
     buildCollapsed2() {
@@ -182,24 +185,26 @@ class Card2 extends StatelessWidget {
     }
 
     buildExpanded1() {
-      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Expandable",
-                style: Theme.of(context).textTheme.bodyLarge,
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Expandable",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  Text(
+                    "3 Expandable widgets",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
               ),
-              Text(
-                "3 Expandable widgets",
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ],
-          ),
-        ),
-      ]);
+            ),
+          ]);
     }
 
     buildExpanded2() {
@@ -266,11 +271,15 @@ class Card2 extends StatelessWidget {
                 children: <Widget>[
                   Builder(
                     builder: (context) {
-                      var controller = MExpandableController.of(context, required: true)!;
+                      var controller =
+                          MExpandableController.of(context, required: true)!;
                       return TextButton(
                         child: Text(
                           controller.expanded ? "COLLAPSE" : "EXPAND",
-                          style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.deepPurple),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .copyWith(color: Colors.deepPurple),
                         ),
                         onPressed: () {
                           controller.toggle();
@@ -343,7 +352,10 @@ class Card3 extends StatelessWidget {
                         Expanded(
                           child: Text(
                             "Items",
-                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(color: Colors.white),
                           ),
                         ),
                       ],
@@ -395,14 +407,16 @@ class Card4 extends StatelessWidget {
                       ],
                     ),
                     const MExpandable(
-                      theme: MExpandableThemeData(transition: MExpandableTransition.size),
+                      theme: MExpandableThemeData(
+                          transition: MExpandableTransition.size),
                       collapsed: SizedBox.shrink(),
                       expanded: Text(loremIpsum),
                     ),
                     Row(
                       children: [
                         MExpandable(
-                          theme: const MExpandableThemeData(transition: MExpandableTransition.opacity),
+                          theme: const MExpandableThemeData(
+                              transition: MExpandableTransition.opacity),
                           collapsed: const SizedBox.shrink(),
                           expanded: MContainer(
                             color: Colors.blue,
@@ -419,7 +433,8 @@ class Card4 extends StatelessWidget {
                 bottom: 0,
                 child: Builder(
                   builder: (context) {
-                    var controller = MExpandableController.of(context, required: true)!;
+                    var controller =
+                        MExpandableController.of(context, required: true)!;
                     return MButton(
                       child: MText(
                         controller.expanded ? "COLLAPSE" : "EXPAND",

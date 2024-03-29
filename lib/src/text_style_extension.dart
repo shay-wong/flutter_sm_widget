@@ -2,10 +2,12 @@ import 'package:flutter/painting.dart';
 
 const String _kDefaultDebugLabel = 'unknown';
 
-const String _kColorForegroundWarning = 'Cannot provide both a color and a foreground\n'
+const String _kColorForegroundWarning =
+    'Cannot provide both a color and a foreground\n'
     'The color argument is just a shorthand for "foreground: Paint()..color = color".';
 
-const String _kColorBackgroundWarning = 'Cannot provide both a backgroundColor and a background\n'
+const String _kColorBackgroundWarning =
+    'Cannot provide both a backgroundColor and a background\n'
     'The backgroundColor argument is just a shorthand for "background: Paint()..color = color".';
 
 extension MFontWeight on FontWeight {
@@ -101,7 +103,8 @@ extension TextStyleEx on TextStyle {
     TextOverflow? overflow,
   }) {
     assert(color == null || foreground == null, _kColorForegroundWarning);
-    assert(backgroundColor == null || background == null, _kColorBackgroundWarning);
+    assert(backgroundColor == null || background == null,
+        _kColorBackgroundWarning);
     String? newDebugLabel;
     assert(() {
       if (this.debugLabel != null) {

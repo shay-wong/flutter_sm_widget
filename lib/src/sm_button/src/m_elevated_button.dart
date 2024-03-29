@@ -60,20 +60,25 @@ class MElevatedButton extends ButtonStyleButton {
   }) {
     final Color? background = backgroundColor;
     final Color? disabledBackground = disabledBackgroundColor;
-    final MaterialStateProperty<Color?>? backgroundColorProp = (background == null && disabledBackground == null)
-        ? null
-        : _MElevatedButtonDefaultColor(background, disabledBackground);
+    final MaterialStateProperty<Color?>? backgroundColorProp =
+        (background == null && disabledBackground == null)
+            ? null
+            : _MElevatedButtonDefaultColor(background, disabledBackground);
     final Color? foreground = foregroundColor;
     final Color? disabledForeground = disabledForegroundColor;
-    final MaterialStateProperty<Color?>? foregroundColorProp = (foreground == null && disabledForeground == null)
+    final MaterialStateProperty<Color?>? foregroundColorProp =
+        (foreground == null && disabledForeground == null)
+            ? null
+            : _MElevatedButtonDefaultColor(foreground, disabledForeground);
+    final MaterialStateProperty<Color?>? overlayColor = (foreground == null)
         ? null
-        : _MElevatedButtonDefaultColor(foreground, disabledForeground);
-    final MaterialStateProperty<Color?>? overlayColor =
-        (foreground == null) ? null : _MElevatedButtonDefaultOverlay(foreground);
-    final MaterialStateProperty<double>? elevationValue =
-        (elevation == null) ? null : _MElevatedButtonDefaultElevation(elevation);
+        : _MElevatedButtonDefaultOverlay(foreground);
+    final MaterialStateProperty<double>? elevationValue = (elevation == null)
+        ? null
+        : _MElevatedButtonDefaultElevation(elevation);
     final MaterialStateProperty<MouseCursor?> mouseCursor =
-        _MElevatedButtonDefaultMouseCursor(enabledMouseCursor, disabledMouseCursor);
+        _MElevatedButtonDefaultMouseCursor(
+            enabledMouseCursor, disabledMouseCursor);
 
     return ButtonStyle(
       textStyle: MaterialStatePropertyAll<TextStyle?>(textStyle),
@@ -117,7 +122,8 @@ class MElevatedButton extends ButtonStyleButton {
             padding: _scaledPadding(context),
             minimumSize: const Size(64, 36),
             maximumSize: Size.infinite,
-            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4))),
             enabledMouseCursor: SystemMouseCursors.click,
             disabledMouseCursor: SystemMouseCursors.basic,
             visualDensity: theme.visualDensity,
@@ -139,7 +145,8 @@ EdgeInsetsGeometry _scaledPadding(BuildContext context) {
   final ThemeData theme = Theme.of(context);
   final double padding1x = theme.useMaterial3 ? 24.0 : 16.0;
   final double defaultFontSize = theme.textTheme.labelLarge?.fontSize ?? 14.0;
-  final double effectiveTextScale = MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
+  final double effectiveTextScale =
+      MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
 
   return ButtonStyleButton.scaledPadding(
     EdgeInsets.symmetric(horizontal: padding1x),
@@ -150,7 +157,8 @@ EdgeInsetsGeometry _scaledPadding(BuildContext context) {
 }
 
 @immutable
-class _MElevatedButtonDefaultColor extends MaterialStateProperty<Color?> with Diagnosticable {
+class _MElevatedButtonDefaultColor extends MaterialStateProperty<Color?>
+    with Diagnosticable {
   _MElevatedButtonDefaultColor(this.color, this.disabled);
 
   final Color? color;
@@ -166,7 +174,8 @@ class _MElevatedButtonDefaultColor extends MaterialStateProperty<Color?> with Di
 }
 
 @immutable
-class _MElevatedButtonDefaultOverlay extends MaterialStateProperty<Color?> with Diagnosticable {
+class _MElevatedButtonDefaultOverlay extends MaterialStateProperty<Color?>
+    with Diagnosticable {
   _MElevatedButtonDefaultOverlay(this.overlay);
 
   final Color overlay;
@@ -187,7 +196,8 @@ class _MElevatedButtonDefaultOverlay extends MaterialStateProperty<Color?> with 
 }
 
 @immutable
-class _MElevatedButtonDefaultElevation extends MaterialStateProperty<double> with Diagnosticable {
+class _MElevatedButtonDefaultElevation extends MaterialStateProperty<double>
+    with Diagnosticable {
   _MElevatedButtonDefaultElevation(this.elevation);
 
   final double elevation;
@@ -211,7 +221,8 @@ class _MElevatedButtonDefaultElevation extends MaterialStateProperty<double> wit
 }
 
 @immutable
-class _MElevatedButtonDefaultMouseCursor extends MaterialStateProperty<MouseCursor?> with Diagnosticable {
+class _MElevatedButtonDefaultMouseCursor
+    extends MaterialStateProperty<MouseCursor?> with Diagnosticable {
   _MElevatedButtonDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
 
   final MouseCursor? enabledCursor;
@@ -250,8 +261,11 @@ class _MElevatedButtonWithIcon extends MElevatedButton {
   ButtonStyle defaultStyleOf(BuildContext context) {
     final bool useMaterial3 = Theme.of(context).useMaterial3;
     final ButtonStyle buttonStyle = super.defaultStyleOf(context);
-    final double defaultFontSize = buttonStyle.textStyle?.resolve(const <MaterialState>{})?.fontSize ?? 14.0;
-    final double effectiveTextScale = MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
+    final double defaultFontSize =
+        buttonStyle.textStyle?.resolve(const <MaterialState>{})?.fontSize ??
+            14.0;
+    final double effectiveTextScale =
+        MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
 
     final EdgeInsetsGeometry scaledPadding = useMaterial3
         ? ButtonStyleButton.scaledPadding(
@@ -273,7 +287,8 @@ class _MElevatedButtonWithIcon extends MElevatedButton {
 }
 
 class _MElevatedButtonWithIconChild extends StatelessWidget {
-  const _MElevatedButtonWithIconChild({required this.label, required this.icon});
+  const _MElevatedButtonWithIconChild(
+      {required this.label, required this.icon});
 
   final Widget label;
   final Widget icon;
@@ -283,7 +298,8 @@ class _MElevatedButtonWithIconChild extends StatelessWidget {
     // TODO: 删除弃用成员
     // ignore: deprecated_member_use
     final double scale = MediaQuery.textScalerOf(context).textScaleFactor;
-    final double gap = scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1))!;
+    final double gap =
+        scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1))!;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[icon, SizedBox(width: gap), Flexible(child: label)],
@@ -304,10 +320,12 @@ class _MElevatedButtonDefaultsM3 extends ButtonStyle {
 
   @override
   MaterialStateProperty<TextStyle?> get textStyle =>
-      MaterialStatePropertyAll<TextStyle?>(Theme.of(context).textTheme.labelLarge);
+      MaterialStatePropertyAll<TextStyle?>(
+          Theme.of(context).textTheme.labelLarge);
 
   @override
-  MaterialStateProperty<Color?>? get backgroundColor => MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+  MaterialStateProperty<Color?>? get backgroundColor =>
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
         if (states.contains(MaterialState.disabled)) {
           return _colors.onSurface.withOpacity(0.12);
         }
@@ -315,7 +333,8 @@ class _MElevatedButtonDefaultsM3 extends ButtonStyle {
       });
 
   @override
-  MaterialStateProperty<Color?>? get foregroundColor => MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+  MaterialStateProperty<Color?>? get foregroundColor =>
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
         if (states.contains(MaterialState.disabled)) {
           return _colors.onSurface.withOpacity(0.38);
         }
@@ -323,7 +342,8 @@ class _MElevatedButtonDefaultsM3 extends ButtonStyle {
       });
 
   @override
-  MaterialStateProperty<Color?>? get overlayColor => MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+  MaterialStateProperty<Color?>? get overlayColor =>
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
         if (states.contains(MaterialState.pressed)) {
           return _colors.primary.withOpacity(0.12);
         }
@@ -337,13 +357,16 @@ class _MElevatedButtonDefaultsM3 extends ButtonStyle {
       });
 
   @override
-  MaterialStateProperty<Color>? get shadowColor => MaterialStatePropertyAll<Color>(_colors.shadow);
+  MaterialStateProperty<Color>? get shadowColor =>
+      MaterialStatePropertyAll<Color>(_colors.shadow);
 
   @override
-  MaterialStateProperty<Color>? get surfaceTintColor => MaterialStatePropertyAll<Color>(_colors.surfaceTint);
+  MaterialStateProperty<Color>? get surfaceTintColor =>
+      MaterialStatePropertyAll<Color>(_colors.surfaceTint);
 
   @override
-  MaterialStateProperty<double>? get elevation => MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+  MaterialStateProperty<double>? get elevation =>
+      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
         if (states.contains(MaterialState.disabled)) {
           return 0.0;
         }
@@ -364,17 +387,20 @@ class _MElevatedButtonDefaultsM3 extends ButtonStyle {
       MaterialStatePropertyAll<EdgeInsetsGeometry>(_scaledPadding(context));
 
   @override
-  MaterialStateProperty<Size>? get minimumSize => const MaterialStatePropertyAll<Size>(Size(64.0, 40.0));
+  MaterialStateProperty<Size>? get minimumSize =>
+      const MaterialStatePropertyAll<Size>(Size(64.0, 40.0));
 
   // No default fixedSize
 
   @override
-  MaterialStateProperty<Size>? get maximumSize => const MaterialStatePropertyAll<Size>(Size.infinite);
+  MaterialStateProperty<Size>? get maximumSize =>
+      const MaterialStatePropertyAll<Size>(Size.infinite);
 
   // No default side
 
   @override
-  MaterialStateProperty<OutlinedBorder>? get shape => const MaterialStatePropertyAll<OutlinedBorder>(StadiumBorder());
+  MaterialStateProperty<OutlinedBorder>? get shape =>
+      const MaterialStatePropertyAll<OutlinedBorder>(StadiumBorder());
 
   @override
   MaterialStateProperty<MouseCursor?>? get mouseCursor =>
@@ -389,8 +415,10 @@ class _MElevatedButtonDefaultsM3 extends ButtonStyle {
   VisualDensity? get visualDensity => Theme.of(context).visualDensity;
 
   @override
-  MaterialTapTargetSize? get tapTargetSize => Theme.of(context).materialTapTargetSize;
+  MaterialTapTargetSize? get tapTargetSize =>
+      Theme.of(context).materialTapTargetSize;
 
   @override
-  InteractiveInkFeatureFactory? get splashFactory => Theme.of(context).splashFactory;
+  InteractiveInkFeatureFactory? get splashFactory =>
+      Theme.of(context).splashFactory;
 }

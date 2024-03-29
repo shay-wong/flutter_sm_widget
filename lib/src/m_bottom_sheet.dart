@@ -68,7 +68,8 @@ class _MBottomSheetDefaultsM3 extends BottomSheetThemeData {
       : super(
           elevation: 1.0,
           modalElevation: 1.0,
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28.0))),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(28.0))),
           constraints: const BoxConstraints(maxWidth: 640),
         );
 
@@ -119,7 +120,8 @@ class _MBottomSheetGestureDetector extends StatelessWidget {
     return RawGestureDetector(
       excludeFromSemantics: true,
       gestures: <Type, GestureRecognizerFactory<GestureRecognizer>>{
-        VerticalDragGestureRecognizer: GestureRecognizerFactoryWithHandlers<VerticalDragGestureRecognizer>(
+        VerticalDragGestureRecognizer:
+            GestureRecognizerFactoryWithHandlers<VerticalDragGestureRecognizer>(
           () => VerticalDragGestureRecognizer(debugOwner: this),
           (VerticalDragGestureRecognizer instance) {
             instance
@@ -135,7 +137,8 @@ class _MBottomSheetGestureDetector extends StatelessWidget {
   }
 }
 
-class _MBottomSheetLayoutWithSizeListener extends SingleChildRenderObjectWidget {
+class _MBottomSheetLayoutWithSizeListener
+    extends SingleChildRenderObjectWidget {
   const _MBottomSheetLayoutWithSizeListener({
     required this.onChildSizeChanged,
     required this.animationValue,
@@ -150,7 +153,8 @@ class _MBottomSheetLayoutWithSizeListener extends SingleChildRenderObjectWidget 
   final double scrollControlDisabledMaxHeightRatio;
 
   @override
-  _MRenderBottomSheetLayoutWithSizeListener createRenderObject(BuildContext context) {
+  _MRenderBottomSheetLayoutWithSizeListener createRenderObject(
+      BuildContext context) {
     return _MRenderBottomSheetLayoutWithSizeListener(
       onChildSizeChanged: onChildSizeChanged,
       animationValue: animationValue,
@@ -160,11 +164,13 @@ class _MBottomSheetLayoutWithSizeListener extends SingleChildRenderObjectWidget 
   }
 
   @override
-  void updateRenderObject(BuildContext context, _MRenderBottomSheetLayoutWithSizeListener renderObject) {
+  void updateRenderObject(BuildContext context,
+      _MRenderBottomSheetLayoutWithSizeListener renderObject) {
     renderObject.onChildSizeChanged = onChildSizeChanged;
     renderObject.animationValue = animationValue;
     renderObject.isScrollControlled = isScrollControlled;
-    renderObject.scrollControlDisabledMaxHeightRatio = scrollControlDisabledMaxHeightRatio;
+    renderObject.scrollControlDisabledMaxHeightRatio =
+        scrollControlDisabledMaxHeightRatio;
   }
 }
 
@@ -174,14 +180,17 @@ class _MBottomSheetState extends State<MBottomSheet> {
   final GlobalKey _childKey = GlobalKey(debugLabel: 'BottomSheet child');
 
   double get _childHeight {
-    final RenderBox renderBox = _childKey.currentContext!.findRenderObject()! as RenderBox;
+    final RenderBox renderBox =
+        _childKey.currentContext!.findRenderObject()! as RenderBox;
     return renderBox.size.height;
   }
 
-  bool get _dismissUnderway => widget.animationController!.status == AnimationStatus.reverse;
+  bool get _dismissUnderway =>
+      widget.animationController!.status == AnimationStatus.reverse;
 
   bool extentChanged(DraggableScrollableNotification notification) {
-    if (notification.extent == notification.minExtent && notification.shouldCloseOnMinExtent) {
+    if (notification.extent == notification.minExtent &&
+        notification.shouldCloseOnMinExtent) {
       widget.onClosing?.call();
     }
     return false;
@@ -189,7 +198,8 @@ class _MBottomSheetState extends State<MBottomSheet> {
 
   void _handleDragEnd(DragEndDetails details) {
     assert(
-      (widget.enableDrag || (widget.showDragHandle ?? false)) && widget.animationController != null,
+      (widget.enableDrag || (widget.showDragHandle ?? false)) &&
+          widget.animationController != null,
       "'BottomSheet.animationController' cannot be null when 'BottomSheet.enableDrag' or 'BottomSheet.showDragHandle' is true. "
       "Use 'BottomSheet.createAnimationController' to create one, or provide another AnimationController.",
     );
@@ -201,7 +211,8 @@ class _MBottomSheetState extends State<MBottomSheet> {
     });
     bool isClosing = false;
     if (details.velocity.pixelsPerSecond.dy > _minFlingVelocity) {
-      final double flingVelocity = -details.velocity.pixelsPerSecond.dy / _childHeight;
+      final double flingVelocity =
+          -details.velocity.pixelsPerSecond.dy / _childHeight;
       if (widget.animationController!.value > 0.0) {
         widget.animationController!.fling(velocity: flingVelocity);
       }
@@ -248,7 +259,8 @@ class _MBottomSheetState extends State<MBottomSheet> {
 
   void _handleDragUpdate(DragUpdateDetails details) {
     assert(
-      (widget.enableDrag || (widget.showDragHandle ?? false)) && widget.animationController != null,
+      (widget.enableDrag || (widget.showDragHandle ?? false)) &&
+          widget.animationController != null,
       "'BottomSheet.animationController' cannot be null when 'BottomSheet.enableDrag' or 'BottomSheet.showDragHandle' is true. "
       "Use 'BottomSheet.createAnimationController' to create one, or provide another AnimationController.",
     );
@@ -260,19 +272,33 @@ class _MBottomSheetState extends State<MBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final BottomSheetThemeData bottomSheetTheme = Theme.of(context).bottomSheetTheme;
+    final BottomSheetThemeData bottomSheetTheme =
+        Theme.of(context).bottomSheetTheme;
     final bool useMaterial3 = Theme.of(context).useMaterial3;
-    final BottomSheetThemeData defaults =
-        useMaterial3 ? _MBottomSheetDefaultsM3(context) : const BottomSheetThemeData();
-    final BoxConstraints? constraints = widget.constraints ?? bottomSheetTheme.constraints ?? defaults.constraints;
-    final Color? color = widget.backgroundColor ?? bottomSheetTheme.backgroundColor ?? defaults.backgroundColor;
-    final Color? surfaceTintColor = bottomSheetTheme.surfaceTintColor ?? defaults.surfaceTintColor;
-    final Color? shadowColor = widget.shadowColor ?? bottomSheetTheme.shadowColor ?? defaults.shadowColor;
-    final double elevation = widget.elevation ?? bottomSheetTheme.elevation ?? defaults.elevation ?? 0;
-    final ShapeBorder? shape = widget.shape ?? bottomSheetTheme.shape ?? defaults.shape;
-    final Clip clipBehavior = widget.clipBehavior ?? bottomSheetTheme.clipBehavior ?? Clip.none;
-    final bool showDragHandle =
-        widget.showDragHandle ?? (widget.enableDrag && (bottomSheetTheme.showDragHandle ?? false));
+    final BottomSheetThemeData defaults = useMaterial3
+        ? _MBottomSheetDefaultsM3(context)
+        : const BottomSheetThemeData();
+    final BoxConstraints? constraints = widget.constraints ??
+        bottomSheetTheme.constraints ??
+        defaults.constraints;
+    final Color? color = widget.backgroundColor ??
+        bottomSheetTheme.backgroundColor ??
+        defaults.backgroundColor;
+    final Color? surfaceTintColor =
+        bottomSheetTheme.surfaceTintColor ?? defaults.surfaceTintColor;
+    final Color? shadowColor = widget.shadowColor ??
+        bottomSheetTheme.shadowColor ??
+        defaults.shadowColor;
+    final double elevation = widget.elevation ??
+        bottomSheetTheme.elevation ??
+        defaults.elevation ??
+        0;
+    final ShapeBorder? shape =
+        widget.shape ?? bottomSheetTheme.shape ?? defaults.shape;
+    final Clip clipBehavior =
+        widget.clipBehavior ?? bottomSheetTheme.clipBehavior ?? Clip.none;
+    final bool showDragHandle = widget.showDragHandle ??
+        (widget.enableDrag && (bottomSheetTheme.showDragHandle ?? false));
 
     Widget? dragHandle;
     if (showDragHandle) {
@@ -307,13 +333,16 @@ class _MBottomSheetState extends State<MBottomSheet> {
       child: NotificationListener<DraggableScrollableNotification>(
         onNotification: extentChanged,
         child: !showDragHandle
-            ? widget.builder?.call(context) ?? widget.child ?? const SizedBox.shrink()
+            ? widget.builder?.call(context) ??
+                widget.child ??
+                const SizedBox.shrink()
             : Stack(
                 alignment: Alignment.topCenter,
                 children: <Widget>[
                   dragHandle!,
                   Padding(
-                    padding: const EdgeInsets.only(top: kMinInteractiveDimension),
+                    padding:
+                        const EdgeInsets.only(top: kMinInteractiveDimension),
                     child: widget.builder?.call(context) ?? widget.child,
                   ),
                 ],
@@ -395,9 +424,12 @@ class _MDragHandle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BottomSheetThemeData bottomSheetTheme = Theme.of(context).bottomSheetTheme;
+    final BottomSheetThemeData bottomSheetTheme =
+        Theme.of(context).bottomSheetTheme;
     final BottomSheetThemeData m3Defaults = _MBottomSheetDefaultsM3(context);
-    final Size handleSize = dragHandleSize ?? bottomSheetTheme.dragHandleSize ?? m3Defaults.dragHandleSize!;
+    final Size handleSize = dragHandleSize ??
+        bottomSheetTheme.dragHandleSize ??
+        m3Defaults.dragHandleSize!;
 
     return MouseRegion(
       onEnter: (PointerEnterEvent event) => handleHover(true),
@@ -415,8 +447,10 @@ class _MDragHandle extends StatelessWidget {
               width: handleSize.width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(handleSize.height / 2),
-                color: MaterialStateProperty.resolveAs<Color?>(dragHandleColor, materialState) ??
-                    MaterialStateProperty.resolveAs<Color?>(bottomSheetTheme.dragHandleColor, materialState) ??
+                color: MaterialStateProperty.resolveAs<Color?>(
+                        dragHandleColor, materialState) ??
+                    MaterialStateProperty.resolveAs<Color?>(
+                        bottomSheetTheme.dragHandleColor, materialState) ??
                     m3Defaults.dragHandleColor,
               ),
             ),
@@ -437,7 +471,8 @@ class _ModalMBottomSheet<T> extends StatefulWidget {
     this.clipBehavior,
     this.constraints,
     this.isScrollControlled = false,
-    this.scrollControlDisabledMaxHeightRatio = _defaultScrollControlDisabledMaxHeightRatio,
+    this.scrollControlDisabledMaxHeightRatio =
+        _defaultScrollControlDisabledMaxHeightRatio,
     this.enableDrag = true,
     this.showDragHandle = false,
   });
@@ -473,7 +508,8 @@ class ModalMBottomSheetRoute<T> extends PopupRoute<T> {
     this.enableDrag = true,
     this.showDragHandle,
     required this.isScrollControlled,
-    this.scrollControlDisabledMaxHeightRatio = _defaultScrollControlDisabledMaxHeightRatio,
+    this.scrollControlDisabledMaxHeightRatio =
+        _defaultScrollControlDisabledMaxHeightRatio,
     super.settings,
     this.transitionAnimationController,
     this.anchorPoint,
@@ -501,7 +537,8 @@ class ModalMBottomSheetRoute<T> extends PopupRoute<T> {
   @override
   final String? barrierLabel;
 
-  final ValueNotifier<EdgeInsets> _clipDetailsNotifier = ValueNotifier<EdgeInsets>(EdgeInsets.zero);
+  final ValueNotifier<EdgeInsets> _clipDetailsNotifier =
+      ValueNotifier<EdgeInsets>(EdgeInsets.zero);
 
   AnimationController? _animationController;
 
@@ -519,21 +556,28 @@ class ModalMBottomSheetRoute<T> extends PopupRoute<T> {
       final Animation<Color?> color = animation!.drive(
         ColorTween(
           begin: barrierColor.withOpacity(0.0),
-          end: barrierColor, // changedInternalState is called if barrierColor updates
-        ).chain(CurveTween(curve: barrierCurve)), // changedInternalState is called if barrierCurve updates
+          end:
+              barrierColor, // changedInternalState is called if barrierColor updates
+        ).chain(CurveTween(
+            curve:
+                barrierCurve)), // changedInternalState is called if barrierCurve updates
       );
       return AnimatedModalBarrier(
         color: color,
-        dismissible: barrierDismissible, // changedInternalState is called if barrierDismissible updates
-        semanticsLabel: barrierLabel, // changedInternalState is called if barrierLabel updates
+        dismissible:
+            barrierDismissible, // changedInternalState is called if barrierDismissible updates
+        semanticsLabel:
+            barrierLabel, // changedInternalState is called if barrierLabel updates
         barrierSemanticsDismissible: semanticsDismissible,
         clipDetailsNotifier: _clipDetailsNotifier,
         semanticsOnTapHint: barrierOnTapHint,
       );
     } else {
       return ModalBarrier(
-        dismissible: barrierDismissible, // changedInternalState is called if barrierDismissible updates
-        semanticsLabel: barrierLabel, // changedInternalState is called if barrierLabel updates
+        dismissible:
+            barrierDismissible, // changedInternalState is called if barrierDismissible updates
+        semanticsLabel:
+            barrierLabel, // changedInternalState is called if barrierLabel updates
         barrierSemanticsDismissible: semanticsDismissible,
         clipDetailsNotifier: _clipDetailsNotifier,
         semanticsOnTapHint: barrierOnTapHint,
@@ -542,28 +586,36 @@ class ModalMBottomSheetRoute<T> extends PopupRoute<T> {
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
     final Widget content = DisplayFeatureSubScreen(
       anchorPoint: anchorPoint,
       child: Builder(
         builder: (BuildContext context) {
-          final BottomSheetThemeData sheetTheme = Theme.of(context).bottomSheetTheme;
-          final BottomSheetThemeData defaults =
-              Theme.of(context).useMaterial3 ? _MBottomSheetDefaultsM3(context) : const BottomSheetThemeData();
+          final BottomSheetThemeData sheetTheme =
+              Theme.of(context).bottomSheetTheme;
+          final BottomSheetThemeData defaults = Theme.of(context).useMaterial3
+              ? _MBottomSheetDefaultsM3(context)
+              : const BottomSheetThemeData();
           return _ModalMBottomSheet<T>(
             route: this,
             backgroundColor: backgroundColor ??
                 sheetTheme.modalBackgroundColor ??
                 sheetTheme.backgroundColor ??
                 defaults.backgroundColor,
-            elevation: elevation ?? sheetTheme.modalElevation ?? sheetTheme.elevation ?? defaults.modalElevation,
+            elevation: elevation ??
+                sheetTheme.modalElevation ??
+                sheetTheme.elevation ??
+                defaults.modalElevation,
             shape: shape,
             clipBehavior: clipBehavior,
             constraints: constraints,
             isScrollControlled: isScrollControlled,
-            scrollControlDisabledMaxHeightRatio: scrollControlDisabledMaxHeightRatio,
+            scrollControlDisabledMaxHeightRatio:
+                scrollControlDisabledMaxHeightRatio,
             enableDrag: enableDrag,
-            showDragHandle: showDragHandle ?? (enableDrag && (sheetTheme.showDragHandle ?? false)),
+            showDragHandle: showDragHandle ??
+                (enableDrag && (sheetTheme.showDragHandle ?? false)),
           );
         },
       ),
@@ -650,7 +702,8 @@ class _ModalMBottomSheetState<T> extends State<_ModalMBottomSheet<T>> {
   Widget build(BuildContext context) {
     assert(debugCheckHasMediaQuery(context));
     assert(debugCheckHasMaterialLocalizations(context));
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations =
+        MaterialLocalizations.of(context);
     final String routeLabel = _getRouteLabel(localizations);
 
     return AnimatedBuilder(
@@ -691,7 +744,8 @@ class _ModalMBottomSheetState<T> extends State<_ModalMBottomSheet<T>> {
               },
               animationValue: animationValue,
               isScrollControlled: widget.isScrollControlled,
-              scrollControlDisabledMaxHeightRatio: widget.scrollControlDisabledMaxHeightRatio,
+              scrollControlDisabledMaxHeightRatio:
+                  widget.scrollControlDisabledMaxHeightRatio,
               child: child,
             ),
           ),
@@ -711,7 +765,8 @@ class _MRenderBottomSheetLayoutWithSizeListener extends RenderShiftedBox {
   })  : _onChildSizeChanged = onChildSizeChanged,
         _animationValue = animationValue,
         _isScrollControlled = isScrollControlled,
-        _scrollControlDisabledMaxHeightRatio = scrollControlDisabledMaxHeightRatio,
+        _scrollControlDisabledMaxHeightRatio =
+            scrollControlDisabledMaxHeightRatio,
         super(child);
 
   double _animationValue;
@@ -727,7 +782,8 @@ class _MRenderBottomSheetLayoutWithSizeListener extends RenderShiftedBox {
 
   @override
   double computeMaxIntrinsicHeight(double width) {
-    final double height = _getSize(BoxConstraints.tightForFinite(width: width)).height;
+    final double height =
+        _getSize(BoxConstraints.tightForFinite(width: width)).height;
     if (height.isFinite) {
       return height;
     }
@@ -736,7 +792,8 @@ class _MRenderBottomSheetLayoutWithSizeListener extends RenderShiftedBox {
 
   @override
   double computeMaxIntrinsicWidth(double height) {
-    final double width = _getSize(BoxConstraints.tightForFinite(height: height)).width;
+    final double width =
+        _getSize(BoxConstraints.tightForFinite(height: height)).width;
     if (width.isFinite) {
       return width;
     }
@@ -745,7 +802,8 @@ class _MRenderBottomSheetLayoutWithSizeListener extends RenderShiftedBox {
 
   @override
   double computeMinIntrinsicHeight(double width) {
-    final double height = _getSize(BoxConstraints.tightForFinite(width: width)).height;
+    final double height =
+        _getSize(BoxConstraints.tightForFinite(width: width)).height;
     if (height.isFinite) {
       return height;
     }
@@ -754,7 +812,8 @@ class _MRenderBottomSheetLayoutWithSizeListener extends RenderShiftedBox {
 
   @override
   double computeMinIntrinsicWidth(double height) {
-    final double width = _getSize(BoxConstraints.tightForFinite(height: height)).width;
+    final double width =
+        _getSize(BoxConstraints.tightForFinite(height: height)).width;
     if (width.isFinite) {
       return width;
     }
@@ -765,13 +824,16 @@ class _MRenderBottomSheetLayoutWithSizeListener extends RenderShiftedBox {
   void performLayout() {
     size = _getSize(constraints);
     if (child != null) {
-      final BoxConstraints childConstraints = _getConstraintsForChild(constraints);
+      final BoxConstraints childConstraints =
+          _getConstraintsForChild(constraints);
       assert(childConstraints.debugAssertIsValid(isAppliedConstraint: true));
-      child!.layout(childConstraints, parentUsesSize: !childConstraints.isTight);
+      child!
+          .layout(childConstraints, parentUsesSize: !childConstraints.isTight);
       final BoxParentData childParentData = child!.parentData! as BoxParentData;
-      childParentData.offset =
-          _getPositionForChild(size, childConstraints.isTight ? childConstraints.smallest : child!.size);
-      final Size childSize = childConstraints.isTight ? childConstraints.smallest : child!.size;
+      childParentData.offset = _getPositionForChild(size,
+          childConstraints.isTight ? childConstraints.smallest : child!.size);
+      final Size childSize =
+          childConstraints.isTight ? childConstraints.smallest : child!.size;
 
       if (_lastSize != childSize) {
         _lastSize = childSize;
@@ -783,7 +845,8 @@ class _MRenderBottomSheetLayoutWithSizeListener extends RenderShiftedBox {
   double get animationValue => _animationValue;
   bool get isScrollControlled => _isScrollControlled;
   _SizeChangeCallback<Size> get onChildSizeChanged => _onChildSizeChanged;
-  double get scrollControlDisabledMaxHeightRatio => _scrollControlDisabledMaxHeightRatio;
+  double get scrollControlDisabledMaxHeightRatio =>
+      _scrollControlDisabledMaxHeightRatio;
 
   set animationValue(double newValue) {
     if (_animationValue == newValue) {
@@ -825,8 +888,9 @@ class _MRenderBottomSheetLayoutWithSizeListener extends RenderShiftedBox {
     return BoxConstraints(
       minWidth: constraints.maxWidth,
       maxWidth: constraints.maxWidth,
-      maxHeight:
-          isScrollControlled ? constraints.maxHeight : constraints.maxHeight * scrollControlDisabledMaxHeightRatio,
+      maxHeight: isScrollControlled
+          ? constraints.maxHeight
+          : constraints.maxHeight * scrollControlDisabledMaxHeightRatio,
     );
   }
 

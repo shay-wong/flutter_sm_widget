@@ -153,22 +153,30 @@ class MText extends StatelessWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('data', data, showName: false));
     if (textSpan != null) {
-      properties.add(textSpan!.toDiagnosticsNode(name: 'textSpan', style: DiagnosticsTreeStyle.transition));
+      properties.add(textSpan!.toDiagnosticsNode(
+          name: 'textSpan', style: DiagnosticsTreeStyle.transition));
     }
     style?.debugFillProperties(properties);
-    properties.add(EnumProperty<TextAlign>('textAlign', textAlign, defaultValue: null));
-    properties.add(EnumProperty<TextDirection>('textDirection', textDirection, defaultValue: null));
-    properties.add(DiagnosticsProperty<Locale>('locale', locale, defaultValue: null));
+    properties.add(
+        EnumProperty<TextAlign>('textAlign', textAlign, defaultValue: null));
+    properties.add(EnumProperty<TextDirection>('textDirection', textDirection,
+        defaultValue: null));
+    properties
+        .add(DiagnosticsProperty<Locale>('locale', locale, defaultValue: null));
     properties.add(FlagProperty('softWrap',
         value: softWrap,
         ifTrue: 'wrapping at box width',
         ifFalse: 'no wrapping except at line break characters',
         showName: true));
-    properties.add(EnumProperty<TextOverflow>('overflow', overflow, defaultValue: null));
+    properties.add(
+        EnumProperty<TextOverflow>('overflow', overflow, defaultValue: null));
     properties.add(IntProperty('maxLines', maxLines, defaultValue: null));
-    properties.add(EnumProperty<TextWidthBasis>('textWidthBasis', textWidthBasis, defaultValue: null));
-    properties
-        .add(DiagnosticsProperty<ui.TextHeightBehavior>('textHeightBehavior', textHeightBehavior, defaultValue: null));
+    properties.add(EnumProperty<TextWidthBasis>(
+        'textWidthBasis', textWidthBasis,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<ui.TextHeightBehavior>(
+        'textHeightBehavior', textHeightBehavior,
+        defaultValue: null));
     if (semanticsLabel != null) {
       properties.add(StringProperty('semanticsLabel', semanticsLabel));
     }
@@ -191,19 +199,24 @@ class MText extends StatelessWidget {
         decoration: decoration ??
             (isDeleted
                 ? TextDecoration.lineThrough
-                : TextDecoration.none), // 默认 TextDecoration.none 是为了去除没有Scaffold 或者 material 时的文本下黄线
+                : TextDecoration
+                    .none), // 默认 TextDecoration.none 是为了去除没有Scaffold 或者 material 时的文本下黄线
         foreground: foreground,
         shadows: shadows,
       );
     }
     if (MediaQuery.boldTextOf(context)) {
-      effectiveTextStyle = effectiveTextStyle!.merge(const TextStyle(fontWeight: FontWeight.bold));
+      effectiveTextStyle = effectiveTextStyle!
+          .merge(const TextStyle(fontWeight: FontWeight.bold));
     }
     final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
-    final TextScaler textScaler = this.textScaler ?? MediaQuery.textScalerOf(context);
+    final TextScaler textScaler =
+        this.textScaler ?? MediaQuery.textScalerOf(context);
 
     StrutStyle? effectiveStrutStyle = strutStyle;
-    if (strutStyle == null && forceStrutHeight || lineHeight != null || height != null) {
+    if (strutStyle == null && forceStrutHeight ||
+        lineHeight != null ||
+        height != null) {
       var effectiveHeight = height;
       if (lineHeight != null && effectiveTextStyle!.fontSize != null) {
         effectiveHeight = lineHeight! / effectiveTextStyle.fontSize!;
@@ -224,19 +237,23 @@ class MText extends StatelessWidget {
 
     Widget result = RichText(
       textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
-      textDirection: textDirection, // RichText uses Directionality.of to obtain a default if this is null.
-      locale: locale, // RichText uses Localizations.localeOf to obtain a default if this is null
+      textDirection:
+          textDirection, // RichText uses Directionality.of to obtain a default if this is null.
+      locale:
+          locale, // RichText uses Localizations.localeOf to obtain a default if this is null
       softWrap: softWrap ?? defaultTextStyle.softWrap,
       overflow: finalOverflow,
       textScaler: textScaler,
       maxLines: maxLines ?? defaultTextStyle.maxLines,
       strutStyle: effectiveStrutStyle,
       textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
-      textHeightBehavior:
-          textHeightBehavior ?? defaultTextStyle.textHeightBehavior ?? DefaultTextHeightBehavior.maybeOf(context),
+      textHeightBehavior: textHeightBehavior ??
+          defaultTextStyle.textHeightBehavior ??
+          DefaultTextHeightBehavior.maybeOf(context),
       selectionRegistrar: registrar,
-      selectionColor:
-          selectionColor ?? DefaultSelectionStyle.of(context).selectionColor ?? DefaultSelectionStyle.defaultColor,
+      selectionColor: selectionColor ??
+          DefaultSelectionStyle.of(context).selectionColor ??
+          DefaultSelectionStyle.defaultColor,
       text: TextSpan(
         style: effectiveTextStyle,
         text: data,
@@ -245,7 +262,8 @@ class MText extends StatelessWidget {
     );
     if (registrar != null) {
       result = MouseRegion(
-        cursor: DefaultSelectionStyle.of(context).mouseCursor ?? SystemMouseCursors.text,
+        cursor: DefaultSelectionStyle.of(context).mouseCursor ??
+            SystemMouseCursors.text,
         child: result,
       );
     }

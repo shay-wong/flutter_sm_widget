@@ -81,7 +81,8 @@ class MRefresh extends StatelessWidget {
         },
       ),
       onRefresh: () => (onRequest ?? onRefresh)?.call(loader..isRefresh = true),
-      onLoading: () => (onRequest ?? onLoading)?.call(loader..isRefresh = false),
+      onLoading: () =>
+          (onRequest ?? onLoading)?.call(loader..isRefresh = false),
       controller: loader.controller,
       scrollController: scrollController,
       child: child,

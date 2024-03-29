@@ -164,28 +164,38 @@ class MButton extends ButtonStyleButton {
           )
         : _MTextButtonDefaultsM2(
             foregroundColor: foregroundColor ?? colorScheme.primary,
-            disabledForegroundColor: disabledColor ?? colorScheme.onSurface.withOpacity(0.38),
+            disabledForegroundColor:
+                disabledColor ?? colorScheme.onSurface.withOpacity(0.38),
             backgroundColor: backgroundColor ?? Colors.transparent,
             disabledBackgroundColor: Colors.transparent,
             shadowColor: shadowColor ?? theme.shadowColor,
             elevation: elevation ?? 0,
             textStyle: textStyle ?? theme.textTheme.labelLarge,
-            padding: padding ?? (clearPadding ? EdgeInsets.zero : _scaledPadding(context)),
-            minimumSize: minimumSize ?? (clearPadding ? Size.zero : const Size(64, 36)),
+            padding: padding ??
+                (clearPadding ? EdgeInsets.zero : _scaledPadding(context)),
+            minimumSize:
+                minimumSize ?? (clearPadding ? Size.zero : const Size(64, 36)),
             maximumSize: maximumSize ?? Size.infinite,
             shape: shape ??
-                RoundedRectangleBorder(borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(radius ?? 4))),
+                RoundedRectangleBorder(
+                    borderRadius: borderRadius ??
+                        BorderRadius.all(Radius.circular(radius ?? 4))),
             enabledMouseCursor: SystemMouseCursors.click,
             disabledMouseCursor: SystemMouseCursors.basic,
             visualDensity: theme.visualDensity,
-            tapTargetSize:
-                tapTargetSize ?? (clearPadding ? MaterialTapTargetSize.shrinkWrap : theme.materialTapTargetSize),
+            tapTargetSize: tapTargetSize ??
+                (clearPadding
+                    ? MaterialTapTargetSize.shrinkWrap
+                    : theme.materialTapTargetSize),
             animationDuration: kThemeChangeDuration,
             enableFeedback: true,
             alignment: Alignment.center,
-            splashFactory: splashFactory ?? (noSplash ? NoSplash.splashFactory : InkRipple.splashFactory),
+            splashFactory: splashFactory ??
+                (noSplash ? NoSplash.splashFactory : InkRipple.splashFactory),
             fixedSize: fixedSize ??
-                (width != null || height != null ? Size(width ?? double.infinity, height ?? double.infinity) : null),
+                (width != null || height != null
+                    ? Size(width ?? double.infinity, height ?? double.infinity)
+                    : null),
             noHighlighting: noHighlight,
             overlayColor: overlayColor,
             side: side,
@@ -226,22 +236,27 @@ class MButton extends ButtonStyleButton {
   }) {
     final Color? foreground = foregroundColor;
     final Color? disabledForeground = disabledForegroundColor;
-    final MaterialStateProperty<Color?>? foregroundColorProp = (foreground == null && disabledForeground == null)
-        ? null
-        : _MTextButtonDefaultColor(foreground, disabledForeground);
+    final MaterialStateProperty<Color?>? foregroundColorProp =
+        (foreground == null && disabledForeground == null)
+            ? null
+            : _MTextButtonDefaultColor(foreground, disabledForeground);
     final MaterialStateProperty<Color?>? backgroundColorProp =
         (backgroundColor == null && disabledBackgroundColor == null)
             ? null
             : disabledBackgroundColor == null
                 ? ButtonStyleButton.allOrNull<Color?>(backgroundColor)
-                : _MTextButtonDefaultColor(backgroundColor, disabledBackgroundColor);
+                : _MTextButtonDefaultColor(
+                    backgroundColor, disabledBackgroundColor);
     MaterialStateProperty<Color?>? effectiveOverlayColor =
-        (overlayColor != null || foreground != null) ? _MTextButtonDefaultOverlay(overlayColor ?? foreground!) : null;
-    final MaterialStateProperty<Color?>? iconColorProp = (iconColor == null && disabledIconColor == null)
-        ? null
-        : disabledIconColor == null
-            ? ButtonStyleButton.allOrNull<Color?>(iconColor)
-            : _MTextButtonDefaultIconColor(iconColor, disabledIconColor);
+        (overlayColor != null || foreground != null)
+            ? _MTextButtonDefaultOverlay(overlayColor ?? foreground!)
+            : null;
+    final MaterialStateProperty<Color?>? iconColorProp =
+        (iconColor == null && disabledIconColor == null)
+            ? null
+            : disabledIconColor == null
+                ? ButtonStyleButton.allOrNull<Color?>(iconColor)
+                : _MTextButtonDefaultIconColor(iconColor, disabledIconColor);
     final MaterialStateProperty<MouseCursor?> mouseCursor =
         _TextButtonDefaultMouseCursor(enabledMouseCursor, disabledMouseCursor);
 
@@ -328,8 +343,11 @@ class _MButtonWithIcon extends MButton {
   ButtonStyle defaultStyleOf(BuildContext context) {
     final bool useMaterial3 = Theme.of(context).useMaterial3;
     final ButtonStyle buttonStyle = super.defaultStyleOf(context);
-    final double defaultFontSize = buttonStyle.textStyle?.resolve(const <MaterialState>{})?.fontSize ?? 14.0;
-    final double effectiveTextScale = MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
+    final double defaultFontSize =
+        buttonStyle.textStyle?.resolve(const <MaterialState>{})?.fontSize ??
+            14.0;
+    final double effectiveTextScale =
+        MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
     final EdgeInsetsGeometry scaledPadding = padding ??
         (clearPadding
             ? EdgeInsets.zero
@@ -355,11 +373,13 @@ class _MButtonWithIcon extends MButton {
 
 extension MButtonIconAlignmentExt on MButtonIconAlignment {
   bool get isVertical {
-    return this == MButtonIconAlignment.top || this == MButtonIconAlignment.bottom;
+    return this == MButtonIconAlignment.top ||
+        this == MButtonIconAlignment.bottom;
   }
 
   bool get isTerminus {
-    return this == MButtonIconAlignment.end || this == MButtonIconAlignment.bottom;
+    return this == MButtonIconAlignment.end ||
+        this == MButtonIconAlignment.bottom;
   }
 }
 
@@ -386,9 +406,12 @@ class _MButtonWithIconChild extends StatelessWidget {
     final double scale = MediaQuery.textScalerOf(context).textScaleFactor;
     // [icon] 和 [label] 的默认间距
     final gap = alignment.isVertical ? 6.0 : 8.0;
-    final double effectiveGap = space ?? (scale <= 1 ? gap : lerpDouble(gap, gap / 2, math.min(scale - 1, 1))!);
+    final double effectiveGap = space ??
+        (scale <= 1 ? gap : lerpDouble(gap, gap / 2, math.min(scale - 1, 1))!);
     final effectiveIcon = Flexible(child: icon);
-    final effectiveSpace = alignment.isVertical ? SizedBox(height: effectiveGap) : SizedBox(width: effectiveGap);
+    final effectiveSpace = alignment.isVertical
+        ? SizedBox(height: effectiveGap)
+        : SizedBox(width: effectiveGap);
     final effectiveLabel = Flexible(child: label!);
 
     List<Widget> children = <Widget>[
@@ -415,9 +438,12 @@ class _MButtonWithIconChild extends StatelessWidget {
 EdgeInsetsGeometry _scaledPadding(BuildContext context) {
   final ThemeData theme = Theme.of(context);
   final double defaultFontSize = theme.textTheme.labelLarge?.fontSize ?? 14.0;
-  final double effectiveTextScale = MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
+  final double effectiveTextScale =
+      MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
   return ButtonStyleButton.scaledPadding(
-    theme.useMaterial3 ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8) : const EdgeInsets.all(8),
+    theme.useMaterial3
+        ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8)
+        : const EdgeInsets.all(8),
     const EdgeInsets.symmetric(horizontal: 8),
     const EdgeInsets.symmetric(horizontal: 4),
     effectiveTextScale,
@@ -523,26 +549,29 @@ ButtonStyle _MTextButtonDefaultsM2({
 }) {
   final Color? foreground = foregroundColor;
   final Color? disabledForeground = disabledForegroundColor;
-  final MaterialStateProperty<Color?>? foregroundColorProp = (foreground == null && disabledForeground == null)
-      ? null
-      : _MTextButtonDefaultColor(foreground, disabledForeground);
-  final MaterialStateProperty<Color?>? backgroundColorProp =
-      (backgroundColor == null && disabledBackgroundColor == null)
+  final MaterialStateProperty<Color?>? foregroundColorProp =
+      (foreground == null && disabledForeground == null)
           ? null
-          : disabledBackgroundColor == null
-              ? ButtonStyleButton.allOrNull<Color?>(backgroundColor)
-              : _MTextButtonDefaultColor(backgroundColor, disabledBackgroundColor);
+          : _MTextButtonDefaultColor(foreground, disabledForeground);
+  final MaterialStateProperty<Color?>? backgroundColorProp = (backgroundColor ==
+              null &&
+          disabledBackgroundColor == null)
+      ? null
+      : disabledBackgroundColor == null
+          ? ButtonStyleButton.allOrNull<Color?>(backgroundColor)
+          : _MTextButtonDefaultColor(backgroundColor, disabledBackgroundColor);
   MaterialStateProperty<Color?>? effectiveOverlayColor;
   if (overlayColor != null) {
     effectiveOverlayColor = _MTextButtonDefaultOverlay(overlayColor);
   } else if (foreground != null && !noHighlighting) {
     effectiveOverlayColor = _MTextButtonDefaultOverlay(foreground);
   }
-  final MaterialStateProperty<Color?>? iconColorProp = (iconColor == null && disabledIconColor == null)
-      ? null
-      : disabledIconColor == null
-          ? ButtonStyleButton.allOrNull<Color?>(iconColor)
-          : _MTextButtonDefaultIconColor(iconColor, disabledIconColor);
+  final MaterialStateProperty<Color?>? iconColorProp =
+      (iconColor == null && disabledIconColor == null)
+          ? null
+          : disabledIconColor == null
+              ? ButtonStyleButton.allOrNull<Color?>(iconColor)
+              : _MTextButtonDefaultIconColor(iconColor, disabledIconColor);
   final MaterialStateProperty<MouseCursor?> mouseCursor =
       _TextButtonDefaultMouseCursor(enabledMouseCursor, disabledMouseCursor);
 
@@ -600,18 +629,23 @@ class _MTextButtonDefaultsM3 extends ButtonStyle {
           animationDuration: kThemeChangeDuration,
           enableFeedback: true,
           alignment: Alignment.center,
-          backgroundColor: MaterialStatePropertyAll<Color>(backgroundColor ?? Colors.transparent),
+          backgroundColor: MaterialStatePropertyAll<Color>(
+              backgroundColor ?? Colors.transparent),
           elevation: MaterialStatePropertyAll<double>(elevation ?? 0.0),
           fixedSize: fixedSize != null || width != null || height != null
-              ? MaterialStatePropertyAll<Size>(fixedSize ?? Size(width ?? double.infinity, height ?? double.infinity))
+              ? MaterialStatePropertyAll<Size>(fixedSize ??
+                  Size(width ?? double.infinity, height ?? double.infinity))
               : null,
-          foregroundColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+          foregroundColor:
+              MaterialStateProperty.resolveWith((Set<MaterialState> states) {
             if (states.contains(MaterialState.disabled)) {
-              return disabledForegroundColor ?? Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
+              return disabledForegroundColor ??
+                  Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
             }
             return foregroundColor ?? Theme.of(context).colorScheme.primary;
           }),
-          maximumSize: MaterialStatePropertyAll<Size>(maximumSize ?? Size.infinite),
+          maximumSize:
+              MaterialStatePropertyAll<Size>(maximumSize ?? Size.infinite),
           minimumSize: MaterialStatePropertyAll<Size>(
             minimumSize ?? (clearPadding ? Size.zero : const Size(64.0, 40.0)),
           ),
@@ -627,40 +661,58 @@ class _MTextButtonDefaultsM3 extends ButtonStyle {
               ? null
               : MaterialStateProperty.resolveWith((Set<MaterialState> states) {
                   if (states.contains(MaterialState.pressed)) {
-                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.12);
+                    return (overlayColor ??
+                            Theme.of(context).colorScheme.primary)
+                        .withOpacity(0.12);
                   }
                   if (states.contains(MaterialState.hovered)) {
-                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.08);
+                    return (overlayColor ??
+                            Theme.of(context).colorScheme.primary)
+                        .withOpacity(0.08);
                   }
                   if (states.contains(MaterialState.focused)) {
-                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.12);
+                    return (overlayColor ??
+                            Theme.of(context).colorScheme.primary)
+                        .withOpacity(0.12);
                   }
                   return null;
                 }),
           padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
-            padding ?? (clearPadding ? EdgeInsets.zero : _scaledPadding(context)),
+            padding ??
+                (clearPadding ? EdgeInsets.zero : _scaledPadding(context)),
           ),
-          shadowColor: MaterialStatePropertyAll<Color>(shadowColor ?? Colors.transparent),
+          shadowColor: MaterialStatePropertyAll<Color>(
+              shadowColor ?? Colors.transparent),
           shape: MaterialStatePropertyAll<OutlinedBorder>(
             shape ??
                 (radius == null && borderRadius == null
                     ? const StadiumBorder()
                     : RoundedRectangleBorder(
-                        borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(radius ?? 4.0)),
+                        borderRadius: borderRadius ??
+                            BorderRadius.all(Radius.circular(radius ?? 4.0)),
                       )),
           ),
-          side: side == null ? null : MaterialStatePropertyAll<BorderSide>(side),
-          splashFactory: splashFactory ?? (noSplash ? NoSplash.splashFactory : Theme.of(context).splashFactory),
-          surfaceTintColor: const MaterialStatePropertyAll<Color>(Colors.transparent),
+          side:
+              side == null ? null : MaterialStatePropertyAll<BorderSide>(side),
+          splashFactory: splashFactory ??
+              (noSplash
+                  ? NoSplash.splashFactory
+                  : Theme.of(context).splashFactory),
+          surfaceTintColor:
+              const MaterialStatePropertyAll<Color>(Colors.transparent),
           tapTargetSize: tapTargetSize ??
-              (clearPadding ? MaterialTapTargetSize.shrinkWrap : Theme.of(context).materialTapTargetSize),
-          textStyle: MaterialStatePropertyAll<TextStyle?>(textStyle ?? Theme.of(context).textTheme.labelLarge),
+              (clearPadding
+                  ? MaterialTapTargetSize.shrinkWrap
+                  : Theme.of(context).materialTapTargetSize),
+          textStyle: MaterialStatePropertyAll<TextStyle?>(
+              textStyle ?? Theme.of(context).textTheme.labelLarge),
           visualDensity: Theme.of(context).visualDensity,
         );
 }
 
 @immutable
-class _TextButtonDefaultMouseCursor extends MaterialStateProperty<MouseCursor?> with Diagnosticable {
+class _TextButtonDefaultMouseCursor extends MaterialStateProperty<MouseCursor?>
+    with Diagnosticable {
   _TextButtonDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
 
   final MouseCursor? disabledCursor;

@@ -269,13 +269,15 @@ class MTextFieldExample extends StatelessWidget {
                     hintColor: const Color(0xFFD0D0D0),
                     fontSize: 14,
                     fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     suffixIcon: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const MIconButton(
                           clearPadding: true,
-                          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8.5),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 8.5),
                           icon: MImage(
                             'assets/images/avatar1.png',
                             package: 'example_package',
@@ -292,13 +294,15 @@ class MTextFieldExample extends StatelessWidget {
                             size: 23,
                           ),
                           clearPadding: true,
-                          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8.5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 8.5),
                           noSplash: true,
                           noHighlight: true,
                         ),
                       ],
                     ),
-                    suffixIconPadding: const EdgeInsetsDirectional.only(end: 10),
+                    suffixIconPadding:
+                        const EdgeInsetsDirectional.only(end: 10),
                     suffixIconConstraints: const BoxConstraints(
                       maxHeight: 40,
                     ),

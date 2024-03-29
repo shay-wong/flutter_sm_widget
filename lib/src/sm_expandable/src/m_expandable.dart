@@ -7,7 +7,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-typedef MExpandableBuilder = Widget Function(BuildContext context, Widget collapsed, Widget expanded);
+typedef MExpandableBuilder = Widget Function(
+    BuildContext context, Widget collapsed, Widget expanded);
 
 /// Shows either the expanded or the collapsed child depending on the state.
 /// The state is determined by an instance of [MExpandableController] provided by [ScopedModel]
@@ -33,7 +34,8 @@ class MExpandable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = this.controller ?? MExpandableController.of(context, required: true);
+    final controller =
+        this.controller ?? MExpandableController.of(context, required: true);
     final theme = MExpandableThemeData.withDefaults(this.theme, context);
 
     switch (theme.transition) {
@@ -57,10 +59,14 @@ class MExpandable extends StatelessWidget {
           alignment: theme.alignment!,
           firstChild: collapsed,
           secondChild: expanded,
-          firstCurve: Interval(theme.collapsedFadeStart, theme.collapsedFadeEnd, curve: theme.fadeCurve!),
-          secondCurve: Interval(theme.expandedFadeStart, theme.expandedFadeEnd, curve: theme.fadeCurve!),
+          firstCurve: Interval(theme.collapsedFadeStart, theme.collapsedFadeEnd,
+              curve: theme.fadeCurve!),
+          secondCurve: Interval(theme.expandedFadeStart, theme.expandedFadeEnd,
+              curve: theme.fadeCurve!),
           sizeCurve: theme.sizeCurve!,
-          crossFadeState: controller?.expanded ?? true ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          crossFadeState: controller?.expanded ?? true
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
           duration: theme.animationDuration!,
         );
     }
@@ -114,11 +120,15 @@ class MExpandableController extends ValueNotifier<bool> {
     expanded = !expanded;
   }
 
-  static MExpandableController? of(BuildContext context, {bool rebuildOnChange = true, bool required = false}) {
+  static MExpandableController? of(BuildContext context,
+      {bool rebuildOnChange = true, bool required = false}) {
     final notifier = rebuildOnChange
-        ? context.dependOnInheritedWidgetOfExactType<_MExpandableControllerNotifier>()
-        : context.findAncestorWidgetOfExactType<_MExpandableControllerNotifier>();
-    assert(notifier != null || !required, "MExpandableNotifier is not found in widget tree");
+        ? context.dependOnInheritedWidgetOfExactType<
+            _MExpandableControllerNotifier>()
+        : context
+            .findAncestorWidgetOfExactType<_MExpandableControllerNotifier>();
+    assert(notifier != null || !required,
+        "MExpandableNotifier is not found in widget tree");
     return notifier?.notifier;
   }
 }
@@ -211,26 +221,33 @@ class MExpandablePanel extends StatelessWidget {
         }
       }
 
-      Widget wrapWithMExpandableButton({required Widget? widget, required bool wrap}) {
-        return wrap ? MExpandableButton(theme: theme, child: widget) : widget ?? Container();
+      Widget wrapWithMExpandableButton(
+          {required Widget? widget, required bool wrap}) {
+        return wrap
+            ? MExpandableButton(theme: theme, child: widget)
+            : widget ?? Container();
       }
 
       if (!theme.hasIcon!) {
-        return wrapWithMExpandableButton(widget: header, wrap: theme.tapHeaderToExpand!);
+        return wrapWithMExpandableButton(
+            widget: header, wrap: theme.tapHeaderToExpand!);
       } else {
         final rowChildren = <Widget>[
           Expanded(
             child: header ?? Container(),
           ),
           // ignore: deprecated_member_use_from_same_package
-          wrapWithMExpandableButton(widget: MExpandableIcon(theme: theme), wrap: !theme.tapHeaderToExpand!)
+          wrapWithMExpandableButton(
+              widget: MExpandableIcon(theme: theme),
+              wrap: !theme.tapHeaderToExpand!)
         ];
         return wrapWithMExpandableButton(
             widget: Row(
               crossAxisAlignment: calculateHeaderCrossAxisAlignment(),
-              children: theme.iconPlacement! == MExpandablePanelIconPlacement.right
-                  ? rowChildren
-                  : rowChildren.reversed.toList(),
+              children:
+                  theme.iconPlacement! == MExpandablePanelIconPlacement.right
+                      ? rowChildren
+                      : rowChildren.reversed.toList(),
             ),
             wrap: theme.tapHeaderToExpand!);
       }
@@ -276,8 +293,8 @@ class MExpandablePanel extends StatelessWidget {
             );
           };
 
-      return builder(
-          context, wrapBody(collapsed, theme.tapBodyToExpand!), wrapBody(expanded, theme.tapBodyToCollapse!));
+      return builder(context, wrapBody(collapsed, theme.tapBodyToExpand!),
+          wrapBody(expanded, theme.tapBodyToCollapse!));
     }
 
     Widget buildWithHeader() {
@@ -298,7 +315,8 @@ class MExpandablePanel extends StatelessWidget {
         child: panel,
       );
     } else {
-      final controller = MExpandableController.of(context, rebuildOnChange: false);
+      final controller =
+          MExpandableController.of(context, rebuildOnChange: false);
       if (controller == null) {
         return MExpandableNotifier(
           child: panel,
@@ -361,7 +379,8 @@ class MExpandableTheme extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _ExpandableThemeNotifier? n = context.dependOnInheritedWidgetOfExactType<_ExpandableThemeNotifier>();
+    _ExpandableThemeNotifier? n =
+        context.dependOnInheritedWidgetOfExactType<_ExpandableThemeNotifier>();
     return _ExpandableThemeNotifier(
       themeData: MExpandableThemeData.combine(data, n?.themeData),
       child: child,
@@ -512,13 +531,16 @@ class MExpandableThemeData {
     this.opacityCurve,
   });
 
-  double get collapsedFadeEnd => crossFadePoint! < 0.5 ? 2 * crossFadePoint! : 1;
+  double get collapsedFadeEnd =>
+      crossFadePoint! < 0.5 ? 2 * crossFadePoint! : 1;
 
-  double get collapsedFadeStart => crossFadePoint! < 0.5 ? 0 : (crossFadePoint! * 2 - 1);
+  double get collapsedFadeStart =>
+      crossFadePoint! < 0.5 ? 0 : (crossFadePoint! * 2 - 1);
 
   double get expandedFadeEnd => crossFadePoint! < 0.5 ? 2 * crossFadePoint! : 1;
 
-  double get expandedFadeStart => crossFadePoint! < 0.5 ? 0 : (crossFadePoint! * 2 - 1);
+  double get expandedFadeStart =>
+      crossFadePoint! < 0.5 ? 0 : (crossFadePoint! * 2 - 1);
 
   @override
   int get hashCode {
@@ -590,7 +612,8 @@ class MExpandableThemeData {
     return isEmpty() ? null : this;
   }
 
-  static MExpandableThemeData combine(MExpandableThemeData? theme, MExpandableThemeData? defaults) {
+  static MExpandableThemeData combine(
+      MExpandableThemeData? theme, MExpandableThemeData? defaults) {
     if (defaults == null || defaults.isEmpty()) {
       return theme ?? empty;
     } else if (theme == null || theme.isEmpty()) {
@@ -601,9 +624,12 @@ class MExpandableThemeData {
       return MExpandableThemeData(
         iconColor: theme.iconColor ?? defaults.iconColor,
         useInkWell: theme.useInkWell ?? defaults.useInkWell,
-        inkWellBorderRadius: theme.inkWellBorderRadius ?? defaults.inkWellBorderRadius,
-        animationDuration: theme.animationDuration ?? defaults.animationDuration,
-        scrollAnimationDuration: theme.scrollAnimationDuration ?? defaults.scrollAnimationDuration,
+        inkWellBorderRadius:
+            theme.inkWellBorderRadius ?? defaults.inkWellBorderRadius,
+        animationDuration:
+            theme.animationDuration ?? defaults.animationDuration,
+        scrollAnimationDuration:
+            theme.scrollAnimationDuration ?? defaults.scrollAnimationDuration,
         crossFadePoint: theme.crossFadePoint ?? defaults.crossFadePoint,
         fadeCurve: theme.fadeCurve ?? defaults.fadeCurve,
         sizeCurve: theme.sizeCurve ?? defaults.sizeCurve,
@@ -611,13 +637,16 @@ class MExpandableThemeData {
         headerAlignment: theme.headerAlignment ?? defaults.headerAlignment,
         bodyAlignment: theme.bodyAlignment ?? defaults.bodyAlignment,
         iconPlacement: theme.iconPlacement ?? defaults.iconPlacement,
-        tapHeaderToExpand: theme.tapHeaderToExpand ?? defaults.tapHeaderToExpand,
+        tapHeaderToExpand:
+            theme.tapHeaderToExpand ?? defaults.tapHeaderToExpand,
         tapBodyToExpand: theme.tapBodyToExpand ?? defaults.tapBodyToExpand,
-        tapBodyToCollapse: theme.tapBodyToCollapse ?? defaults.tapBodyToCollapse,
+        tapBodyToCollapse:
+            theme.tapBodyToCollapse ?? defaults.tapBodyToCollapse,
         hasIcon: theme.hasIcon ?? defaults.hasIcon,
         iconSize: theme.iconSize ?? defaults.iconSize,
         iconPadding: theme.iconPadding ?? defaults.iconPadding,
-        iconRotationAngle: theme.iconRotationAngle ?? defaults.iconRotationAngle,
+        iconRotationAngle:
+            theme.iconRotationAngle ?? defaults.iconRotationAngle,
         expandIcon: theme.expandIcon ?? defaults.expandIcon,
         collapseIcon: theme.collapseIcon ?? defaults.collapseIcon,
         transition: theme.transition ?? defaults.transition,
@@ -688,7 +717,8 @@ class MExpandableThemeData {
       useInkWell: useInkWell ?? this.useInkWell,
       inkWellBorderRadius: inkWellBorderRadius ?? this.inkWellBorderRadius,
       animationDuration: animationDuration ?? this.animationDuration,
-      scrollAnimationDuration: scrollAnimationDuration ?? this.scrollAnimationDuration,
+      scrollAnimationDuration:
+          scrollAnimationDuration ?? this.scrollAnimationDuration,
       crossFadePoint: crossFadePoint ?? this.crossFadePoint,
       fadeCurve: fadeCurve ?? this.fadeCurve,
       sizeCurve: sizeCurve ?? this.sizeCurve,
@@ -711,19 +741,23 @@ class MExpandableThemeData {
     );
   }
 
-  static MExpandableThemeData of(BuildContext context, {bool rebuildOnChange = true}) {
+  static MExpandableThemeData of(BuildContext context,
+      {bool rebuildOnChange = true}) {
     final notifier = rebuildOnChange
         ? context.dependOnInheritedWidgetOfExactType<_ExpandableThemeNotifier>()
         : context.findAncestorWidgetOfExactType<_ExpandableThemeNotifier>();
     return notifier?.themeData ?? defaults;
   }
 
-  static MExpandableThemeData withDefaults(MExpandableThemeData? theme, BuildContext context,
+  static MExpandableThemeData withDefaults(
+      MExpandableThemeData? theme, BuildContext context,
       {bool rebuildOnChange = true}) {
     if (theme != null && theme.isFull()) {
       return theme;
     } else {
-      return combine(combine(theme, of(context, rebuildOnChange: rebuildOnChange)), defaults);
+      return combine(
+          combine(theme, of(context, rebuildOnChange: rebuildOnChange)),
+          defaults);
     }
   }
 }
@@ -759,12 +793,15 @@ class MScrollOnExpand extends StatefulWidget {
 
 /// Makes an [MExpandableController] available to the widget subtree.
 /// Useful for making multiple [Expandable] widgets synchronized with a single controller.
-class _MExpandableControllerNotifier extends InheritedNotifier<MExpandableController> {
-  const _MExpandableControllerNotifier({required MExpandableController? controller, required super.child})
+class _MExpandableControllerNotifier
+    extends InheritedNotifier<MExpandableController> {
+  const _MExpandableControllerNotifier(
+      {required MExpandableController? controller, required super.child})
       : super(notifier: controller);
 }
 
-class _MExpandableIconState extends State<MExpandableIcon> with SingleTickerProviderStateMixin {
+class _MExpandableIconState extends State<MExpandableIcon>
+    with SingleTickerProviderStateMixin {
   AnimationController? animationController;
   Animation<double>? animation;
   MExpandableThemeData? theme;
@@ -779,10 +816,13 @@ class _MExpandableIconState extends State<MExpandableIcon> with SingleTickerProv
       child: AnimatedBuilder(
         animation: animation!,
         builder: (context, child) {
-          final showSecondIcon = theme.collapseIcon! != theme.expandIcon! && animationController!.value >= 0.5;
+          final showSecondIcon = theme.collapseIcon! != theme.expandIcon! &&
+              animationController!.value >= 0.5;
           return Transform.rotate(
             angle: theme.iconRotationAngle! *
-                (showSecondIcon ? -(1.0 - animationController!.value) : animationController!.value),
+                (showSecondIcon
+                    ? -(1.0 - animationController!.value)
+                    : animationController!.value),
             child: Icon(
               showSecondIcon ? theme.collapseIcon! : theme.expandIcon!,
               color: theme.iconColor!,
@@ -797,7 +837,8 @@ class _MExpandableIconState extends State<MExpandableIcon> with SingleTickerProv
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final controller2 = MExpandableController.of(context, rebuildOnChange: false, required: true);
+    final controller2 = MExpandableController.of(context,
+        rebuildOnChange: false, required: true);
     if (controller2 != controller) {
       controller?.removeListener(_expandedStateChanged);
       controller = controller2;
@@ -826,11 +867,14 @@ class _MExpandableIconState extends State<MExpandableIcon> with SingleTickerProv
   @override
   void initState() {
     super.initState();
-    final theme = MExpandableThemeData.withDefaults(widget.theme, context, rebuildOnChange: false);
-    animationController = AnimationController(duration: theme.animationDuration, vsync: this);
-    animation =
-        animationController!.drive(Tween<double>(begin: 0.0, end: 1.0).chain(CurveTween(curve: theme.sizeCurve!)));
-    controller = MExpandableController.of(context, rebuildOnChange: false, required: true);
+    final theme = MExpandableThemeData.withDefaults(widget.theme, context,
+        rebuildOnChange: false);
+    animationController =
+        AnimationController(duration: theme.animationDuration, vsync: this);
+    animation = animationController!.drive(Tween<double>(begin: 0.0, end: 1.0)
+        .chain(CurveTween(curve: theme.sizeCurve!)));
+    controller = MExpandableController.of(context,
+        rebuildOnChange: false, required: true);
     controller?.addListener(_expandedStateChanged);
     if (controller?.expanded ?? true) {
       animationController!.value = 1.0;
@@ -839,10 +883,12 @@ class _MExpandableIconState extends State<MExpandableIcon> with SingleTickerProv
 
   _expandedStateChanged() {
     if (controller!.expanded &&
-        const [AnimationStatus.dismissed, AnimationStatus.reverse].contains(animationController!.status)) {
+        const [AnimationStatus.dismissed, AnimationStatus.reverse]
+            .contains(animationController!.status)) {
       animationController!.forward();
     } else if (!controller!.expanded &&
-        const [AnimationStatus.completed, AnimationStatus.forward].contains(animationController!.status)) {
+        const [AnimationStatus.completed, AnimationStatus.forward]
+            .contains(animationController!.status)) {
       animationController!.reverse();
     }
   }
@@ -854,14 +900,18 @@ class _MExpandableNotifierState extends State<MExpandableNotifier> {
 
   @override
   Widget build(BuildContext context) {
-    final cn = _MExpandableControllerNotifier(controller: controller, child: widget.child);
-    return theme != null ? _ExpandableThemeNotifier(themeData: theme, child: cn) : cn;
+    final cn = _MExpandableControllerNotifier(
+        controller: controller, child: widget.child);
+    return theme != null
+        ? _ExpandableThemeNotifier(themeData: theme, child: cn)
+        : cn;
   }
 
   @override
   void didUpdateWidget(MExpandableNotifier oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.controller != oldWidget.controller && widget.controller != null) {
+    if (widget.controller != oldWidget.controller &&
+        widget.controller != null) {
       setState(() {
         controller = widget.controller;
       });
@@ -871,7 +921,8 @@ class _MExpandableNotifierState extends State<MExpandableNotifier> {
   @override
   void initState() {
     super.initState();
-    controller = widget.controller ?? MExpandableController(initialExpanded: widget.initialExpanded ?? false);
+    controller = widget.controller ??
+        MExpandableController(initialExpanded: widget.initialExpanded ?? false);
   }
 }
 
@@ -880,11 +931,13 @@ class _MExpandableNotifierState extends State<MExpandableNotifier> {
 class _ExpandableThemeNotifier extends InheritedWidget {
   final MExpandableThemeData? themeData;
 
-  const _ExpandableThemeNotifier({required this.themeData, required super.child});
+  const _ExpandableThemeNotifier(
+      {required this.themeData, required super.child});
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) {
-    return !(oldWidget is _ExpandableThemeNotifier && oldWidget.themeData == themeData);
+    return !(oldWidget is _ExpandableThemeNotifier &&
+        oldWidget.themeData == themeData);
   }
 }
 
@@ -895,7 +948,8 @@ class _ScrollOnExpandState extends State<MScrollOnExpand> {
   MExpandableThemeData? _theme;
 
   Duration get _animationDuration {
-    return _theme?.scrollAnimationDuration ?? MExpandableThemeData.defaults.animationDuration!;
+    return _theme?.scrollAnimationDuration ??
+        MExpandableThemeData.defaults.animationDuration!;
   }
 
   @override
@@ -908,7 +962,8 @@ class _ScrollOnExpandState extends State<MScrollOnExpand> {
   @override
   void didUpdateWidget(MScrollOnExpand oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final newController = MExpandableController.of(context, rebuildOnChange: false, required: true);
+    final newController = MExpandableController.of(context,
+        rebuildOnChange: false, required: true);
     if (newController != _controller) {
       _controller?.removeListener(_expandedStateChanged);
       _controller = newController;
@@ -925,7 +980,8 @@ class _ScrollOnExpandState extends State<MScrollOnExpand> {
   @override
   void initState() {
     super.initState();
-    _controller = MExpandableController.of(context, rebuildOnChange: false, required: true);
+    _controller = MExpandableController.of(context,
+        rebuildOnChange: false, required: true);
     _controller?.addListener(_expandedStateChanged);
   }
 
@@ -934,7 +990,9 @@ class _ScrollOnExpandState extends State<MScrollOnExpand> {
     if (_isAnimating == 0 && _lastContext != null && mounted) {
       if ((_controller?.expanded ?? true && widget.scrollOnExpand) ||
           (!(_controller?.expanded ?? true) && widget.scrollOnCollapse)) {
-        _lastContext?.findRenderObject()?.showOnScreen(duration: _animationDuration);
+        _lastContext
+            ?.findRenderObject()
+            ?.showOnScreen(duration: _animationDuration);
       }
     }
   }
@@ -942,7 +1000,8 @@ class _ScrollOnExpandState extends State<MScrollOnExpand> {
   _expandedStateChanged() {
     if (_theme != null) {
       _isAnimating++;
-      Future.delayed(_animationDuration + const Duration(milliseconds: 10), _animationComplete);
+      Future.delayed(_animationDuration + const Duration(milliseconds: 10),
+          _animationComplete);
     }
   }
 }

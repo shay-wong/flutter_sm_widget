@@ -8,10 +8,13 @@ import 'package:flutter/services.dart';
 
 import 'text_style_extension.dart';
 
-TextStyle _m2CounterErrorStyle(BuildContext context) =>
-    Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.error);
+TextStyle _m2CounterErrorStyle(BuildContext context) => Theme.of(context)
+    .textTheme
+    .bodySmall!
+    .copyWith(color: Theme.of(context).colorScheme.error);
 
-TextStyle? _m2StateInputStyle(BuildContext context) => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
+TextStyle? _m2StateInputStyle(BuildContext context) =>
+    MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
       final ThemeData theme = Theme.of(context);
       if (states.contains(MaterialState.disabled)) {
         return TextStyle(color: theme.disabledColor);
@@ -19,13 +22,22 @@ TextStyle? _m2StateInputStyle(BuildContext context) => MaterialStateTextStyle.re
       return TextStyle(color: theme.textTheme.titleMedium?.color);
     });
 
-TextStyle _m3CounterErrorStyle(BuildContext context) =>
-    Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.error);
+TextStyle _m3CounterErrorStyle(BuildContext context) => Theme.of(context)
+    .textTheme
+    .bodySmall!
+    .copyWith(color: Theme.of(context).colorScheme.error);
 
-TextStyle _m3InputStyle(BuildContext context) => Theme.of(context).textTheme.bodyLarge!;
-TextStyle? _m3StateInputStyle(BuildContext context) => MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
+TextStyle _m3InputStyle(BuildContext context) =>
+    Theme.of(context).textTheme.bodyLarge!;
+TextStyle? _m3StateInputStyle(BuildContext context) =>
+    MaterialStateTextStyle.resolveWith((Set<MaterialState> states) {
       if (states.contains(MaterialState.disabled)) {
-        return TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color?.withOpacity(0.38));
+        return TextStyle(
+            color: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .color
+                ?.withOpacity(0.38));
       }
       return TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color);
     });
@@ -170,8 +182,10 @@ class MTextField extends StatefulWidget {
     this.hoverColor,
     this.semanticCounterText,
   })  : assert(obscuringCharacter.length == 1),
-        smartDashesType = smartDashesType ?? (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
-        smartQuotesType = smartQuotesType ?? (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
+        smartDashesType = smartDashesType ??
+            (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
+        smartQuotesType = smartQuotesType ??
+            (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
         assert(maxLines == null || maxLines > 0),
         assert(minLines == null || minLines > 0),
         assert(
@@ -182,8 +196,11 @@ class MTextField extends StatefulWidget {
           !expands || (maxLines == null && minLines == null),
           'minLines and maxLines must be null when expands is true.',
         ),
-        assert(!obscureText || maxLines == 1, 'Obscured fields cannot be multiline.'),
-        assert(maxLength == null || maxLength == TextField.noMaxLength || maxLength > 0),
+        assert(!obscureText || maxLines == 1,
+            'Obscured fields cannot be multiline.'),
+        assert(maxLength == null ||
+            maxLength == TextField.noMaxLength ||
+            maxLength > 0),
         // Assert the following instead of setting it directly to avoid surprising the user by silently changing the value they set.
         assert(
           !identical(textInputAction, TextInputAction.newline) ||
@@ -191,8 +208,10 @@ class MTextField extends StatefulWidget {
               !identical(keyboardType, TextInputType.text),
           'Use keyboardType TextInputType.multiline when using TextInputAction.newline on a multiline TextField.',
         ),
-        keyboardType = keyboardType ?? (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
-        enableInteractiveSelection = enableInteractiveSelection ?? (!readOnly || !obscureText);
+        keyboardType = keyboardType ??
+            (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
+        enableInteractiveSelection =
+            enableInteractiveSelection ?? (!readOnly || !obscureText);
 
   static const TextStyle materialMisspelledTextStyle = TextStyle(
     decoration: TextDecoration.underline,
@@ -496,59 +515,112 @@ class MTextField extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<TextEditingController>('controller', controller, defaultValue: null));
-    properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode, defaultValue: null));
-    properties.add(DiagnosticsProperty<UndoHistoryController>('undoController', undoController, defaultValue: null));
-    properties.add(DiagnosticsProperty<bool>('enabled', enabled, defaultValue: null));
+    properties.add(DiagnosticsProperty<TextEditingController>(
+        'controller', controller,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<UndoHistoryController>(
+        'undoController', undoController,
+        defaultValue: null));
     properties
-        .add(DiagnosticsProperty<InputDecoration>('decoration', decoration, defaultValue: const InputDecoration()));
-    properties.add(DiagnosticsProperty<TextInputType>('keyboardType', keyboardType, defaultValue: TextInputType.text));
-    properties.add(DiagnosticsProperty<TextStyle>('style', style, defaultValue: null));
-    properties.add(DiagnosticsProperty<bool>('autofocus', autofocus, defaultValue: false));
-    properties.add(DiagnosticsProperty<String>('obscuringCharacter', obscuringCharacter, defaultValue: '•'));
-    properties.add(DiagnosticsProperty<bool>('obscureText', obscureText, defaultValue: false));
-    properties.add(DiagnosticsProperty<bool>('autocorrect', autocorrect, defaultValue: true));
-    properties.add(EnumProperty<SmartDashesType>('smartDashesType', smartDashesType,
-        defaultValue: obscureText ? SmartDashesType.disabled : SmartDashesType.enabled));
-    properties.add(EnumProperty<SmartQuotesType>('smartQuotesType', smartQuotesType,
-        defaultValue: obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled));
-    properties.add(DiagnosticsProperty<bool>('enableSuggestions', enableSuggestions, defaultValue: true));
+        .add(DiagnosticsProperty<bool>('enabled', enabled, defaultValue: null));
+    properties.add(DiagnosticsProperty<InputDecoration>(
+        'decoration', decoration,
+        defaultValue: const InputDecoration()));
+    properties.add(DiagnosticsProperty<TextInputType>(
+        'keyboardType', keyboardType,
+        defaultValue: TextInputType.text));
+    properties.add(
+        DiagnosticsProperty<TextStyle>('style', style, defaultValue: null));
+    properties.add(
+        DiagnosticsProperty<bool>('autofocus', autofocus, defaultValue: false));
+    properties.add(DiagnosticsProperty<String>(
+        'obscuringCharacter', obscuringCharacter,
+        defaultValue: '•'));
+    properties.add(DiagnosticsProperty<bool>('obscureText', obscureText,
+        defaultValue: false));
+    properties.add(DiagnosticsProperty<bool>('autocorrect', autocorrect,
+        defaultValue: true));
+    properties.add(EnumProperty<SmartDashesType>(
+        'smartDashesType', smartDashesType,
+        defaultValue:
+            obscureText ? SmartDashesType.disabled : SmartDashesType.enabled));
+    properties.add(EnumProperty<SmartQuotesType>(
+        'smartQuotesType', smartQuotesType,
+        defaultValue:
+            obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled));
+    properties.add(DiagnosticsProperty<bool>(
+        'enableSuggestions', enableSuggestions,
+        defaultValue: true));
     properties.add(IntProperty('maxLines', maxLines, defaultValue: 1));
     properties.add(IntProperty('minLines', minLines, defaultValue: null));
-    properties.add(DiagnosticsProperty<bool>('expands', expands, defaultValue: false));
+    properties.add(
+        DiagnosticsProperty<bool>('expands', expands, defaultValue: false));
     properties.add(IntProperty('maxLength', maxLength, defaultValue: null));
-    properties
-        .add(EnumProperty<MaxLengthEnforcement>('maxLengthEnforcement', maxLengthEnforcement, defaultValue: null));
-    properties.add(EnumProperty<TextInputAction>('textInputAction', textInputAction, defaultValue: null));
-    properties.add(EnumProperty<TextCapitalization>('textCapitalization', textCapitalization,
-        defaultValue: TextCapitalization.none));
-    properties.add(EnumProperty<TextAlign>('textAlign', textAlign, defaultValue: TextAlign.start));
-    properties.add(DiagnosticsProperty<TextAlignVertical>('textAlignVertical', textAlignVertical, defaultValue: null));
-    properties.add(EnumProperty<TextDirection>('textDirection', textDirection, defaultValue: null));
-    properties.add(DoubleProperty('cursorWidth', cursorWidth, defaultValue: 2.0));
-    properties.add(DoubleProperty('cursorHeight', cursorHeight, defaultValue: null));
-    properties.add(DiagnosticsProperty<Radius>('cursorRadius', cursorRadius, defaultValue: null));
-    properties.add(DiagnosticsProperty<bool>('cursorOpacityAnimates', cursorOpacityAnimates, defaultValue: null));
-    properties.add(ColorProperty('cursorColor', cursorColor, defaultValue: null));
-    properties.add(ColorProperty('cursorErrorColor', cursorErrorColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<Brightness>('keyboardAppearance', keyboardAppearance, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('scrollPadding', scrollPadding,
-        defaultValue: const EdgeInsets.all(20.0)));
-    properties.add(
-        FlagProperty('selectionEnabled', value: selectionEnabled, defaultValue: true, ifFalse: 'selection disabled'));
-    properties
-        .add(DiagnosticsProperty<TextSelectionControls>('selectionControls', selectionControls, defaultValue: null));
-    properties.add(DiagnosticsProperty<ScrollController>('scrollController', scrollController, defaultValue: null));
-    properties.add(DiagnosticsProperty<ScrollPhysics>('scrollPhysics', scrollPhysics, defaultValue: null));
-    properties.add(DiagnosticsProperty<Clip>('clipBehavior', clipBehavior, defaultValue: Clip.hardEdge));
-    properties.add(DiagnosticsProperty<bool>('scribbleEnabled', scribbleEnabled, defaultValue: true));
-    properties.add(
-        DiagnosticsProperty<bool>('enableIMEPersonalizedLearning', enableIMEPersonalizedLearning, defaultValue: true));
-    properties.add(DiagnosticsProperty<SpellCheckConfiguration>('spellCheckConfiguration', spellCheckConfiguration,
+    properties.add(EnumProperty<MaxLengthEnforcement>(
+        'maxLengthEnforcement', maxLengthEnforcement,
         defaultValue: null));
-    properties.add(DiagnosticsProperty<List<String>>(
-        'contentCommitMimeTypes', contentInsertionConfiguration?.allowedMimeTypes ?? const <String>[],
-        defaultValue: contentInsertionConfiguration == null ? const <String>[] : kDefaultContentInsertionMimeTypes));
+    properties.add(EnumProperty<TextInputAction>(
+        'textInputAction', textInputAction,
+        defaultValue: null));
+    properties.add(EnumProperty<TextCapitalization>(
+        'textCapitalization', textCapitalization,
+        defaultValue: TextCapitalization.none));
+    properties.add(EnumProperty<TextAlign>('textAlign', textAlign,
+        defaultValue: TextAlign.start));
+    properties.add(DiagnosticsProperty<TextAlignVertical>(
+        'textAlignVertical', textAlignVertical,
+        defaultValue: null));
+    properties.add(EnumProperty<TextDirection>('textDirection', textDirection,
+        defaultValue: null));
+    properties
+        .add(DoubleProperty('cursorWidth', cursorWidth, defaultValue: 2.0));
+    properties
+        .add(DoubleProperty('cursorHeight', cursorHeight, defaultValue: null));
+    properties.add(DiagnosticsProperty<Radius>('cursorRadius', cursorRadius,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<bool>(
+        'cursorOpacityAnimates', cursorOpacityAnimates,
+        defaultValue: null));
+    properties
+        .add(ColorProperty('cursorColor', cursorColor, defaultValue: null));
+    properties.add(ColorProperty('cursorErrorColor', cursorErrorColor,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Brightness>(
+        'keyboardAppearance', keyboardAppearance,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>(
+        'scrollPadding', scrollPadding,
+        defaultValue: const EdgeInsets.all(20.0)));
+    properties.add(FlagProperty('selectionEnabled',
+        value: selectionEnabled,
+        defaultValue: true,
+        ifFalse: 'selection disabled'));
+    properties.add(DiagnosticsProperty<TextSelectionControls>(
+        'selectionControls', selectionControls,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<ScrollController>(
+        'scrollController', scrollController,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<ScrollPhysics>(
+        'scrollPhysics', scrollPhysics,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Clip>('clipBehavior', clipBehavior,
+        defaultValue: Clip.hardEdge));
+    properties.add(DiagnosticsProperty<bool>('scribbleEnabled', scribbleEnabled,
+        defaultValue: true));
+    properties.add(DiagnosticsProperty<bool>(
+        'enableIMEPersonalizedLearning', enableIMEPersonalizedLearning,
+        defaultValue: true));
+    properties.add(DiagnosticsProperty<SpellCheckConfiguration>(
+        'spellCheckConfiguration', spellCheckConfiguration,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<List<String>>('contentCommitMimeTypes',
+        contentInsertionConfiguration?.allowedMimeTypes ?? const <String>[],
+        defaultValue: contentInsertionConfiguration == null
+            ? const <String>[]
+            : kDefaultContentInsertionMimeTypes));
     // TODO: add custom properties
   }
 
@@ -578,17 +650,21 @@ class MTextField extends StatefulWidget {
   static SpellCheckConfiguration inferAndroidSpellCheckConfiguration(
     SpellCheckConfiguration? configuration,
   ) {
-    if (configuration == null || configuration == const SpellCheckConfiguration.disabled()) {
+    if (configuration == null ||
+        configuration == const SpellCheckConfiguration.disabled()) {
       return const SpellCheckConfiguration.disabled();
     }
     return configuration.copyWith(
-      misspelledTextStyle: configuration.misspelledTextStyle ?? TextField.materialMisspelledTextStyle,
+      misspelledTextStyle: configuration.misspelledTextStyle ??
+          TextField.materialMisspelledTextStyle,
       spellCheckSuggestionsToolbarBuilder:
-          configuration.spellCheckSuggestionsToolbarBuilder ?? MTextField.defaultSpellCheckSuggestionsToolbarBuilder,
+          configuration.spellCheckSuggestionsToolbarBuilder ??
+              MTextField.defaultSpellCheckSuggestionsToolbarBuilder,
     );
   }
 
-  static Widget _defaultContextMenuBuilder(BuildContext context, EditableTextState editableTextState) {
+  static Widget _defaultContextMenuBuilder(
+      BuildContext context, EditableTextState editableTextState) {
     return AdaptiveTextSelectionToolbar.editableText(
       editableTextState: editableTextState,
     );
@@ -599,7 +675,8 @@ class _MTextFieldState extends State<MTextField>
     with RestorationMixin
     implements TextSelectionGestureDetectorBuilderDelegate, AutofillClient {
   @override
-  final GlobalKey<EditableTextState> editableTextKey = GlobalKey<EditableTextState>();
+  final GlobalKey<EditableTextState> editableTextKey =
+      GlobalKey<EditableTextState>();
 
   // API for TextSelectionGestureDetectorBuilderDelegate.
   @override
@@ -609,14 +686,16 @@ class _MTextFieldState extends State<MTextField>
   MaterialStatesController? _internalStatesController;
 
   bool _isHovering = false;
-  late _TextFieldSelectionGestureDetectorBuilder _selectionGestureDetectorBuilder;
+  late _TextFieldSelectionGestureDetectorBuilder
+      _selectionGestureDetectorBuilder;
   bool _showSelectionHandles = false;
 
   RestorableTextEditingController? _controller;
   FocusNode? _focusNode;
 
   @override
-  void autofill(TextEditingValue newEditingValue) => _editableText!.autofill(newEditingValue);
+  void autofill(TextEditingValue newEditingValue) =>
+      _editableText!.autofill(newEditingValue);
 
   // AutofillClient implementation start.
   @override
@@ -646,7 +725,9 @@ class _MTextFieldState extends State<MTextField>
 
     _effectiveFocusNode.canRequestFocus = _canRequestFocus;
 
-    if (_effectiveFocusNode.hasFocus && widget.readOnly != oldWidget.readOnly && _isEnabled) {
+    if (_effectiveFocusNode.hasFocus &&
+        widget.readOnly != oldWidget.readOnly &&
+        _isEnabled) {
       if (_effectiveController.selection.isCollapsed) {
         _showSelectionHandles = !widget.readOnly;
       }
@@ -655,7 +736,8 @@ class _MTextFieldState extends State<MTextField>
     if (widget.statesController == oldWidget.statesController) {
       _statesController.update(MaterialState.disabled, !_isEnabled);
       _statesController.update(MaterialState.hovered, _isHovering);
-      _statesController.update(MaterialState.focused, _effectiveFocusNode.hasFocus);
+      _statesController.update(
+          MaterialState.focused, _effectiveFocusNode.hasFocus);
       _statesController.update(MaterialState.error, _hasError);
     } else {
       oldWidget.statesController?.removeListener(_handleStatesControllerChange);
@@ -680,7 +762,8 @@ class _MTextFieldState extends State<MTextField>
   @override
   void initState() {
     super.initState();
-    _selectionGestureDetectorBuilder = _TextFieldSelectionGestureDetectorBuilder(state: this);
+    _selectionGestureDetectorBuilder =
+        _TextFieldSelectionGestureDetectorBuilder(state: this);
     if (widget.controller == null) {
       _createLocalController();
     }
@@ -704,7 +787,8 @@ class _MTextFieldState extends State<MTextField>
 
   @override
   TextInputConfiguration get textInputConfiguration {
-    final List<String>? autofillHints = widget.autofillHints?.toList(growable: false);
+    final List<String>? autofillHints =
+        widget.autofillHints?.toList(growable: false);
     final AutofillConfiguration autofillConfiguration = autofillHints != null
         ? AutofillConfiguration(
             uniqueIdentifier: autofillId,
@@ -714,11 +798,13 @@ class _MTextFieldState extends State<MTextField>
           )
         : AutofillConfiguration.disabled;
 
-    return _editableText!.textInputConfiguration.copyWith(autofillConfiguration: autofillConfiguration);
+    return _editableText!.textInputConfiguration
+        .copyWith(autofillConfiguration: autofillConfiguration);
   }
 
   bool get _canRequestFocus {
-    final NavigationMode mode = MediaQuery.maybeNavigationModeOf(context) ?? NavigationMode.traditional;
+    final NavigationMode mode =
+        MediaQuery.maybeNavigationModeOf(context) ?? NavigationMode.traditional;
     switch (mode) {
       case NavigationMode.traditional:
         return widget.canRequestFocus && _isEnabled;
@@ -729,8 +815,11 @@ class _MTextFieldState extends State<MTextField>
 
   int get _currentLength => _effectiveController.value.text.characters.length;
   InputBorder? get _defaultBorder {
-    if (widget.borderRadius != null || widget.radius != null || widget.side != null) {
-      final borderRadius = widget.borderRadius ?? BorderRadius.circular(widget.radius ?? 0);
+    if (widget.borderRadius != null ||
+        widget.radius != null ||
+        widget.side != null) {
+      final borderRadius =
+          widget.borderRadius ?? BorderRadius.circular(widget.radius ?? 0);
       // 默认无边框.
       // NOTE: 如果使用 [BorderSide.none] 在 UnderlineInputBorder 下也会展示出黑线, 因为 [BorderSide] 的 color 默认是黑色, 可能是 flutter 的 bug? 所以这里直接把颜色设置为透明.
       final borderSide = widget.side ??
@@ -768,7 +857,8 @@ class _MTextFieldState extends State<MTextField>
     );
 
     final constraints = (widget.width != null || widget.height != null)
-        ? widget.constraints?.tighten(width: widget.width, height: widget.height) ??
+        ? widget.constraints
+                ?.tighten(width: widget.width, height: widget.height) ??
             BoxConstraints.tightFor(width: widget.width, height: widget.height)
         : widget.constraints;
 
@@ -778,7 +868,8 @@ class _MTextFieldState extends State<MTextField>
     }
     var suffixIcon = widget.suffixIcon;
     if (widget.suffixIconPadding != null && widget.suffixIcon != null) {
-      suffixIcon = Padding(padding: widget.suffixIconPadding!, child: widget.suffixIcon);
+      suffixIcon =
+          Padding(padding: widget.suffixIconPadding!, child: widget.suffixIcon);
     }
 
     return InputDecoration(
@@ -838,11 +929,15 @@ class _MTextFieldState extends State<MTextField>
   }
 
   TextStyle? get _defaultTextStyle {
-    if (widget.color != null || widget.fontSize != null || widget.fontWeight != null || widget.isBold) {
+    if (widget.color != null ||
+        widget.fontSize != null ||
+        widget.fontWeight != null ||
+        widget.isBold) {
       return TextStyle(
         color: widget.color,
         fontSize: widget.fontSize,
-        fontWeight: widget.fontWeight ?? (widget.isBold ? FontWeight.bold : null),
+        fontWeight:
+            widget.fontWeight ?? (widget.isBold ? FontWeight.bold : null),
         inherit: true,
       );
     }
@@ -850,22 +945,33 @@ class _MTextFieldState extends State<MTextField>
   }
 
   EditableTextState? get _editableText => editableTextKey.currentState;
-  TextEditingController get _effectiveController => widget.controller ?? _controller!.value;
-  FocusNode get _effectiveFocusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
+  TextEditingController get _effectiveController =>
+      widget.controller ?? _controller!.value;
+  FocusNode get _effectiveFocusNode =>
+      widget.focusNode ?? (_focusNode ??= FocusNode());
   MaxLengthEnforcement get _effectiveMaxLengthEnforcement =>
       widget.maxLengthEnforcement ??
-      LengthLimitingTextInputFormatter.getDefaultMaxLengthEnforcement(Theme.of(context).platform);
+      LengthLimitingTextInputFormatter.getDefaultMaxLengthEnforcement(
+          Theme.of(context).platform);
 
   Color get _errorColor =>
-      widget.cursorErrorColor ?? widget.decoration?.errorStyle?.color ?? Theme.of(context).colorScheme.error;
+      widget.cursorErrorColor ??
+      widget.decoration?.errorStyle?.color ??
+      Theme.of(context).colorScheme.error;
 
-  bool get _hasError => widget.decoration?.errorText != null || widget.decoration?.error != null || _hasIntrinsicError;
+  bool get _hasError =>
+      widget.decoration?.errorText != null ||
+      widget.decoration?.error != null ||
+      _hasIntrinsicError;
   bool get _hasIntrinsicError =>
       widget.maxLength != null &&
       widget.maxLength! > 0 &&
       (widget.controller == null
-          ? !restorePending && _effectiveController.value.text.characters.length > widget.maxLength!
-          : _effectiveController.value.text.characters.length > widget.maxLength!);
+          ? !restorePending &&
+              _effectiveController.value.text.characters.length >
+                  widget.maxLength!
+          : _effectiveController.value.text.characters.length >
+              widget.maxLength!);
 
   // 自定义方法
   TextStyle get _hintStyle => MaterialStateTextStyle.resolveWith(
@@ -881,9 +987,12 @@ class _MTextFieldState extends State<MTextField>
 
   bool get _isEnabled => widget.enabled ?? widget.decoration?.enabled ?? true;
 
-  MaterialStatesController get _statesController => widget.statesController ?? _internalStatesController!;
+  MaterialStatesController get _statesController =>
+      widget.statesController ?? _internalStatesController!;
   bool get needsCounter =>
-      widget.maxLength != null && widget.decoration != null && widget.decoration!.counterText == null;
+      widget.maxLength != null &&
+      widget.decoration != null &&
+      widget.decoration!.counterText == null;
 
   void _createLocalController([TextEditingValue? value]) {
     assert(_controller == null);
@@ -897,23 +1006,29 @@ class _MTextFieldState extends State<MTextField>
   }
 
   InputDecoration _getEffectiveDecoration() {
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    final MaterialLocalizations localizations =
+        MaterialLocalizations.of(context);
     final ThemeData themeData = Theme.of(context);
     final InputDecoration effectiveDecoration =
-        (widget.decoration ?? _defaultDecoration).applyDefaults(themeData.inputDecorationTheme).copyWith(
+        (widget.decoration ?? _defaultDecoration)
+            .applyDefaults(themeData.inputDecorationTheme)
+            .copyWith(
               enabled: _isEnabled,
               hintMaxLines: widget.decoration?.hintMaxLines ?? widget.maxLines,
             );
 
     // No need to build anything if counter or counterText were given directly.
-    if (effectiveDecoration.counter != null || effectiveDecoration.counterText != null) {
+    if (effectiveDecoration.counter != null ||
+        effectiveDecoration.counterText != null) {
       return effectiveDecoration;
     }
 
     // If buildCounter was provided, use it to generate a counter widget.
     Widget? counter;
     final int currentLength = _currentLength;
-    if (effectiveDecoration.counter == null && effectiveDecoration.counterText == null && widget.buildCounter != null) {
+    if (effectiveDecoration.counter == null &&
+        effectiveDecoration.counterText == null &&
+        widget.buildCounter != null) {
       final bool isFocused = _effectiveFocusNode.hasFocus;
       final Widget? builtCounter = widget.buildCounter!(
         context,
@@ -943,15 +1058,19 @@ class _MTextFieldState extends State<MTextField>
     if (widget.maxLength! > 0) {
       // Show the maxLength in the counter
       counterText += '/${widget.maxLength}';
-      final int remaining = (widget.maxLength! - currentLength).clamp(0, widget.maxLength!);
-      semanticCounterText = localizations.remainingTextFieldCharacterCount(remaining);
+      final int remaining =
+          (widget.maxLength! - currentLength).clamp(0, widget.maxLength!);
+      semanticCounterText =
+          localizations.remainingTextFieldCharacterCount(remaining);
     }
 
     if (_hasIntrinsicError) {
       return effectiveDecoration.copyWith(
         errorText: effectiveDecoration.errorText ?? '',
         counterStyle: effectiveDecoration.errorStyle ??
-            (themeData.useMaterial3 ? _m3CounterErrorStyle(context) : _m2CounterErrorStyle(context)),
+            (themeData.useMaterial3
+                ? _m3CounterErrorStyle(context)
+                : _m2CounterErrorStyle(context)),
         counterText: counterText,
         semanticCounterText: semanticCounterText,
       );
@@ -968,8 +1087,12 @@ class _MTextFieldState extends State<MTextField>
   TextStyle _getInputStyleForState(TextStyle style) {
     final ThemeData theme = Theme.of(context);
     final TextStyle stateStyle = MaterialStateProperty.resolveAs(
-        theme.useMaterial3 ? _m3StateInputStyle(context)! : _m2StateInputStyle(context)!, _statesController.value);
-    final TextStyle providedStyle = MaterialStateProperty.resolveAs(style, _statesController.value);
+        theme.useMaterial3
+            ? _m3StateInputStyle(context)!
+            : _m2StateInputStyle(context)!,
+        _statesController.value);
+    final TextStyle providedStyle =
+        MaterialStateProperty.resolveAs(style, _statesController.value);
     return providedStyle.merge(stateStyle);
   }
 
@@ -978,7 +1101,8 @@ class _MTextFieldState extends State<MTextField>
       // Rebuild the widget on focus change to show/hide the text selection
       // highlight.
     });
-    _statesController.update(MaterialState.focused, _effectiveFocusNode.hasFocus);
+    _statesController.update(
+        MaterialState.focused, _effectiveFocusNode.hasFocus);
   }
 
   void _handleHover(bool hovering) {
@@ -990,7 +1114,8 @@ class _MTextFieldState extends State<MTextField>
     }
   }
 
-  void _handleSelectionChanged(TextSelection selection, SelectionChangedCause? cause) {
+  void _handleSelectionChanged(
+      TextSelection selection, SelectionChangedCause? cause) {
     final bool willShowSelectionHandles = _shouldShowSelectionHandles(cause);
     if (willShowSelectionHandles != _showSelectionHandles) {
       setState(() {
@@ -1041,7 +1166,8 @@ class _MTextFieldState extends State<MTextField>
     }
     _statesController.update(MaterialState.disabled, !_isEnabled);
     _statesController.update(MaterialState.hovered, _isHovering);
-    _statesController.update(MaterialState.focused, _effectiveFocusNode.hasFocus);
+    _statesController.update(
+        MaterialState.focused, _effectiveFocusNode.hasFocus);
     _statesController.update(MaterialState.error, _hasError);
     _statesController.addListener(_handleStatesControllerChange);
   }
@@ -1074,7 +1200,8 @@ class _MTextFieldState extends State<MTextField>
       return false;
     }
 
-    if (cause == SelectionChangedCause.longPress || cause == SelectionChangedCause.scribble) {
+    if (cause == SelectionChangedCause.longPress ||
+        cause == SelectionChangedCause.scribble) {
       return true;
     }
 
@@ -1093,22 +1220,27 @@ class _MTextFieldState extends State<MTextField>
     assert(
       !(widget.style != null &&
           !widget.style!.inherit &&
-          (widget.style!.fontSize == null || widget.style!.textBaseline == null)),
+          (widget.style!.fontSize == null ||
+              widget.style!.textBaseline == null)),
       'inherit false style must supply fontSize and textBaseline',
     );
 
     final ThemeData theme = Theme.of(context);
-    final DefaultSelectionStyle selectionStyle = DefaultSelectionStyle.of(context);
+    final DefaultSelectionStyle selectionStyle =
+        DefaultSelectionStyle.of(context);
     final TextStyle? providedStyle =
-        MaterialStateProperty.resolveAs(widget.style, _statesController.value)?.combine(_defaultTextStyle) ??
+        MaterialStateProperty.resolveAs(widget.style, _statesController.value)
+                ?.combine(_defaultTextStyle) ??
             _defaultTextStyle;
-    final TextStyle style =
-        _getInputStyleForState(theme.useMaterial3 ? _m3InputStyle(context) : theme.textTheme.titleMedium!)
-            .merge(providedStyle);
+    final TextStyle style = _getInputStyleForState(theme.useMaterial3
+            ? _m3InputStyle(context)
+            : theme.textTheme.titleMedium!)
+        .merge(providedStyle);
     final strutStyle = (widget.strutStyle == null && widget.forceStrutHeight)
         ? StrutStyle.fromTextStyle(style, forceStrutHeight: true)
         : widget.strutStyle;
-    final Brightness keyboardAppearance = widget.keyboardAppearance ?? theme.brightness;
+    final Brightness keyboardAppearance =
+        widget.keyboardAppearance ?? theme.brightness;
     final TextEditingController controller = _effectiveController;
     final FocusNode focusNode = _effectiveFocusNode;
     final List<TextInputFormatter> formatters = <TextInputFormatter>[
@@ -1127,7 +1259,8 @@ class _MTextFieldState extends State<MTextField>
     switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:
-        spellCheckConfiguration = CupertinoTextField.inferIOSSpellCheckConfiguration(
+        spellCheckConfiguration =
+            CupertinoTextField.inferIOSSpellCheckConfiguration(
           widget.spellCheckConfiguration,
         );
       case TargetPlatform.android:
@@ -1157,11 +1290,16 @@ class _MTextFieldState extends State<MTextField>
         textSelectionControls ??= cupertinoTextSelectionHandleControls;
         paintCursorAboveText = true;
         cursorOpacityAnimates ??= true;
-        cursorColor =
-            _hasError ? _errorColor : widget.cursorColor ?? selectionStyle.cursorColor ?? cupertinoTheme.primaryColor;
-        selectionColor = selectionStyle.selectionColor ?? cupertinoTheme.primaryColor.withOpacity(0.40);
+        cursorColor = _hasError
+            ? _errorColor
+            : widget.cursorColor ??
+                selectionStyle.cursorColor ??
+                cupertinoTheme.primaryColor;
+        selectionColor = selectionStyle.selectionColor ??
+            cupertinoTheme.primaryColor.withOpacity(0.40);
         cursorRadius ??= const Radius.circular(2.0);
-        cursorOffset = Offset(iOSHorizontalOffset / MediaQuery.devicePixelRatioOf(context), 0);
+        cursorOffset = Offset(
+            iOSHorizontalOffset / MediaQuery.devicePixelRatioOf(context), 0);
         autocorrectionTextRectColor = selectionColor;
 
       case TargetPlatform.macOS:
@@ -1170,14 +1308,20 @@ class _MTextFieldState extends State<MTextField>
         textSelectionControls ??= cupertinoDesktopTextSelectionHandleControls;
         paintCursorAboveText = true;
         cursorOpacityAnimates ??= false;
-        cursorColor =
-            _hasError ? _errorColor : widget.cursorColor ?? selectionStyle.cursorColor ?? cupertinoTheme.primaryColor;
-        selectionColor = selectionStyle.selectionColor ?? cupertinoTheme.primaryColor.withOpacity(0.40);
+        cursorColor = _hasError
+            ? _errorColor
+            : widget.cursorColor ??
+                selectionStyle.cursorColor ??
+                cupertinoTheme.primaryColor;
+        selectionColor = selectionStyle.selectionColor ??
+            cupertinoTheme.primaryColor.withOpacity(0.40);
         cursorRadius ??= const Radius.circular(2.0);
-        cursorOffset = Offset(iOSHorizontalOffset / MediaQuery.devicePixelRatioOf(context), 0);
+        cursorOffset = Offset(
+            iOSHorizontalOffset / MediaQuery.devicePixelRatioOf(context), 0);
         handleDidGainAccessibilityFocus = () {
           // Automatically activate the TextField when it receives accessibility focus.
-          if (!_effectiveFocusNode.hasFocus && _effectiveFocusNode.canRequestFocus) {
+          if (!_effectiveFocusNode.hasFocus &&
+              _effectiveFocusNode.canRequestFocus) {
             _effectiveFocusNode.requestFocus();
           }
         };
@@ -1191,21 +1335,30 @@ class _MTextFieldState extends State<MTextField>
         textSelectionControls ??= materialTextSelectionHandleControls;
         paintCursorAboveText = false;
         cursorOpacityAnimates ??= false;
-        cursorColor =
-            _hasError ? _errorColor : widget.cursorColor ?? selectionStyle.cursorColor ?? theme.colorScheme.primary;
-        selectionColor = selectionStyle.selectionColor ?? theme.colorScheme.primary.withOpacity(0.40);
+        cursorColor = _hasError
+            ? _errorColor
+            : widget.cursorColor ??
+                selectionStyle.cursorColor ??
+                theme.colorScheme.primary;
+        selectionColor = selectionStyle.selectionColor ??
+            theme.colorScheme.primary.withOpacity(0.40);
 
       case TargetPlatform.linux:
         forcePressEnabled = false;
         textSelectionControls ??= desktopTextSelectionHandleControls;
         paintCursorAboveText = false;
         cursorOpacityAnimates ??= false;
-        cursorColor =
-            _hasError ? _errorColor : widget.cursorColor ?? selectionStyle.cursorColor ?? theme.colorScheme.primary;
-        selectionColor = selectionStyle.selectionColor ?? theme.colorScheme.primary.withOpacity(0.40);
+        cursorColor = _hasError
+            ? _errorColor
+            : widget.cursorColor ??
+                selectionStyle.cursorColor ??
+                theme.colorScheme.primary;
+        selectionColor = selectionStyle.selectionColor ??
+            theme.colorScheme.primary.withOpacity(0.40);
         handleDidGainAccessibilityFocus = () {
           // Automatically activate the TextField when it receives accessibility focus.
-          if (!_effectiveFocusNode.hasFocus && _effectiveFocusNode.canRequestFocus) {
+          if (!_effectiveFocusNode.hasFocus &&
+              _effectiveFocusNode.canRequestFocus) {
             _effectiveFocusNode.requestFocus();
           }
         };
@@ -1218,12 +1371,17 @@ class _MTextFieldState extends State<MTextField>
         textSelectionControls ??= desktopTextSelectionHandleControls;
         paintCursorAboveText = false;
         cursorOpacityAnimates ??= false;
-        cursorColor =
-            _hasError ? _errorColor : widget.cursorColor ?? selectionStyle.cursorColor ?? theme.colorScheme.primary;
-        selectionColor = selectionStyle.selectionColor ?? theme.colorScheme.primary.withOpacity(0.40);
+        cursorColor = _hasError
+            ? _errorColor
+            : widget.cursorColor ??
+                selectionStyle.cursorColor ??
+                theme.colorScheme.primary;
+        selectionColor = selectionStyle.selectionColor ??
+            theme.colorScheme.primary.withOpacity(0.40);
         handleDidGainAccessibilityFocus = () {
           // Automatically activate the TextField when it receives accessibility focus.
-          if (!_effectiveFocusNode.hasFocus && _effectiveFocusNode.canRequestFocus) {
+          if (!_effectiveFocusNode.hasFocus &&
+              _effectiveFocusNode.canRequestFocus) {
             _effectiveFocusNode.requestFocus();
           }
         };
@@ -1262,7 +1420,8 @@ class _MTextFieldState extends State<MTextField>
           expands: widget.expands,
           // Only show the selection highlight when the text field is focused.
           selectionColor: focusNode.hasFocus ? selectionColor : null,
-          selectionControls: widget.selectionEnabled ? textSelectionControls : null,
+          selectionControls:
+              widget.selectionEnabled ? textSelectionControls : null,
           onChanged: widget.onChanged,
           onSelectionChanged: _handleSelectionChanged,
           onEditingComplete: widget.onEditingComplete,
@@ -1298,7 +1457,8 @@ class _MTextFieldState extends State<MTextField>
           contentInsertionConfiguration: widget.contentInsertionConfiguration,
           contextMenuBuilder: widget.contextMenuBuilder,
           spellCheckConfiguration: spellCheckConfiguration,
-          magnifierConfiguration: widget.magnifierConfiguration ?? TextMagnifier.adaptiveMagnifierConfiguration,
+          magnifierConfiguration: widget.magnifierConfiguration ??
+              TextMagnifier.adaptiveMagnifierConfiguration,
         ),
       ),
     );
@@ -1322,7 +1482,8 @@ class _MTextFieldState extends State<MTextField>
       child: child,
     );
     // }
-    final MouseCursor effectiveMouseCursor = MaterialStateProperty.resolveAs<MouseCursor>(
+    final MouseCursor effectiveMouseCursor =
+        MaterialStateProperty.resolveAs<MouseCursor>(
       widget.mouseCursor ?? MaterialStateMouseCursor.textable,
       _statesController.value,
     );
@@ -1354,7 +1515,8 @@ class _MTextFieldState extends State<MTextField>
                     : () {
                         if (!_effectiveController.selection.isValid) {
                           _effectiveController.selection =
-                              TextSelection.collapsed(offset: _effectiveController.text.length);
+                              TextSelection.collapsed(
+                                  offset: _effectiveController.text.length);
                         }
                         _requestKeyboard();
                       },
@@ -1374,7 +1536,8 @@ class _MTextFieldState extends State<MTextField>
   }
 }
 
-class _TextFieldSelectionGestureDetectorBuilder extends TextSelectionGestureDetectorBuilder {
+class _TextFieldSelectionGestureDetectorBuilder
+    extends TextSelectionGestureDetectorBuilder {
   _TextFieldSelectionGestureDetectorBuilder({
     required _MTextFieldState state,
   })  : _state = state,

@@ -86,8 +86,10 @@ class MContainer extends StatelessWidget {
         assert(constraints == null || constraints.debugAssertIsValid()),
         assert(decoration != null || clipBehavior == Clip.none),
         constraints = (width != null || height != null || size != null)
-            ? constraints?.tighten(width: width ?? size, height: height ?? size) ??
-                BoxConstraints.tightFor(width: width ?? size, height: height ?? size)
+            ? constraints?.tighten(
+                    width: width ?? size, height: height ?? size) ??
+                BoxConstraints.tightFor(
+                    width: width ?? size, height: height ?? size)
             : constraints;
 
   /// 对齐方式
@@ -195,17 +197,26 @@ class MContainer extends StatelessWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<AlignmentGeometry>('alignment', alignment, showName: false, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding, defaultValue: null));
-    properties.add(DiagnosticsProperty<Clip>('clipBehavior', clipBehavior, defaultValue: Clip.none));
+    properties.add(DiagnosticsProperty<AlignmentGeometry>(
+        'alignment', alignment,
+        showName: false, defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<Clip>('clipBehavior', clipBehavior,
+        defaultValue: Clip.none));
     if (color != null) {
       properties.add(DiagnosticsProperty<Color>('bg', color));
     } else {
-      properties.add(DiagnosticsProperty<Decoration>('bg', decoration, defaultValue: null));
+      properties.add(DiagnosticsProperty<Decoration>('bg', decoration,
+          defaultValue: null));
     }
-    properties.add(DiagnosticsProperty<Decoration>('fg', foregroundDecoration, defaultValue: null));
-    properties.add(DiagnosticsProperty<BoxConstraints>('constraints', constraints, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('margin', margin, defaultValue: null));
+    properties.add(DiagnosticsProperty<Decoration>('fg', foregroundDecoration,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<BoxConstraints>(
+        'constraints', constraints,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('margin', margin,
+        defaultValue: null));
     properties.add(ObjectFlagProperty<Matrix4>.has('transform', transform));
   }
 
@@ -258,7 +269,8 @@ class MContainer extends StatelessWidget {
           ),
         );
       } else {
-        BoxShape finalShape = shape == MBoxShape.circle ? BoxShape.circle : BoxShape.rectangle;
+        BoxShape finalShape =
+            shape == MBoxShape.circle ? BoxShape.circle : BoxShape.rectangle;
 
         BorderRadius? finalBorderRadius;
         // 如果你是一个圆形，就不能有 borderRadius。 所以只在矩形下设置 borderRadius
@@ -342,7 +354,10 @@ class MContainer extends StatelessWidget {
 
     if (constraints != null) {
       current = ConstrainedBox(constraints: constraints!, child: current);
-    } else if (maxWidth != null || maxHeight != null || minWidth != null || minHeight != null) {
+    } else if (maxWidth != null ||
+        maxHeight != null ||
+        minWidth != null ||
+        minHeight != null) {
       current = ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: minWidth ?? 0.0,
@@ -359,7 +374,8 @@ class MContainer extends StatelessWidget {
     }
 
     if (transform != null) {
-      current = Transform(transform: transform!, alignment: transformAlignment, child: current);
+      current = Transform(
+          transform: transform!, alignment: transformAlignment, child: current);
     }
 
     return current!;
@@ -383,6 +399,7 @@ class _SMDecorationClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(_SMDecorationClipper oldClipper) {
-    return oldClipper.decoration != decoration || oldClipper.textDirection != textDirection;
+    return oldClipper.decoration != decoration ||
+        oldClipper.textDirection != textDirection;
   }
 }

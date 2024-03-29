@@ -168,7 +168,8 @@ class MOutlinedButton extends ButtonStyleButton {
             side: BorderSide(
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
             ),
-            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4))),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4))),
             enabledMouseCursor: SystemMouseCursors.click,
             disabledMouseCursor: SystemMouseCursors.basic,
             visualDensity: theme.visualDensity,
@@ -212,20 +213,24 @@ class MOutlinedButton extends ButtonStyleButton {
   }) {
     final Color? foreground = foregroundColor;
     final Color? disabledForeground = disabledForegroundColor;
-    final MaterialStateProperty<Color?>? foregroundColorProp = (foreground == null && disabledForeground == null)
-        ? null
-        : _MOutlinedButtonDefaultColor(foreground, disabledForeground);
+    final MaterialStateProperty<Color?>? foregroundColorProp =
+        (foreground == null && disabledForeground == null)
+            ? null
+            : _MOutlinedButtonDefaultColor(foreground, disabledForeground);
     final MaterialStateProperty<Color?>? backgroundColorProp =
         (backgroundColor == null && disabledBackgroundColor == null)
             ? null
             : disabledBackgroundColor == null
                 ? ButtonStyleButton.allOrNull<Color?>(backgroundColor)
-                : _MOutlinedButtonDefaultColor(backgroundColor, disabledBackgroundColor);
-    MaterialStateProperty<Color?>? effectiveOverlayColor = (overlayColor != null || foreground != null)
-        ? _MOutlinedButtonDefaultOverlay(overlayColor ?? foreground!)
-        : null;
+                : _MOutlinedButtonDefaultColor(
+                    backgroundColor, disabledBackgroundColor);
+    MaterialStateProperty<Color?>? effectiveOverlayColor =
+        (overlayColor != null || foreground != null)
+            ? _MOutlinedButtonDefaultOverlay(overlayColor ?? foreground!)
+            : null;
     final MaterialStateProperty<MouseCursor?> mouseCursor =
-        _MOutlinedButtonDefaultMouseCursor(enabledMouseCursor, disabledMouseCursor);
+        _MOutlinedButtonDefaultMouseCursor(
+            enabledMouseCursor, disabledMouseCursor);
 
     return ButtonStyle(
       textStyle: ButtonStyleButton.allOrNull<TextStyle>(textStyle),
@@ -256,7 +261,8 @@ EdgeInsetsGeometry _scaledPadding(BuildContext context) {
   final ThemeData theme = Theme.of(context);
   final double padding1x = theme.useMaterial3 ? 24.0 : 16.0;
   final double defaultFontSize = theme.textTheme.labelLarge?.fontSize ?? 14.0;
-  final double effectiveTextScale = MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
+  final double effectiveTextScale =
+      MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
   return ButtonStyleButton.scaledPadding(
     EdgeInsets.symmetric(horizontal: padding1x),
     EdgeInsets.symmetric(horizontal: padding1x / 2),
@@ -266,7 +272,8 @@ EdgeInsetsGeometry _scaledPadding(BuildContext context) {
 }
 
 @immutable
-class _MOutlinedButtonDefaultColor extends MaterialStateProperty<Color?> with Diagnosticable {
+class _MOutlinedButtonDefaultColor extends MaterialStateProperty<Color?>
+    with Diagnosticable {
   _MOutlinedButtonDefaultColor(this.color, this.disabled);
 
   final Color? color;
@@ -282,7 +289,8 @@ class _MOutlinedButtonDefaultColor extends MaterialStateProperty<Color?> with Di
 }
 
 @immutable
-class _MOutlinedButtonDefaultMouseCursor extends MaterialStateProperty<MouseCursor?> with Diagnosticable {
+class _MOutlinedButtonDefaultMouseCursor
+    extends MaterialStateProperty<MouseCursor?> with Diagnosticable {
   _MOutlinedButtonDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
 
   final MouseCursor? disabledCursor;
@@ -298,7 +306,8 @@ class _MOutlinedButtonDefaultMouseCursor extends MaterialStateProperty<MouseCurs
 }
 
 @immutable
-class _MOutlinedButtonDefaultOverlay extends MaterialStateProperty<Color?> with Diagnosticable {
+class _MOutlinedButtonDefaultOverlay extends MaterialStateProperty<Color?>
+    with Diagnosticable {
   _MOutlinedButtonDefaultOverlay(this.foreground);
 
   final Color foreground;
@@ -347,18 +356,23 @@ class _MOutlinedButtonDefaultsM3 extends ButtonStyle {
           animationDuration: kThemeChangeDuration,
           enableFeedback: true,
           alignment: Alignment.center,
-          backgroundColor: MaterialStatePropertyAll<Color>(backgroundColor ?? Colors.transparent),
+          backgroundColor: MaterialStatePropertyAll<Color>(
+              backgroundColor ?? Colors.transparent),
           elevation: MaterialStatePropertyAll<double>(elevation ?? 0.0),
           fixedSize: fixedSize != null || width != null || height != null
-              ? MaterialStatePropertyAll<Size>(fixedSize ?? Size(width ?? double.infinity, height ?? double.infinity))
+              ? MaterialStatePropertyAll<Size>(fixedSize ??
+                  Size(width ?? double.infinity, height ?? double.infinity))
               : null,
-          foregroundColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+          foregroundColor:
+              MaterialStateProperty.resolveWith((Set<MaterialState> states) {
             if (states.contains(MaterialState.disabled)) {
-              return disabledForegroundColor ?? Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
+              return disabledForegroundColor ??
+                  Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
             }
             return foregroundColor ?? Theme.of(context).colorScheme.primary;
           }),
-          maximumSize: MaterialStatePropertyAll<Size>(maximumSize ?? Size.infinite),
+          maximumSize:
+              MaterialStatePropertyAll<Size>(maximumSize ?? Size.infinite),
           minimumSize: MaterialStatePropertyAll<Size>(
             minimumSize ?? (clearPadding ? Size.zero : const Size(64.0, 40.0)),
           ),
@@ -374,49 +388,69 @@ class _MOutlinedButtonDefaultsM3 extends ButtonStyle {
               ? null
               : MaterialStateProperty.resolveWith((Set<MaterialState> states) {
                   if (states.contains(MaterialState.pressed)) {
-                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.12);
+                    return (overlayColor ??
+                            Theme.of(context).colorScheme.primary)
+                        .withOpacity(0.12);
                   }
                   if (states.contains(MaterialState.hovered)) {
-                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.08);
+                    return (overlayColor ??
+                            Theme.of(context).colorScheme.primary)
+                        .withOpacity(0.08);
                   }
                   if (states.contains(MaterialState.focused)) {
-                    return (overlayColor ?? Theme.of(context).colorScheme.primary).withOpacity(0.12);
+                    return (overlayColor ??
+                            Theme.of(context).colorScheme.primary)
+                        .withOpacity(0.12);
                   }
                   return null;
                 }),
           padding: MaterialStatePropertyAll<EdgeInsetsGeometry>(
-            padding ?? (clearPadding ? EdgeInsets.zero : _scaledPadding(context)),
+            padding ??
+                (clearPadding ? EdgeInsets.zero : _scaledPadding(context)),
           ),
-          shadowColor: MaterialStatePropertyAll<Color>(shadowColor ?? Colors.transparent),
+          shadowColor: MaterialStatePropertyAll<Color>(
+              shadowColor ?? Colors.transparent),
           shape: MaterialStatePropertyAll<OutlinedBorder>(
             shape ??
                 (radius == null && borderRadius == null
                     ? const StadiumBorder()
                     : RoundedRectangleBorder(
-                        borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(radius ?? 4.0)),
+                        borderRadius: borderRadius ??
+                            BorderRadius.all(Radius.circular(radius ?? 4.0)),
                       )),
           ),
           side: side == null
               ? MaterialStateProperty.resolveWith((Set<MaterialState> states) {
                   if (states.contains(MaterialState.disabled)) {
-                    return BorderSide(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.12));
+                    return BorderSide(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.12));
                   }
                   if (states.contains(MaterialState.focused)) {
-                    return BorderSide(color: Theme.of(context).colorScheme.primary);
+                    return BorderSide(
+                        color: Theme.of(context).colorScheme.primary);
                   }
-                  return BorderSide(color: Theme.of(context).colorScheme.outline);
+                  return BorderSide(
+                      color: Theme.of(context).colorScheme.outline);
                 })
               : MaterialStatePropertyAll<BorderSide>(side),
-          splashFactory: splashFactory ?? (noSplash ? NoSplash.splashFactory : Theme.of(context).splashFactory),
-          surfaceTintColor: const MaterialStatePropertyAll<Color>(Colors.transparent),
+          splashFactory: splashFactory ??
+              (noSplash
+                  ? NoSplash.splashFactory
+                  : Theme.of(context).splashFactory),
+          surfaceTintColor:
+              const MaterialStatePropertyAll<Color>(Colors.transparent),
           tapTargetSize: tapTargetSize ??
-              (clearPadding ? MaterialTapTargetSize.shrinkWrap : Theme.of(context).materialTapTargetSize),
-          textStyle: MaterialStatePropertyAll<TextStyle?>(textStyle ?? Theme.of(context).textTheme.labelLarge),
+              (clearPadding
+                  ? MaterialTapTargetSize.shrinkWrap
+                  : Theme.of(context).materialTapTargetSize),
+          textStyle: MaterialStatePropertyAll<TextStyle?>(
+              textStyle ?? Theme.of(context).textTheme.labelLarge),
           visualDensity: Theme.of(context).visualDensity,
         );
 }
-
-
 
 class _MOutlinedButtonWithIcon extends MOutlinedButton {
   _MOutlinedButtonWithIcon({
@@ -476,8 +510,11 @@ class _MOutlinedButtonWithIcon extends MOutlinedButton {
       return super.defaultStyleOf(context);
     }
     final ButtonStyle buttonStyle = super.defaultStyleOf(context);
-    final double defaultFontSize = buttonStyle.textStyle?.resolve(const <MaterialState>{})?.fontSize ?? 14.0;
-    final double effectiveTextScale = MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
+    final double defaultFontSize =
+        buttonStyle.textStyle?.resolve(const <MaterialState>{})?.fontSize ??
+            14.0;
+    final double effectiveTextScale =
+        MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
     final EdgeInsetsGeometry scaledPadding = padding ??
         (clearPadding
             ? EdgeInsets.zero
@@ -516,9 +553,12 @@ class _MOutlinedButtonWithIconChild extends StatelessWidget {
     final double scale = MediaQuery.textScalerOf(context).textScaleFactor;
     // [icon] 和 [label] 的默认间距
     final gap = alignment.isVertical ? 6.0 : 8.0;
-    final double effectiveGap = space ?? (scale <= 1 ? gap : lerpDouble(gap, gap / 2, math.min(scale - 1, 1))!);
+    final double effectiveGap = space ??
+        (scale <= 1 ? gap : lerpDouble(gap, gap / 2, math.min(scale - 1, 1))!);
     final effectiveIcon = Flexible(child: icon);
-    final effectiveSpace = alignment.isVertical ? SizedBox(height: effectiveGap) : SizedBox(width: effectiveGap);
+    final effectiveSpace = alignment.isVertical
+        ? SizedBox(height: effectiveGap)
+        : SizedBox(width: effectiveGap);
     final effectiveLabel = Flexible(child: label!);
 
     List<Widget> children = <Widget>[

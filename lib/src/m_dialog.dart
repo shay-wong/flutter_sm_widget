@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-const EdgeInsets _defaultInsetPadding = EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0);
+const EdgeInsets _defaultInsetPadding =
+    EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0);
 
 class _MAdaptiveAlertDialog extends MAlertDialog {
   const _MAdaptiveAlertDialog({
@@ -169,7 +170,9 @@ class MAlertDialog extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     final DialogTheme dialogTheme = DialogTheme.of(context);
-    final DialogTheme defaults = theme.useMaterial3 ? _MDialogDefaultsM3(context) : _MDialogDefaultsM2(context);
+    final DialogTheme defaults = theme.useMaterial3
+        ? _MDialogDefaultsM3(context)
+        : _MDialogDefaultsM2(context);
 
     String? label = semanticLabel;
     switch (theme.platform) {
@@ -186,7 +189,8 @@ class MAlertDialog extends StatelessWidget {
     // The paddingScaleFactor is used to adjust the padding of Dialog's
     // children.
     // ignore: deprecated_member_use
-    final double paddingScaleFactor = _paddingScaleFactor(MediaQuery.textScalerOf(context).textScaleFactor);
+    final double paddingScaleFactor =
+        _paddingScaleFactor(MediaQuery.textScalerOf(context).textScaleFactor);
     final TextDirection? textDirection = Directionality.maybeOf(context);
 
     Widget? iconWidget;
@@ -207,7 +211,8 @@ class MAlertDialog extends StatelessWidget {
                 ? 0.0
                 : 24.0,
       );
-      final EdgeInsets effectiveIconPadding = iconPadding?.resolve(textDirection) ?? defaultIconPadding;
+      final EdgeInsets effectiveIconPadding =
+          iconPadding?.resolve(textDirection) ?? defaultIconPadding;
       iconWidget = Padding(
         padding: EdgeInsets.only(
           left: effectiveIconPadding.left * paddingScaleFactor,
@@ -231,16 +236,21 @@ class MAlertDialog extends StatelessWidget {
         right: 24.0,
         bottom: content == null ? 20.0 : 0.0,
       );
-      final EdgeInsets effectiveTitlePadding = titlePadding?.resolve(textDirection) ?? defaultTitlePadding;
+      final EdgeInsets effectiveTitlePadding =
+          titlePadding?.resolve(textDirection) ?? defaultTitlePadding;
       titleWidget = Padding(
         padding: EdgeInsets.only(
           left: effectiveTitlePadding.left * paddingScaleFactor,
           right: effectiveTitlePadding.right * paddingScaleFactor,
-          top: icon == null ? effectiveTitlePadding.top * paddingScaleFactor : effectiveTitlePadding.top,
+          top: icon == null
+              ? effectiveTitlePadding.top * paddingScaleFactor
+              : effectiveTitlePadding.top,
           bottom: effectiveTitlePadding.bottom,
         ),
         child: DefaultTextStyle(
-          style: titleTextStyle ?? dialogTheme.titleTextStyle ?? defaults.titleTextStyle!,
+          style: titleTextStyle ??
+              dialogTheme.titleTextStyle ??
+              defaults.titleTextStyle!,
           textAlign: icon == null ? TextAlign.start : TextAlign.center,
           child: Semantics(
             // For iOS platform, the focus always lands on the title.
@@ -260,7 +270,8 @@ class MAlertDialog extends StatelessWidget {
         right: 24.0,
         bottom: 24.0,
       );
-      final EdgeInsets effectiveContentPadding = contentPadding?.resolve(textDirection) ?? defaultContentPadding;
+      final EdgeInsets effectiveContentPadding =
+          contentPadding?.resolve(textDirection) ?? defaultContentPadding;
       contentWidget = Padding(
         padding: EdgeInsets.only(
           left: effectiveContentPadding.left * paddingScaleFactor,
@@ -271,7 +282,9 @@ class MAlertDialog extends StatelessWidget {
           bottom: effectiveContentPadding.bottom,
         ),
         child: DefaultTextStyle(
-          style: contentTextStyle ?? dialogTheme.contentTextStyle ?? defaults.contentTextStyle!,
+          style: contentTextStyle ??
+              dialogTheme.contentTextStyle ??
+              defaults.contentTextStyle!,
           child: Semantics(
             container: true,
             child: content,
@@ -285,11 +298,14 @@ class MAlertDialog extends StatelessWidget {
       actionsWidget = Padding(
         padding: actionsPadding ??
             dialogTheme.actionsPadding ??
-            (theme.useMaterial3 ? defaults.actionsPadding! : defaults.actionsPadding!.add(EdgeInsets.all(spacing))),
+            (theme.useMaterial3
+                ? defaults.actionsPadding!
+                : defaults.actionsPadding!.add(EdgeInsets.all(spacing))),
         child: OverflowBar(
           alignment: actionsAlignment ?? MainAxisAlignment.end,
           spacing: spacing,
-          overflowAlignment: actionsOverflowAlignment ?? OverflowBarAlignment.end,
+          overflowAlignment:
+              actionsOverflowAlignment ?? OverflowBarAlignment.end,
           overflowDirection: actionsOverflowDirection ?? VerticalDirection.down,
           overflowSpacing: actionsOverflowButtonSpacing ?? 0,
           children: actions!,
@@ -485,16 +501,21 @@ class MDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final DialogTheme dialogTheme = DialogTheme.of(context);
-    final EdgeInsets effectivePadding = MediaQuery.viewInsetsOf(context) + (insetPadding ?? EdgeInsets.zero);
+    final EdgeInsets effectivePadding =
+        MediaQuery.viewInsetsOf(context) + (insetPadding ?? EdgeInsets.zero);
     final DialogTheme defaults = theme.useMaterial3
-        ? (_fullscreen ? _MDialogFullscreenDefaultsM3(context) : _MDialogDefaultsM3(context))
+        ? (_fullscreen
+            ? _MDialogFullscreenDefaultsM3(context)
+            : _MDialogDefaultsM3(context))
         : _MDialogDefaultsM2(context);
 
     Widget dialogChild;
 
     if (_fullscreen) {
       dialogChild = Material(
-        color: backgroundColor ?? dialogTheme.backgroundColor ?? defaults.backgroundColor,
+        color: backgroundColor ??
+            dialogTheme.backgroundColor ??
+            defaults.backgroundColor,
         child: child,
       );
     } else {
@@ -503,10 +524,16 @@ class MDialog extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minWidth: 280.0),
           child: Material(
-            color: backgroundColor ?? dialogTheme.backgroundColor ?? Theme.of(context).dialogBackgroundColor,
-            elevation: elevation ?? dialogTheme.elevation ?? defaults.elevation!,
-            shadowColor: shadowColor ?? dialogTheme.shadowColor ?? defaults.shadowColor,
-            surfaceTintColor: surfaceTintColor ?? dialogTheme.surfaceTintColor ?? defaults.surfaceTintColor,
+            color: backgroundColor ??
+                dialogTheme.backgroundColor ??
+                Theme.of(context).dialogBackgroundColor,
+            elevation:
+                elevation ?? dialogTheme.elevation ?? defaults.elevation!,
+            shadowColor:
+                shadowColor ?? dialogTheme.shadowColor ?? defaults.shadowColor,
+            surfaceTintColor: surfaceTintColor ??
+                dialogTheme.surfaceTintColor ??
+                defaults.surfaceTintColor,
             shape: shape ?? dialogTheme.shape ?? defaults.shape!,
             type: MaterialType.card,
             clipBehavior: clipBehavior,
@@ -540,7 +567,8 @@ class _MDialogDefaultsM2 extends DialogTheme {
         super(
           alignment: Alignment.center,
           elevation: 24.0,
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(4.0))),
         );
 
   final BuildContext context;
@@ -572,7 +600,8 @@ class _MDialogDefaultsM3 extends DialogTheme {
       : super(
           alignment: Alignment.center,
           elevation: 6.0,
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(28.0))),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(28.0))),
         );
 
   final BuildContext context;
@@ -581,7 +610,8 @@ class _MDialogDefaultsM3 extends DialogTheme {
   late final TextTheme _textTheme = Theme.of(context).textTheme;
 
   @override
-  EdgeInsetsGeometry? get actionsPadding => const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 24.0);
+  EdgeInsetsGeometry? get actionsPadding =>
+      const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 24.0);
 
   @override
   Color? get backgroundColor => _colors.surface;

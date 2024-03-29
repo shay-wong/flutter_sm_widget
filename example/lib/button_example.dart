@@ -132,7 +132,8 @@ class MButtonExample extends StatelessWidget {
                   backgroundColor: const Color(0xFFDBFFF5),
                   clearPadding: true,
                   space: 10,
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 ),
             ],
           ),
