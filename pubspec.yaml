@@ -24,13 +24,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/
-    - assets/images/
 
-flutter_gen:
-  output: lib/src/generated/
-  line_length: 120
-  assets:
-    outputs:
-      package_parameter_enabled: true
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
