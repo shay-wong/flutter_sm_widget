@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sm_widget/sm_widget.dart';
+import 'package:sm_widget/sm_widget.dart';
 import 'package:get/get.dart';
 
 class MDialogExample extends StatelessWidget {

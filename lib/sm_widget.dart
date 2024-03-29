@@ -1,9 +1,9 @@
 library sm_widget;
 
-export 'package:flutter_sm_image/sm_image.dart';
-export 'package:flutter_sm_network/sm_network.dart';
+export 'package:sm_image/sm_image.dart';
+export 'package:sm_network/sm_network.dart';
 
-export 'generated/locales.g.dart' show SMWidgetAppTranslation;
+export 'src/generated/locales.g.dart' show SMWidgetAppTranslation;
 export 'src/cupertion/m_dialog.dart';
 export 'src/m_app_bar.dart';
 export 'src/m_bottom_sheet.dart';

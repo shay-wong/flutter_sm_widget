@@ -375,7 +375,8 @@ class MTextField extends StatefulWidget {
 
   /// 限定文本高度, 会限定 [MTextField] 高度为 [height],
   /// 如果想设置初始高度, 在 [maxLines] > 1, 并且希望 [MTextField] 自适应高度的情况下,
-  /// 推荐设置 [isDense] 为 true, 配合 [contentPadding] 来控制初始高度
+  /// 推荐设置 [isDense] 为 true, 配合 [contentPadding] 来控制初始高度,
+  /// 注意, [suffixIcon] 默认约束是 48x48, 如果要设置小于 48 的高度, 需要设置 [suffixIconConstraints].
   final double? height;
 
   /// 帮助提示的最大行数
@@ -468,7 +469,7 @@ class MTextField extends StatefulWidget {
   /// 后缀图标的颜色
   final Color? suffixIconColor;
 
-  /// 后缀图标的约束, 比如限制宽高
+  /// 后缀图标的约束, 比如限制宽高, 默认是 48x48, 在 [InputDecorator] 中被设置为 [kMinInteractiveDimension]
   final BoxConstraints? suffixIconConstraints;
 
   /// 后缀的样式

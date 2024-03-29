@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sm_network/sm_network.dart';
+import 'package:sm_network/sm_network.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../generated/locales.g.dart';
+import 'generated/locales.g.dart';
 import 'm_text.dart';
 
 typedef MRefreshRequest = void Function(APIPageableLoader loader);

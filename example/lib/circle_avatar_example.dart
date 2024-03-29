@@ -1,6 +1,5 @@
-import 'package:example_package/example_package.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sm_widget/sm_widget.dart';
+import 'package:sm_widget/sm_widget.dart';
 
 class MCircleAvatarExample extends StatelessWidget {
   const MCircleAvatarExample({super.key});
@@ -30,7 +29,6 @@ class MCircleAvatarExample extends StatelessWidget {
             diameter: 100,
             backgroundColor: Colors.amber,
           ),
-          Expanded(child: ExamplePage()),
         ],
       ),
     );

@@ -1,6 +1,6 @@
-name: flutter_sm_widget
-description: "A Flutter package with widgets."
-version: 0.0.2-dev.2
+name: sm_widget
+description: "A Flutter package with widgets, containing implementations of commonly used Flutter widgets."
+version: 0.0.2
 homepage: "https://github.com/shay-wong/flutter_sm_widget"
 repository: "https://github.com/shay-wong/flutter_sm_widget"
 issue_tracker: "https://github.com/shay-wong/flutter_sm_widget/issues"
@@ -12,13 +12,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sm_image: ^0.0.2-dev.3
-  flutter_sm_network: ^0.0.1
+  sm_image: ^0.0.3
+  sm_network: ^0.0.4
   get: ^4.6.6
   pull_to_refresh: ^2.0.0
 
 dev_dependencies:
-  flutter_lints: ^3.0.1
+  flutter_lints: ^3.0.2
   flutter_test:
     sdk: flutter
 
@@ -29,7 +29,7 @@ flutter:
     - assets/images/
 
 flutter_gen:
-  output: lib/generated/
+  output: lib/src/generated/
   line_length: 120
   assets:
     outputs:

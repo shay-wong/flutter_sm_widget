@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_sm_widget/sm_widget.dart';
+import 'package:sm_image/sm_image.dart';
 
 enum MBoxShape {
   rectangle,
@@ -79,7 +79,7 @@ class MContainer extends StatelessWidget {
     this.shape,
     this.bundle,
     this.package,
-    this.headers,
+    this.httpHeaders,
   })  : assert(margin == null || margin.isNonNegative),
         assert(padding == null || padding.isNonNegative),
         assert(decoration == null || decoration.debugAssertIsValid()),
@@ -136,7 +136,7 @@ class MContainer extends StatelessWidget {
   final Gradient? gradient;
 
   /// 用于 [HttpClient.get] 从网络获取图片的 HTTP 标头。在网络上运行 Flutter 时，不使用标头。
-  final Map<String, String>? headers;
+  final Map<String, String>? httpHeaders;
 
   /// [image] 来源
   final String? image;
@@ -230,7 +230,7 @@ class MContainer extends StatelessWidget {
           image,
           package: package,
           bundle: bundle,
-          headers: headers,
+          httpHeaders: httpHeaders,
           scale: scale,
         );
       }

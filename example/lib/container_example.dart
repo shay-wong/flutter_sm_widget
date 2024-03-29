@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sm_widget/sm_widget.dart';
+import 'package:sm_widget/sm_widget.dart';
 
 class MContainerExample extends StatelessWidget {
   const MContainerExample({super.key});

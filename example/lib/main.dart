@@ -1,6 +1,6 @@
 import 'package:example/cupertino_dialog_example.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sm_widget/sm_widget.dart';
+import 'package:sm_widget/sm_widget.dart';
 import 'package:get/get.dart';
 
 import 'button_example.dart';

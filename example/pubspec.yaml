@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_sm_widget:
+  sm_widget:
     path: ../
   example_package:
     path: ../example_package/

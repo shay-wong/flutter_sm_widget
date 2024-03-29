@@ -8,8 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_sm_widget/sm_widget.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sm_widget/sm_widget.dart';
 
 import 'semantics_tester.dart';
 

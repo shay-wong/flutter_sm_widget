@@ -8,8 +8,9 @@ import 'dart:ui' show ImageFilter;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_sm_widget/sm_widget.dart';
 import 'package:get/get.dart';
+
+import '../m_text.dart';
 
 // TODO(abarth): These constants probably belong somewhere more general.
 

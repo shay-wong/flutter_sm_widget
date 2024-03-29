@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_sm_widget/sm_widget.dart';
+import 'package:sm_widget/sm_widget.dart';
 
 class ExpandableExample extends StatelessWidget {
   const ExpandableExample({super.key});

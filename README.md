@@ -1,29 +1,31 @@
-# flutter_sm_widget
+# sm_widget
 
+| [English](README.md) | [简体中文](README.zh.md) |
+| ------------------------------- | ----------------------- |
 
-flutter_sm_widget 是一个 flutter 组件库，使用 dart 语言编写，包含了常用的 flutter widget 的实现。
+sm_widget is a Flutter component library written in Dart, containing implementations of commonly used Flutter widgets.
 
-## 安装
+## Installing
 
-运行下面的命令:
+Depend on it
 
-Dart:
+Run this command:
 
-```
-dart pub add flutter_sm_widget
-```
-
-Flutter:
+With Dart:
 
 ```
-flutter pub add flutter_sm_widget
+dart pub add sm_widget
 ```
 
-或者在 `pubspec.yaml` 文件中添加依赖并运行`dart pub get`：
+with Flutter:
+
+```
+flutter pub add sm_widget
+```
+
+Or add the dependency to your `pubspec.yaml` file and run `dart pub get`:
 
 ```
 dependencies:
-  flutter_sm_widget: ^0.0.1
+  sm_widget: ^0.0.1
 ```
-
-<!-- ## 使用 -->
