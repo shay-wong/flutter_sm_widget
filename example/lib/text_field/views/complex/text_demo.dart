@@ -19,7 +19,7 @@ class TextDemo extends StatefulWidget {
   const TextDemo({super.key});
 
   @override
-  _TextDemoState createState() => _TextDemoState();
+  State<TextDemo> createState() => _TextDemoState();
 }
 
 class _TextDemoState extends State<TextDemo> {

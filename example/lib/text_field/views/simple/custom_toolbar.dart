@@ -13,7 +13,7 @@ class CustomToolBar extends StatefulWidget {
   const CustomToolBar({super.key});
 
   @override
-  _CustomToolBarState createState() => _CustomToolBarState();
+  State<CustomToolBar> createState() => _CustomToolBarState();
 }
 
 class _CustomToolBarState extends State<CustomToolBar> {

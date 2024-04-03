@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, deprecated_member_use
 
 import 'package:example/text/text/my_extended_text_selection_controls.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +59,6 @@ class CommonSelectionArea extends StatelessWidget {
                 //   selectableRegionState._clearSelection();
                 // }
 
-                // ignore: deprecated_member_use
                 selectableRegionState
                     .copySelection(SelectionChangedCause.toolbar);
 

@@ -3,7 +3,7 @@ library sm_widget;
 export 'package:extended_text/extended_text.dart'
     show TextOverflowWidget, TextOverflowAlign, TextOverflowPosition, TextOverflowClearType;
 export 'package:extended_text_field/extended_text_field.dart'
-    show TextInputBinding, TextInputFocusNode;
+    show TextInputBinding, TextInputFocusNode, ExtendedEditableTextState;
 export 'package:extended_text_library/extended_text_library.dart';
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 export 'package:sm_image/sm_image.dart';

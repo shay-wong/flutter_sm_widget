@@ -7,7 +7,7 @@ class ToggleButton extends StatefulWidget {
   final bool active;
   final ValueChanged<bool>? activeChanged;
   @override
-  _ToggleButtonState createState() => _ToggleButtonState();
+  State<ToggleButton> createState() => _ToggleButtonState();
 }
 
 class _ToggleButtonState extends State<ToggleButton> {

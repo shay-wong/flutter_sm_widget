@@ -11,7 +11,7 @@ class WidgetSpanDemo extends StatefulWidget {
   const WidgetSpanDemo({super.key});
 
   @override
-  _WidgetSpanDemoState createState() => _WidgetSpanDemoState();
+  State<WidgetSpanDemo> createState() => _WidgetSpanDemoState();
 }
 
 class _WidgetSpanDemoState extends State<WidgetSpanDemo> {

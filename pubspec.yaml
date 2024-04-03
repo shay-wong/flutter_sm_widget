@@ -1,7 +1,7 @@
 name: sm_widget
 description: "A Flutter package with widgets, containing implementations of
   commonly used Flutter widgets."
-version: 0.0.2
+version: 0.0.3
 homepage: "https://github.com/shay-wong/flutter_sm_widget"
 repository: "https://github.com/shay-wong/flutter_sm_widget"
 issue_tracker: "https://github.com/shay-wong/flutter_sm_widget/issues"
