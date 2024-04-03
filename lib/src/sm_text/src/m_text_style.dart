@@ -1,14 +1,56 @@
 import 'package:flutter/painting.dart';
 
-const String _kDefaultDebugLabel = 'unknown';
+const String _kColorBackgroundWarning =
+    'Cannot provide both a backgroundColor and a background\n'
+    'The backgroundColor argument is just a shorthand for "background: Paint()..color = color".';
 
 const String _kColorForegroundWarning =
     'Cannot provide both a color and a foreground\n'
     'The color argument is just a shorthand for "foreground: Paint()..color = color".';
 
-const String _kColorBackgroundWarning =
-    'Cannot provide both a backgroundColor and a background\n'
-    'The backgroundColor argument is just a shorthand for "background: Paint()..color = color".';
+const String _kDefaultDebugLabel = 'unknown';
+
+class MTextStyle extends TextStyle {
+  const MTextStyle({
+    super.inherit,
+    super.color,
+    super.backgroundColor,
+    super.fontSize,
+    FontWeight? fontWeight,
+    FontStyle? fontStyle,
+    super.letterSpacing,
+    super.wordSpacing,
+    super.textBaseline,
+    super.height,
+    super.leadingDistribution,
+    super.locale,
+    super.foreground,
+    super.background,
+    super.shadows,
+    super.fontFeatures,
+    super.fontVariations,
+    TextDecoration? decoration,
+    super.decorationColor,
+    super.decorationStyle,
+    super.decorationThickness,
+    super.debugLabel,
+    super.fontFamily,
+    super.fontFamilyFallback,
+    super.package,
+    super.overflow,
+    bool isBold = false,
+    bool isDeleted = false,
+    bool isItalic = false,
+  }) : super(
+          fontWeight: fontWeight ?? (isBold ? FontWeight.bold : null),
+          fontStyle: fontStyle ?? (isItalic ? FontStyle.italic : null),
+          decoration: decoration ??
+              (isDeleted
+                  ? TextDecoration.lineThrough
+                  : TextDecoration
+                      .none), // 默认 TextDecoration.none 是为了去除没有Scaffold 或者 material 时的文本下黄线
+        );
+}
 
 extension MFontWeight on FontWeight {
   static const FontWeight thin = FontWeight.w300;

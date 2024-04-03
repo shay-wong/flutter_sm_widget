@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'm_text.dart';
+import 'sm_text/src/m_text.dart';
 
 // Identifies the children of a _ListTileElement.
 enum _ListTileSlot {

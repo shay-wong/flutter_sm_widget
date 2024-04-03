@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui' show clampDouble, lerpDouble;
 
 import 'package:flutter/cupertino.dart';
@@ -188,7 +190,6 @@ class MAlertDialog extends StatelessWidget {
     // TODO: 删除弃用成员
     // The paddingScaleFactor is used to adjust the padding of Dialog's
     // children.
-    // ignore: deprecated_member_use
     final double paddingScaleFactor =
         _paddingScaleFactor(MediaQuery.textScalerOf(context).textScaleFactor);
     final TextDirection? textDirection = Directionality.maybeOf(context);

@@ -255,8 +255,7 @@ class MTextFieldExample extends StatelessWidget {
                 const SizedBox(width: 10),
                 const MIconButton(
                   icon: MImage(
-                    'assets/images/avatar1.png',
-                    package: 'example_package',
+                    'assets/images/avatar.png',
                     width: 22,
                     height: 28,
                   ),
@@ -264,58 +263,62 @@ class MTextFieldExample extends StatelessWidget {
                 Expanded(
                   child: MTextField(
                     // controller: controller.textController,
-                    color: Colors.amber,
-                    hintText: '请输入消息...',
-                    hintColor: const Color(0xFFD0D0D0),
-                    fontSize: 14,
-                    fillColor: Colors.white,
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                    suffixIcon: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const MIconButton(
-                          clearPadding: true,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 8.5),
-                          icon: MImage(
-                            'assets/images/avatar1.png',
-                            package: 'example_package',
-                            size: 23,
-                          ),
-                          noSplash: true,
-                          noHighlight: true,
-                        ),
-                        MIconButton(
-                          onPressed: () async {},
-                          icon: const MImage(
-                            'assets/images/avatar1.png',
-                            package: 'example_package',
-                            size: 23,
-                          ),
-                          clearPadding: true,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 8.5),
-                          noSplash: true,
-                          noHighlight: true,
-                        ),
-                      ],
-                    ),
-                    suffixIconPadding:
-                        const EdgeInsetsDirectional.only(end: 10),
-                    suffixIconConstraints: const BoxConstraints(
-                      maxHeight: 40,
-                    ),
-                    // border: InputBorder.none,
-                    side: const BorderSide(
+                    style: const MTextStyle(
                       color: Colors.amber,
-                      width: 1,
+                      fontSize: 14,
                     ),
-                    radius: 20,
-                    borderStyle: MTextFieldBorderStyle.outline,
+                    decoration: MInputDecoration(
+                      hintText: '请输入消息...',
+                      hintColor: const Color(0xFFD0D0D0),
+                      fillColor: Colors.white,
+                      filled: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 0),
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const MIconButton(
+                            clearPadding: true,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 8.5),
+                            icon: MImage(
+                              'assets/images/avatar1.png',
+                              package: 'example_package',
+                              size: 23,
+                            ),
+                            noSplash: true,
+                            noHighlight: true,
+                          ),
+                          MIconButton(
+                            onPressed: () async {},
+                            icon: const MImage(
+                              'assets/images/avatar1.png',
+                              package: 'example_package',
+                              size: 23,
+                            ),
+                            clearPadding: true,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 8.5),
+                            noSplash: true,
+                            noHighlight: true,
+                          ),
+                        ],
+                      ),
+                      suffixIconPadding:
+                          const EdgeInsetsDirectional.only(end: 10),
+                      suffixIconConstraints: const BoxConstraints(
+                        maxHeight: 40,
+                      ),
+                      // side: const BorderSide(
+                      //   color: Colors.amber,
+                      //   width: 1,
+                      // ),
+                      // radius: 20,
+                      borderStyle: MInputBorderStyle.outline,
+                      isDense: true,
+                    ),
                     maxLines: 4,
                     minLines: 1,
-                    isDense: true,
                   ),
                 ),
               ],

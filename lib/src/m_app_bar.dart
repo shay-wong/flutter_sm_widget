@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'm_text.dart';
 import 'sm_button/sm_button.dart';
+import 'sm_text/src/m_text.dart';
 
 class MAppBar extends AppBar {
   MAppBar({

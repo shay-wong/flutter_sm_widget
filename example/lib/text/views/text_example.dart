@@ -107,11 +107,8 @@ class MTextExample extends StatelessWidget {
               ],
             ),
           ),
-          const MRichText(
-            color: Colors.red,
-            isBold: true,
-            fontSize: 20,
-            children: [
+          MRichText.children(
+            children: const [
               MTextSpan(text: 'Hello World,'),
               MTextSpan(
                 text: 'I am RichText',
@@ -119,6 +116,9 @@ class MTextExample extends StatelessWidget {
                 fontSize: 30,
               ),
             ],
+            color: Colors.red,
+            isBold: true,
+            fontSize: 20,
           ),
           const Text(
             'Hello World!!',

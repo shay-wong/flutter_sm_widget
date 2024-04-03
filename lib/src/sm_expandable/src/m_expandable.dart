@@ -59,10 +59,16 @@ class MExpandable extends StatelessWidget {
           alignment: theme.alignment!,
           firstChild: collapsed,
           secondChild: expanded,
-          firstCurve: Interval(theme.collapsedFadeStart, theme.collapsedFadeEnd,
-              curve: theme.fadeCurve!),
-          secondCurve: Interval(theme.expandedFadeStart, theme.expandedFadeEnd,
-              curve: theme.fadeCurve!),
+          firstCurve: Interval(
+            theme.collapsedFadeStart,
+            theme.collapsedFadeEnd,
+            curve: theme.fadeCurve!,
+          ),
+          secondCurve: Interval(
+            theme.expandedFadeStart,
+            theme.expandedFadeEnd,
+            curve: theme.fadeCurve!,
+          ),
           sizeCurve: theme.sizeCurve!,
           crossFadeState: controller?.expanded ?? true
               ? CrossFadeState.showSecond

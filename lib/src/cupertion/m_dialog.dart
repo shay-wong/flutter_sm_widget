@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// ignore_for_file: deprecated_member_use
+
 import 'dart:math' as math;
 import 'dart:ui' show ImageFilter;
 
@@ -10,7 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
-import '../m_text.dart';
+import '../sm_text/src/m_text.dart';
 
 // TODO(abarth): These constants probably belong somewhere more general.
 
@@ -148,7 +150,6 @@ const double _kMaxRegularTextScaleFactor = 1.4;
 // user has selected.
 bool _isInAccessibilityMode(BuildContext context) {
   // TODO: 删除弃用成员
-  // ignore: deprecated_member_use
   final double? factor = MediaQuery.maybeTextScalerOf(context)?.textScaleFactor;
   return factor != null && factor > _kMaxRegularTextScaleFactor;
 }
@@ -1003,7 +1004,6 @@ class _MCupertinoAlertDialogState extends State<MCupertinoAlertDialog> {
 
   Widget _buildContent(BuildContext context) {
     // TODO: 删除弃用成员
-    // ignore: deprecated_member_use
     final double textScaleFactor =
         MediaQuery.textScalerOf(context).textScaleFactor;
 
@@ -1191,7 +1191,6 @@ class MCupertinoDialogAction extends StatelessWidget {
 
   double _calculatePadding(BuildContext context) {
     // TODO: 删除弃用成员
-    // ignore: deprecated_member_use
     return 8.0 * MediaQuery.textScalerOf(context).textScaleFactor;
   }
 

@@ -1,8 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'dart:ui' as ui show TextHeightBehavior;
 
+import 'package:extended_text/extended_text.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+
+import 'm_rich_text.dart';
+import 'm_text_span.dart';
 
 class MText extends StatelessWidget {
   const MText(
@@ -33,10 +38,25 @@ class MText extends StatelessWidget {
     this.textAlign,
     this.textDirection,
     this.textHeightBehavior,
+    @Deprecated(
+      'Use textScaler instead. '
+      'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
+      'This feature was deprecated after v3.12.0-2.0.pre.',
+    )
+    this.textScaleFactor,
     this.textScaler,
     this.textWidthBasis,
+    this.joinZeroWidthSpace = false,
+    this.onSpecialTextTap,
+    this.overflowWidget,
+    this.specialTextSpanBuilder,
+    this.canSelectPlaceholderSpan = true,
   })  : textSpan = null,
-        children = null;
+        children = null,
+        assert(
+          textScaler == null || textScaleFactor == null,
+          'textScaleFactor is deprecated and cannot be specified when textScaler is specified.',
+        );
 
   const MText.rich({
     super.key,
@@ -67,11 +87,26 @@ class MText extends StatelessWidget {
     this.textAlign,
     this.textDirection,
     this.textHeightBehavior,
+    @Deprecated(
+      'Use textScaler instead. '
+      'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
+      'This feature was deprecated after v3.12.0-2.0.pre.',
+    )
+    this.textScaleFactor,
     this.textScaler,
     this.textWidthBasis,
-  })  : data = null,
+    this.joinZeroWidthSpace = false,
+    this.onSpecialTextTap,
+    this.overflowWidget,
+    this.specialTextSpanBuilder,
+    this.canSelectPlaceholderSpan = true,
+  })  : assert(text == null || children == null),
         textSpan = text,
-        assert(text == null || children == null);
+        data = null,
+        assert(
+          textScaler == null || textScaleFactor == null,
+          'textScaleFactor is deprecated and cannot be specified when textScaler is specified.',
+        );
 
   final TextDecoration? decoration;
   final Locale? locale;
@@ -81,6 +116,9 @@ class MText extends StatelessWidget {
   final bool? softWrap;
   final ui.TextHeightBehavior? textHeightBehavior;
   final TextWidthBasis? textWidthBasis;
+
+  /// if false, it will skip PlaceholderSpan
+  final bool canSelectPlaceholderSpan;
 
   /// 文本片段集合
   final List<InlineSpan>? children;
@@ -109,7 +147,7 @@ class MText extends StatelessWidget {
   /// 前景
   final Paint? foreground;
 
-  /// 文本垂直支撑的最小高度，是对应 [fontSize] 的倍数。
+  /// [StrutStyle.height] 文本垂直支撑的最小高度，是对应 [fontSize] 的倍数。
   final double? height;
 
   /// 是否加粗
@@ -121,14 +159,31 @@ class MText extends StatelessWidget {
   /// 是否斜体
   final bool isItalic;
 
-  /// 行高, 自动除以 [fontSize] 来计算, 如果设置 [height] 则会忽略此值.
+  /// Whether join '\u{200B}' into text
+  /// https://github.com/flutter/flutter/issues/18761#issuecomment-812390920
+  ///
+  /// Characters(text).join('\u{200B}')
+  ///
+  final bool joinZeroWidthSpace;
+
+  /// [StrutStyle.height] 行高, 自动除以 [fontSize] 来计算, 如果设置 [height] 则会忽略此值.
   final double? lineHeight;
 
   /// 文本最大行数
   final int? maxLines;
 
+  /// call back of SpecialText tap
+  final SpecialTextGestureTapCallback? onSpecialTextTap;
+
   /// 文本溢出模式
   final TextOverflow? overflow;
+
+  /// maxheight is equal to textPainter.preferredLineHeight
+  /// maxWidth is equal to textPainter.width
+  final TextOverflowWidget? overflowWidget;
+
+  /// build your ccustom text span
+  final SpecialTextSpanBuilder? specialTextSpanBuilder;
 
   /// 文本支撑样式, 定义文本的垂直布局属性
   final StrutStyle? strutStyle;
@@ -141,6 +196,13 @@ class MText extends StatelessWidget {
 
   /// 文本方向
   final TextDirection? textDirection;
+
+  @Deprecated(
+    'Use textScaler instead. '
+    'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
+    'This feature was deprecated after v3.12.0-2.0.pre.',
+  )
+  final double? textScaleFactor;
 
   /// 文本缩放
   final TextScaler? textScaler;
@@ -170,6 +232,8 @@ class MText extends StatelessWidget {
         showName: true));
     properties.add(
         EnumProperty<TextOverflow>('overflow', overflow, defaultValue: null));
+    properties.add(
+        DoubleProperty('textScaleFactor', textScaleFactor, defaultValue: null));
     properties.add(IntProperty('maxLines', maxLines, defaultValue: null));
     properties.add(EnumProperty<TextWidthBasis>(
         'textWidthBasis', textWidthBasis,
@@ -180,6 +244,30 @@ class MText extends StatelessWidget {
     if (semanticsLabel != null) {
       properties.add(StringProperty('semanticsLabel', semanticsLabel));
     }
+  }
+
+  InlineSpan _buildTextSpan(TextStyle? effectiveTextStyle) {
+    InlineSpan? innerTextSpan = specialTextSpanBuilder?.build(
+      data!,
+      textStyle: effectiveTextStyle,
+      onTap: onSpecialTextTap,
+    );
+
+    innerTextSpan ??= MTextSpan(
+      style: effectiveTextStyle,
+      text: data,
+      children: textSpan != null ? <InlineSpan>[textSpan!] : children,
+    );
+
+    if (joinZeroWidthSpace) {
+      innerTextSpan = ExtendedTextLibraryUtils.joinChar(
+        innerTextSpan,
+        Accumulator(),
+        ExtendedTextLibraryUtils.zeroWidthSpace,
+      );
+    }
+
+    return innerTextSpan;
   }
 
   @override
@@ -210,8 +298,13 @@ class MText extends StatelessWidget {
           .merge(const TextStyle(fontWeight: FontWeight.bold));
     }
     final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
-    final TextScaler textScaler =
-        this.textScaler ?? MediaQuery.textScalerOf(context);
+    final TextScaler textScaler = switch ((this.textScaler, textScaleFactor)) {
+      (final TextScaler textScaler, _) => textScaler,
+      // For unmigrated apps, fall back to textScaleFactor.
+      (null, final double textScaleFactor) =>
+        TextScaler.linear(textScaleFactor),
+      (null, null) => MediaQuery.textScalerOf(context),
+    };
 
     StrutStyle? effectiveStrutStyle = strutStyle;
     if (strutStyle == null && forceStrutHeight ||
@@ -235,7 +328,7 @@ class MText extends StatelessWidget {
         effectiveTextStyle?.overflow ??
         defaultTextStyle.overflow;
 
-    Widget result = RichText(
+    Widget result = MRichText(
       textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
       textDirection:
           textDirection, // RichText uses Directionality.of to obtain a default if this is null.
@@ -254,11 +347,9 @@ class MText extends StatelessWidget {
       selectionColor: selectionColor ??
           DefaultSelectionStyle.of(context).selectionColor ??
           DefaultSelectionStyle.defaultColor,
-      text: TextSpan(
-        style: effectiveTextStyle,
-        text: data,
-        children: textSpan != null ? <InlineSpan>[textSpan!] : children,
-      ),
+      text: _buildTextSpan(effectiveTextStyle),
+      overflowWidget: overflowWidget,
+      canSelectPlaceholderSpan: canSelectPlaceholderSpan,
     );
     if (registrar != null) {
       result = MouseRegion(
