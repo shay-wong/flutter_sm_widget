@@ -34,6 +34,9 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
+    this.clearPadding,
+    this.clearOverlay,
+    this.clearSplash,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.standard;
 
@@ -61,6 +64,9 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
+    this.clearPadding,
+    this.clearOverlay,
+    this.clearSplash,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.filled;
 
@@ -88,6 +94,9 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
+    this.clearPadding,
+    this.clearOverlay,
+    this.clearSplash,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.filledTonal;
 
@@ -115,6 +124,9 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
+    this.clearPadding,
+    this.clearOverlay,
+    this.clearSplash,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.outlined;
 
@@ -132,16 +144,33 @@ class MIconButton extends StatelessWidget {
   final bool? isSelected;
   final MouseCursor? mouseCursor;
   final VoidCallback? onPressed;
-  final EdgeInsetsGeometry? padding;
   final Widget? selectedIcon;
   final Color? splashColor;
   final double? splashRadius;
-  final ButtonStyle? style;
   final String? tooltip;
   final VisualDensity? visualDensity;
 
+  /// 是否清除默认的 [ButtonStyle.overlayColor]
+  final bool? clearOverlay;
+
+  /// 是否清除默认 [ButtonStyle.padding],
+  /// 需要和 [padding] 保持在在同一层级, 要么都在 [style] 中设置.
+  final bool? clearPadding;
+
+  /// 是否清除默认 [ButtonStyle.splashFactory]
+  final bool? clearSplash;
+
   /// 即 [ButtonStyle.foregroundColor]
   final Color? color;
+
+  /// 即 [ButtonStyle.padding], 会合并到 [style] 中.
+  /// 当 [style] 为 [ButtonStyle] 时，[ButtonStyle.padding] 为 null 时有效.
+  /// 当 [style] 为 [MButtonStyle] 时，并且 [MButtonStyle.padding] 和 [MButtonStyle.clearPadding] 为 null 时有效.
+  /// 需要和 [clearPadding] 保持在同一层级, 要么都在 [style] 中设置.
+  final EdgeInsetsGeometry? padding;
+
+  /// 按钮样式, 优先级最高, 当设置 [style] 中的样式后, 其他样式属性将失效
+  final ButtonStyle? style;
 
   final _MIconButtonVariant _variant;
 
@@ -198,8 +227,8 @@ class MIconButton extends StatelessWidget {
     BorderRadius? borderRadius,
     double? radius,
     bool? clearPadding,
-    bool? noOverlay,
-    bool? noSplash,
+    bool? clearOverlay,
+    bool? clearSplash,
     double? width,
     double? height,
     double? size,
@@ -236,8 +265,8 @@ class MIconButton extends StatelessWidget {
       overlayFocusColor: focusColor,
       overlayHoverColor: hoverColor,
       overlayHighlightColor: highlightColor,
-      noOverlay: noOverlay,
-      noSplash: noSplash,
+      clearOverlay: clearOverlay,
+      clearSplash: clearSplash,
       width: width,
       height: height,
       size: size,
@@ -281,6 +310,9 @@ class MIconButton extends StatelessWidget {
         enabledMouseCursor: mouseCursor,
         disabledMouseCursor: mouseCursor,
         enableFeedback: enableFeedback,
+        clearPadding: clearPadding,
+        clearOverlay: clearOverlay,
+        clearSplash: clearSplash,
         mode: mode,
       );
       if (style != null) {

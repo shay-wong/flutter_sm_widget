@@ -18,33 +18,42 @@ class MButtonExample1 extends StatelessWidget {
           MButton(
             onPressed: () {},
             style: MButtonStyle.from(
-              // foregroundColor: Colors.amber,
-              // useMaterial3: false,
-              noOverlay: true,
-              noSplash: true,
-              overlayColor: Colors.amber,
+              clearPadding: true,
+              width: 100,
+              height: 50,
+              radius: 20,
+              disabledBackgroundColor: Colors.grey,
+              selectedBackgroundColor: Colors.amber,
+              selectedForegroundColor: Colors.red,
+              // foregroundColor: Colors.blue,
+              // clearSplash: true,
+              // clearOverlay: true,
+            ),
+            isSelected: true,
+            child: const MText('这是一个按钮'),
+          ),
+          const SizedBox(height: 5),
+          TextButton(
+            onPressed: () {},
+            style: MButtonStyle.from(
+              clearPadding: true,
+              width: 100,
+              height: 50,
+              radius: 20,
+              disabledBackgroundColor: Colors.grey,
+              selectedBackgroundColor: Colors.amber,
+              selectedForegroundColor: Colors.red,
+              // foregroundColor: Colors.blue,
+              // clearSplash: true,
+              // clearOverlay: true,
+            ),
+            statesController: MaterialStatesController(
+              <MaterialState>{
+                MaterialState.selected,
+              },
             ),
             child: const MText('这是一个按钮'),
           ),
-          // TextButton(
-          //   onPressed: () {},
-          //   style: ButtonStyle(
-          //     overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-          //       if (states.contains(MaterialState.pressed)) {
-          //         return null;
-          //       }
-          //       if (states.contains(MaterialState.hovered)) {
-          //         return null;
-          //       }
-          //       if (states.contains(MaterialState.focused)) {
-          //         return null;
-          //       }
-          //       return null;
-          //     }),
-          //     splashFactory: NoSplash.splashFactory,
-          //   ),
-          //   child: const MText('这是一个按钮'),
-          // ),
         ],
       ),
     );

@@ -280,8 +280,8 @@ class MTextFieldExample extends StatelessWidget {
                           MIconButton(
                             style: MButtonStyle.from(
                               clearPadding: true,
-                              noSplash: true,
-                              noOverlay: true,
+                              clearSplash: true,
+                              clearOverlay: true,
                             ),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 8.5),
@@ -300,8 +300,8 @@ class MTextFieldExample extends StatelessWidget {
                             ),
                             style: MButtonStyle.from(
                               clearPadding: true,
-                              noSplash: true,
-                              noOverlay: true,
+                              clearSplash: true,
+                              clearOverlay: true,
                             ),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 8.5),

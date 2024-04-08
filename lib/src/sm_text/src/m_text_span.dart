@@ -10,7 +10,7 @@ class MTextSpan extends TextSpan {
     super.children,
     super.style,
     super.recognizer,
-    MouseCursor? mouseCursor,
+    super.mouseCursor,
     super.onEnter,
     super.onExit,
     super.semanticsLabel,

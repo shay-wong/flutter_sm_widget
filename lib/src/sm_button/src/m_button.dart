@@ -1,10 +1,10 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:sm_widget/src/sm_button/src/m_button_style.dart';
+import 'package:sm_widget/sm_widget.dart';
+
+part '_m_button.dart';
 
 class MButton extends ButtonStyleButton {
   const MButton({
@@ -21,6 +21,9 @@ class MButton extends ButtonStyleButton {
     super.isSemanticButton,
     required Widget super.child,
     this.isSelected,
+    this.clearPadding,
+    this.clearOverlay,
+    this.clearSplash,
   });
 
   factory MButton.icon({
@@ -34,14 +37,64 @@ class MButton extends ButtonStyleButton {
     bool? autofocus,
     Clip? clipBehavior,
     MaterialStatesController? statesController,
+    bool? isSelected,
+    bool? clearOverlay,
+    bool? clearPadding,
+    bool? clearSplash,
     required Widget icon,
-    Widget label,
+    Widget? label,
     MButtonIconAlignment? alignment,
     double? space,
-    bool? isSelected,
   }) = _MButtonWithIcon;
 
-  /// 是否选中
+  factory MButton.image({
+    Key? key,
+    VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
+    bool? autofocus,
+    Clip? clipBehavior,
+    MaterialStatesController? statesController,
+    bool? isSelected,
+    bool? clearOverlay,
+    bool? clearPadding,
+    bool? clearSplash,
+    Widget? label,
+    String? source,
+    Widget? image,
+    IconData? icon,
+    MButtonIconAlignment? alignment,
+    double? space,
+  }) = _MButtonWithImage;
+
+  factory MButton.text({
+    Key? key,
+    VoidCallback? onPressed,
+    VoidCallback? onLongPress,
+    ValueChanged<bool>? onHover,
+    ValueChanged<bool>? onFocusChange,
+    ButtonStyle? style,
+    FocusNode? focusNode,
+    bool? autofocus,
+    Clip? clipBehavior,
+    MaterialStatesController? statesController,
+    bool? isSemanticButton,
+    bool? isSelected,
+    bool? clearOverlay,
+    bool? clearPadding,
+    bool? clearSplash,
+    String? data,
+    Widget? text,
+  }) = _MButtonWithText;
+
+  final bool? clearOverlay;
+  final bool? clearPadding;
+  final bool? clearSplash;
+
+  /// 是否选中, 默认不选中, 设置 [statesController] 时无效
   final bool? isSelected;
 
   @override
@@ -50,8 +103,23 @@ class MButton extends ButtonStyleButton {
       context,
       isSelected: isSelected,
       mode: MButtonMode.text,
+    ).copyFrom(
+      clearPadding: clearPadding,
+      clearOverlay: clearOverlay,
+      clearSplash: clearSplash,
     );
   }
+
+  @override
+  MaterialStatesController? get statesController =>
+      super.statesController ??
+      (isSelected != null && isSelected!
+          ? MaterialStatesController(
+              <MaterialState>{
+                MaterialState.selected,
+              },
+            )
+          : null);
 
   @override
   ButtonStyle? themeStyleOf(BuildContext context) {
@@ -87,8 +155,8 @@ class MButton extends ButtonStyleButton {
     double? radius,
     bool? clearPadding,
     Color? overlayColor,
-    bool? noOverlay,
-    bool? noSplash,
+    bool? clearOverlay,
+    bool? clearSplash,
     double? width,
     double? height,
     double? size,
@@ -124,105 +192,13 @@ class MButton extends ButtonStyleButton {
       radius: radius,
       clearPadding: clearPadding,
       overlayColor: overlayColor,
-      noOverlay: noOverlay,
-      noSplash: noSplash,
+      clearOverlay: clearOverlay,
+      clearSplash: clearSplash,
       width: width,
       height: height,
       size: size,
       useMaterial3: useMaterial3,
       mode: mode ?? MButtonMode.text,
-    );
-  }
-}
-
-class _MButtonWithIcon extends MButton {
-  _MButtonWithIcon({
-    super.key,
-    super.onPressed,
-    super.onLongPress,
-    super.onHover,
-    super.onFocusChange,
-    super.style,
-    super.focusNode,
-    bool? autofocus,
-    Clip? clipBehavior,
-    super.statesController,
-    required Widget icon,
-    Widget? label,
-    MButtonIconAlignment? alignment,
-    double? space,
-    super.isSelected,
-  })  : alignment = alignment ?? MButtonIconAlignment.start,
-        super(
-          autofocus: autofocus ?? false,
-          clipBehavior: clipBehavior ?? Clip.none,
-          child: _MButtonWithIconChild(
-            icon: icon,
-            label: label,
-            space: space,
-            alignment: alignment ?? MButtonIconAlignment.start,
-          ),
-        );
-
-  final MButtonIconAlignment alignment;
-
-  @override
-  ButtonStyle defaultStyleOf(BuildContext context) {
-    return MButtonStyle.defaultOf(
-      context,
-      isSelected: isSelected,
-      alignment: alignment,
-      mode: MButtonMode.textIcon,
-    );
-  }
-}
-
-class _MButtonWithIconChild extends StatelessWidget {
-  const _MButtonWithIconChild({
-    this.label,
-    required this.icon,
-    this.space,
-    this.alignment = MButtonIconAlignment.start,
-  });
-
-  final MButtonIconAlignment alignment;
-  final Widget icon;
-  final Widget? label;
-  final double? space;
-
-  @override
-  Widget build(BuildContext context) {
-    if (label == null) {
-      return icon;
-    }
-    final double scale = MediaQuery.textScalerOf(context).textScaleFactor;
-    // [icon] 和 [label] 的默认间距
-    final gap = alignment.isVertical ? 6.0 : 8.0;
-    final double effectiveGap = space ??
-        (scale <= 1 ? gap : lerpDouble(gap, gap / 2, math.min(scale - 1, 1))!);
-    final effectiveIcon = Flexible(child: icon);
-    final effectiveSpace = alignment.isVertical
-        ? SizedBox(height: effectiveGap)
-        : SizedBox(width: effectiveGap);
-    final effectiveLabel = Flexible(child: label!);
-
-    List<Widget> children = <Widget>[
-      effectiveIcon,
-      effectiveSpace,
-      effectiveLabel,
-    ];
-    if (alignment.isTerminus) {
-      children = children.reversed.toList();
-    }
-    if (alignment.isVertical) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: children,
-      );
-    }
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: children,
     );
   }
 }

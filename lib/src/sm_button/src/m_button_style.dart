@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sm_logger/sm_logger.dart';
 
+part '_m_button_default_style.dart';
+
 enum MButtonMode {
   text,
   textIcon,
@@ -16,264 +18,22 @@ enum MButtonMode {
   elevated,
 }
 
-extension _MButtonModeExt on MButtonMode {
-  bool get isTextButton =>
-      this == MButtonMode.text || this == MButtonMode.textIcon;
-
-  bool get isIconButton =>
-      this == MButtonMode.iconStandard ||
-      this == MButtonMode.iconFilled ||
-      this == MButtonMode.iconTonal ||
-      this == MButtonMode.iconOutlined;
-}
-
-@immutable
-class _MButtonDefaultColor extends MaterialStateProperty<Color?> {
-  _MButtonDefaultColor(
-    this.color,
-    this.disabled,
-    this.unselected,
-    this.selected,
-    this.selectedDisabled,
-    this.toggleable,
-  );
-
-  final Color? color;
-  final Color? disabled;
-  final Color? selected;
-  final Color? selectedDisabled;
-  final bool toggleable;
-  final Color? unselected;
-
-  @override
-  Color? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.selected)) {
-      if (states.contains(MaterialState.disabled)) {
-        return selectedDisabled ?? disabled;
-      }
-      return selected;
-    }
-    if (states.contains(MaterialState.disabled)) {
-      return disabled;
-    }
-    if (toggleable) {
-      // toggleable but unselected case
-      return unselected;
-    }
-    return color;
-  }
-
-  @override
-  String toString() {
-    return '{disabled: $disabled, otherwise: $color}';
-  }
-}
-
-@immutable
-class _MButtonDefaultElevation extends MaterialStateProperty<double> {
-  _MButtonDefaultElevation({
-    required this.elevation,
-    this.pressed,
-    this.hovered,
-    this.focused,
-    this.disable,
-  });
-
-  final double? disable;
-  final double elevation;
-  final double? focused;
-  final double? hovered;
-  final double? pressed;
-
-  @override
-  double resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return disable ?? elevation;
-    }
-    if (states.contains(MaterialState.pressed)) {
-      return pressed ?? elevation;
-    }
-    if (states.contains(MaterialState.hovered)) {
-      return hovered ?? elevation;
-    }
-    if (states.contains(MaterialState.focused)) {
-      return focused ?? elevation;
-    }
-    return elevation;
-  }
-}
-
-@immutable
-class _MButtonDefaultIconColor extends MaterialStateProperty<Color?> {
-  _MButtonDefaultIconColor(this.iconColor, this.disabledIconColor);
-
-  final Color? disabledIconColor;
-  final Color? iconColor;
-
-  @override
-  Color? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return disabledIconColor;
-    }
-    return iconColor;
-  }
-
-  @override
-  String toString() {
-    return '{disabled: $disabledIconColor, color: $iconColor}';
-  }
-}
-
-@immutable
-class _MButtonDefaultMouseCursor extends MaterialStateProperty<MouseCursor?>
-    with Diagnosticable {
-  _MButtonDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
-
-  final MouseCursor? disabledCursor;
-  final MouseCursor? enabledCursor;
-
-  @override
-  MouseCursor? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return disabledCursor;
-    }
-    return enabledCursor;
-  }
-}
-
-@immutable
-class _MButtonDefaultOverlay extends MaterialStateProperty<Color?> {
-  _MButtonDefaultOverlay(
-    this.primary,
-    this.focus,
-    this.hover,
-    this.highlight,
-    this.unselectedPrimary,
-    this.unselectedFocus,
-    this.unselectedHover,
-    this.unselectedHighlight,
-    this.selectedPrimary,
-    this.selectedFocus,
-    this.selectedHover,
-    this.selectedHighlight,
-    this.noOverlay,
-    this.toggleable,
-    this.useMaterial3,
-    this.mode,
-  );
-
-  final Color? focus;
-  final Color? highlight;
-  final Color? hover;
-  final MButtonMode mode;
-  final bool noOverlay;
-  final Color? primary;
-  final Color? selectedFocus;
-  final Color? selectedHighlight;
-  final Color? selectedHover;
-  final Color? selectedPrimary;
-  final bool toggleable;
-  final Color? unselectedFocus;
-  final Color? unselectedHighlight;
-  final Color? unselectedHover;
-  final Color? unselectedPrimary;
-  final bool useMaterial3;
-
-  @override
-  Color? resolve(Set<MaterialState> states) {
-    if (noOverlay) {
-      return Colors.transparent;
-    }
-
-    final pressedOrFocusedOpacity = mode == MButtonMode.elevated ? 0.24 : 0.12;
-    final hoveredOpacity = useMaterial3 ? 0.08 : 0.04;
-
-    if (states.contains(MaterialState.selected)) {
-      if (states.contains(MaterialState.pressed)) {
-        return selectedHighlight ??
-            primary?.withOpacity(pressedOrFocusedOpacity);
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return selectedHover ?? primary?.withOpacity(hoveredOpacity);
-      }
-      if (states.contains(MaterialState.focused)) {
-        return selectedFocus ?? primary?.withOpacity(pressedOrFocusedOpacity);
-      }
-    }
-    if (toggleable) {
-      // toggleable but unselected case
-      if (states.contains(MaterialState.pressed)) {
-        return unselectedHighlight ??
-            unselectedPrimary?.withOpacity(pressedOrFocusedOpacity);
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return unselectedHover ??
-            unselectedPrimary?.withOpacity(hoveredOpacity);
-      }
-      if (states.contains(MaterialState.focused)) {
-        return unselectedFocus ??
-            unselectedPrimary?.withOpacity(pressedOrFocusedOpacity);
-      }
-    }
-
-    if (states.contains(MaterialState.pressed)) {
-      return highlight ?? primary?.withOpacity(pressedOrFocusedOpacity);
-    }
-    if (states.contains(MaterialState.hovered)) {
-      return hover ?? primary?.withOpacity(hoveredOpacity);
-    }
-    if (states.contains(MaterialState.focused)) {
-      return focus ?? primary?.withOpacity(pressedOrFocusedOpacity);
-    }
-
-    return mode.isIconButton ? Colors.transparent : null;
-  }
-
-  @override
-  String toString() {
-    final pressedOrFocusedOpacity = mode == MButtonMode.elevated ? 0.24 : 0.12;
-    final hoveredOpacity = useMaterial3 ? 0.08 : 0.04;
-    return '{hovered: ${hover ?? primary?.withOpacity(hoveredOpacity)}, focused: ${focus ?? primary?.withOpacity(pressedOrFocusedOpacity)}, pressed: ${highlight ?? primary?.withOpacity(pressedOrFocusedOpacity)}, otherwise: null}';
-  }
-}
-
-@immutable
-class _MButtonDefaultSide extends MaterialStateProperty<BorderSide?> {
-  _MButtonDefaultSide(
-    this.color,
-    this.focused,
-    this.disable,
-  );
-
-  final Color? color;
-  final Color? disable;
-  final Color? focused;
-
-  @override
-  BorderSide? resolve(Set<MaterialState> states) {
-    Color? color = this.color;
-
-    if (states.contains(MaterialState.disabled)) {
-      color = disable;
-    }
-    if (states.contains(MaterialState.focused)) {
-      color = focused;
-    }
-    return color == null ? null : BorderSide(color: color);
-  }
-}
-
+///
+/// [maximumSize] 最大尺寸
+/// !: 注意 如果设置了 [maximumSize] 不设置 [minimumSize], 并且 [maximumSize] 小于 [minimumSize], 则会导致约束冲突.
+/// !: BoxConstraints has both width and height constraints non-normalized.
+///
 class MButtonStyle extends ButtonStyle {
   const MButtonStyle({
     super.textStyle,
     super.backgroundColor,
     super.foregroundColor,
-    super.overlayColor,
+    MaterialStateProperty<Color?>? overlayColor,
     super.shadowColor,
     super.surfaceTintColor,
     super.elevation,
-    super.padding,
-    super.minimumSize,
+    MaterialStateProperty<EdgeInsetsGeometry?>? padding,
+    MaterialStateProperty<Size?>? minimumSize,
     super.fixedSize,
     super.maximumSize,
     super.iconColor,
@@ -282,18 +42,36 @@ class MButtonStyle extends ButtonStyle {
     super.shape,
     super.mouseCursor,
     super.visualDensity,
-    super.tapTargetSize,
+    MaterialTapTargetSize? tapTargetSize,
     super.animationDuration,
     super.enableFeedback,
     super.alignment,
-    super.splashFactory,
-  });
-
-  /// [maximumSize] 最大尺寸
-  /// !!!: 注意 [IconButton] 在 [Material 3] 下 [minimumSize] 默认为 40x40.
-  /// !!!: 如果设置了 [maximumSize] 不设置 [minimumSize], 并且 [maximumSize] 小于 [minimumSize], 则会导致约束冲突.
-  /// BoxConstraints has both width and height constraints non-normalized.
-  // final MaterialStateProperty<Size?>? maximumSize;
+    InteractiveInkFeatureFactory? splashFactory,
+    this.clearPadding,
+    this.clearOverlay,
+    this.clearSplash,
+  }) : super(
+          overlayColor: overlayColor ??
+              (clearOverlay != null && clearOverlay
+                  ? const MaterialStatePropertyAll(Colors.transparent)
+                  : null),
+          padding: padding ??
+              (clearPadding != null && clearPadding
+                  ? const MaterialStatePropertyAll(EdgeInsets.zero)
+                  : null),
+          minimumSize: minimumSize ??
+              (clearPadding != null && clearPadding
+                  ? const MaterialStatePropertyAll(Size.zero)
+                  : null),
+          tapTargetSize: tapTargetSize ??
+              (clearPadding != null && clearPadding
+                  ? MaterialTapTargetSize.shrinkWrap
+                  : null),
+          splashFactory: splashFactory ??
+              (clearSplash != null && clearSplash
+                  ? NoSplash.splashFactory
+                  : null),
+        );
 
   factory MButtonStyle.from({
     Color? foregroundColor,
@@ -342,8 +120,8 @@ class MButtonStyle extends ButtonStyle {
     Color? overlaySelectedFocusColor,
     Color? overlaySelectedHighlightColor,
     Color? overlaySelectedHoverColor,
-    bool? noOverlay,
-    bool? noSplash,
+    bool? clearOverlay,
+    bool? clearSplash,
     double? width,
     double? height,
     double? size,
@@ -351,39 +129,48 @@ class MButtonStyle extends ButtonStyle {
     bool? useMaterial3,
     MButtonMode? mode,
   }) {
-    final currentMode = mode ?? MButtonMode.text;
-    final clears = clearPadding ?? false;
+    mode = mode ?? MButtonMode.text;
     final toggleable = isSelected != null;
 
     final MaterialStateProperty<Color?>? foregroundColorProp =
-        (foregroundColor == null && disabledForegroundColor == null)
+        (foregroundColor == null &&
+                disabledForegroundColor == null &&
+                unselectedForegroundColor == null &&
+                selectedForegroundColor == null &&
+                selectedDisabledForegroundColor == null)
             ? null
             : _MButtonDefaultColor(
                 foregroundColor,
                 disabledForegroundColor,
                 // [IconButton] 有默认值, 无需设置默认值为 foregroundColor
                 unselectedForegroundColor ??
-                    (currentMode.isIconButton ? null : foregroundColor),
-                selectedForegroundColor,
+                    (mode.isIconButton ? null : foregroundColor),
+                // [TextButton] 除了 disabledForegroundColor 其余默认值都为 foregroundColor
+                selectedForegroundColor ??
+                    (mode.isTextButton ? foregroundColor : null),
                 selectedDisabledForegroundColor,
                 toggleable,
               );
 
     final MaterialStateProperty<Color?>? backgroundColorProp =
-        (backgroundColor == null && disabledBackgroundColor == null)
+        (backgroundColor == null &&
+                disabledBackgroundColor == null &&
+                unselectedBackgroundColor == null &&
+                selectedBackgroundColor == null &&
+                selectedDisabledBackgroundColor == null)
             ? null
             : _MButtonDefaultColor(
                 backgroundColor,
                 // [TextButton] 默认为透明, 需设置默认值为 backgroundColor
                 disabledBackgroundColor ??
-                    (currentMode.isTextButton ? backgroundColor : null),
+                    (mode.isTextButton ? backgroundColor : null),
                 // [IconButton] 有默认值, 无需设置默认值为 backgroundColor
                 unselectedBackgroundColor ??
-                    (currentMode.isIconButton ? null : backgroundColor),
+                    (mode.isIconButton ? null : backgroundColor),
                 selectedBackgroundColor,
                 // [TextButton] 默认为透明, 需设置默认值为 backgroundColor
                 selectedDisabledBackgroundColor ??
-                    (currentMode.isTextButton ? selectedBackgroundColor : null),
+                    (mode.isTextButton ? selectedBackgroundColor : null),
                 toggleable,
               );
 
@@ -400,7 +187,7 @@ class MButtonStyle extends ButtonStyle {
         overlaySelectedHighlightColor == null &&
         overlaySelectedHoverColor == null;
 
-    final effectiveOverlayColor = overlaySetting && noOverlay == null
+    final effectiveOverlayColor = overlaySetting && clearOverlay == null
         ? null
         : _MButtonDefaultOverlay(
             overlayColor ?? foregroundColor,
@@ -415,13 +202,13 @@ class MButtonStyle extends ButtonStyle {
             overlaySelectedFocusColor,
             overlaySelectedHoverColor,
             overlaySelectedHighlightColor,
-            noOverlay != null && noOverlay && overlaySetting,
+            clearOverlay != null && clearOverlay && overlaySetting,
             toggleable,
             useMaterial3 ?? true,
-            currentMode,
+            mode,
           );
-    if (noOverlay != null && noOverlay && !overlaySetting) {
-      logger.w('overlayColors is not null, noOverlay will be ignored');
+    if (clearOverlay != null && clearOverlay && !overlaySetting) {
+      logger.w('overlayColors is not null, clearOverlay will be ignored');
     }
 
     final MaterialStateProperty<Color?>? iconColorProp =
@@ -433,30 +220,20 @@ class MButtonStyle extends ButtonStyle {
 
     final MaterialStateProperty<double>? elevationValue = (elevation == null)
         ? null
-        : currentMode == MButtonMode.elevated
+        : mode == MButtonMode.elevated
             ? _MElevatedButtonDefaultElevation(elevation)
             : ButtonStyleButton.allOrNull<double>(elevation);
 
-    final effectivePadding = padding ?? (clears ? EdgeInsets.zero : null);
-    final effectiveMinimumSize = minimumSize ?? (clears ? Size.zero : null);
-    final effectiveTapTargetSize =
-        tapTargetSize ?? (clears ? MaterialTapTargetSize.shrinkWrap : null);
-
-    final effectiveWidth = width ?? size;
-    final effectiveHeight = height ?? size;
     final Size? effectiveSize = fixedSize ??
-        (effectiveWidth != null || effectiveHeight != null
-            ? Size(effectiveWidth ?? double.infinity,
-                effectiveHeight ?? double.infinity)
+        ((width ?? size) != null || (height ?? size) != null
+            ? Size(width ?? size ?? double.infinity,
+                height ?? size ?? double.infinity)
             : null);
     final OutlinedBorder? effectiveShape = shape ??
         (borderRadius != null || radius != null
             ? RoundedRectangleBorder(
                 borderRadius: borderRadius ?? BorderRadius.circular(radius!))
             : null);
-
-    final effectiveSplashFactory =
-        splashFactory ?? ((noSplash ?? false) ? NoSplash.splashFactory : null);
 
     return MButtonStyle(
       textStyle: ButtonStyleButton.allOrNull<TextStyle>(textStyle),
@@ -468,22 +245,33 @@ class MButtonStyle extends ButtonStyle {
       iconColor: iconColorProp,
       iconSize: ButtonStyleButton.allOrNull<double>(iconSize),
       elevation: elevationValue,
-      padding:
-          ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(effectivePadding),
-      minimumSize: ButtonStyleButton.allOrNull<Size>(effectiveMinimumSize),
+      padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(padding),
+      minimumSize: ButtonStyleButton.allOrNull<Size>(minimumSize),
       fixedSize: ButtonStyleButton.allOrNull<Size>(effectiveSize),
       maximumSize: ButtonStyleButton.allOrNull<Size>(maximumSize),
       side: ButtonStyleButton.allOrNull<BorderSide>(side),
       shape: ButtonStyleButton.allOrNull<OutlinedBorder>(effectiveShape),
       mouseCursor: mouseCursor,
       visualDensity: visualDensity,
-      tapTargetSize: effectiveTapTargetSize,
+      tapTargetSize: tapTargetSize,
       animationDuration: animationDuration,
       enableFeedback: enableFeedback,
       alignment: alignment,
-      splashFactory: effectiveSplashFactory,
+      splashFactory: splashFactory,
+      clearPadding: clearPadding,
+      clearOverlay: clearOverlay,
+      clearSplash: clearSplash,
     );
   }
+
+  /// 是否清除默认的 [_MButtonDefaultOverlay]
+  final bool? clearOverlay;
+
+  /// 是否清除默认 [_scaledPadding]
+  final bool? clearPadding;
+
+  /// 是否清除默认 [splashFactory]
+  final bool? clearSplash;
 
   static ButtonStyle defaultOf(
     BuildContext context, {
@@ -618,16 +406,12 @@ class MButtonStyle extends ButtonStyle {
         minimumSize = const Size(40.0, 40.0);
         iconSize = 24.0;
         visualDensity = VisualDensity.standard;
-        side = MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-          if (states.contains(MaterialState.selected)) {
-            return null;
-          } else {
-            if (states.contains(MaterialState.disabled)) {
-              return BorderSide(color: colorScheme.onSurface.withOpacity(0.12));
-            }
-            return BorderSide(color: colorScheme.outline);
-          }
-        });
+        side = _MButtonDefaultSide(
+          colorScheme.outline,
+          null,
+          null,
+          colorScheme.onSurface.withOpacity(0.12),
+        );
         break;
       case MButtonMode.iconStandard:
         foregroundColor = colorScheme.onSurfaceVariant;
@@ -644,6 +428,7 @@ class MButtonStyle extends ButtonStyle {
           useMaterial3
               ? colorScheme.outline
               : colorScheme.onSurface.withOpacity(0.12),
+          null,
           useMaterial3 ? colorScheme.primary : null,
           useMaterial3 ? colorScheme.onSurface.withOpacity(0.12) : null,
         );
@@ -719,34 +504,178 @@ extension MButtonStyleExt on ButtonStyle {
     bool? enableFeedback,
     AlignmentGeometry? alignment,
     InteractiveInkFeatureFactory? splashFactory,
+    Color? disabledForegroundColor,
+    Color? disabledBackgroundColor,
+    Color? unselectedForegroundColor,
+    Color? unselectedBackgroundColor,
+    Color? selectedForegroundColor,
+    Color? selectedBackgroundColor,
+    Color? selectedDisabledForegroundColor,
+    Color? selectedDisabledBackgroundColor,
+    Color? disabledIconColor,
+    MouseCursor? enabledMouseCursor,
+    MouseCursor? disabledMouseCursor,
+    BorderRadius? borderRadius,
+    double? radius,
+    bool? clearPadding,
+    Color? overlayFocusColor,
+    Color? overlayHighlightColor,
+    Color? overlayHoverColor,
+    Color? overlayUnselectedColor,
+    Color? overlayUnselectedFocusColor,
+    Color? overlayUnselectedHighlightColor,
+    Color? overlayUnselectedHoverColor,
+    Color? overlaySelectedColor,
+    Color? overlaySelectedFocusColor,
+    Color? overlaySelectedHighlightColor,
+    Color? overlaySelectedHoverColor,
+    bool? clearOverlay,
+    bool? clearSplash,
+    double? width,
+    double? height,
+    double? size,
+    bool? isSelected,
+    bool? useMaterial3,
+    MButtonMode? mode,
   }) {
+    mode = mode ?? MButtonMode.text;
+    clearPadding = clearPadding ?? false;
+    final toggleable = isSelected != null;
+
+    final MaterialStateProperty<Color?>? foregroundColorProp =
+        (foregroundColor == null && disabledForegroundColor == null)
+            ? null
+            : _MButtonDefaultColor(
+                foregroundColor,
+                disabledForegroundColor,
+                // [IconButton] 有默认值, 无需设置默认值为 foregroundColor
+                unselectedForegroundColor ??
+                    (mode.isIconButton ? null : foregroundColor),
+                selectedForegroundColor,
+                selectedDisabledForegroundColor,
+                toggleable,
+              );
+
+    final MaterialStateProperty<Color?>? backgroundColorProp =
+        (backgroundColor == null && disabledBackgroundColor == null)
+            ? null
+            : _MButtonDefaultColor(
+                backgroundColor,
+                // [TextButton] 默认为透明, 需设置默认值为 backgroundColor
+                disabledBackgroundColor ??
+                    (mode.isTextButton ? backgroundColor : null),
+                // [IconButton] 有默认值, 无需设置默认值为 backgroundColor
+                unselectedBackgroundColor ??
+                    (mode.isIconButton ? null : backgroundColor),
+                selectedBackgroundColor,
+                // [TextButton] 默认为透明, 需设置默认值为 backgroundColor
+                selectedDisabledBackgroundColor ??
+                    (mode.isTextButton ? selectedBackgroundColor : null),
+                toggleable,
+              );
+
+    final overlaySetting = overlayColor == null &&
+        overlayFocusColor == null &&
+        overlayHighlightColor == null &&
+        overlayHoverColor == null &&
+        overlayUnselectedColor == null &&
+        overlayUnselectedFocusColor == null &&
+        overlayUnselectedHighlightColor == null &&
+        overlayUnselectedHoverColor == null &&
+        overlaySelectedColor == null &&
+        overlaySelectedFocusColor == null &&
+        overlaySelectedHighlightColor == null &&
+        overlaySelectedHoverColor == null;
+
+    final effectiveOverlayColor = overlaySetting && clearOverlay == null
+        ? null
+        : _MButtonDefaultOverlay(
+            overlayColor ?? foregroundColor,
+            overlayFocusColor,
+            overlayHoverColor,
+            overlayHighlightColor,
+            overlayUnselectedColor,
+            overlayUnselectedFocusColor,
+            overlayUnselectedHoverColor,
+            overlayUnselectedHighlightColor,
+            overlaySelectedColor,
+            overlaySelectedFocusColor,
+            overlaySelectedHoverColor,
+            overlaySelectedHighlightColor,
+            clearOverlay != null && clearOverlay && overlaySetting,
+            toggleable,
+            useMaterial3 ?? true,
+            mode,
+          );
+    if (clearOverlay != null && clearOverlay && !overlaySetting) {
+      logger.w('overlayColors is not null, clearOverlay will be ignored');
+    }
+
+    final MaterialStateProperty<Color?>? iconColorProp =
+        (iconColor == null && disabledIconColor == null)
+            ? null
+            : _MButtonDefaultIconColor(iconColor, disabledIconColor);
+    final MaterialStateProperty<MouseCursor?>? effectiveMouseCursor =
+        enabledMouseCursor == null && disabledMouseCursor == null
+            ? null
+            : _MButtonDefaultMouseCursor(
+                enabledMouseCursor, disabledMouseCursor);
+
+    final MaterialStateProperty<double>? elevationValue = (elevation == null)
+        ? null
+        : mode == MButtonMode.elevated
+            ? _MElevatedButtonDefaultElevation(elevation)
+            : ButtonStyleButton.allOrNull<double>(elevation);
+
+    final effectivePadding = padding ?? (clearPadding ? EdgeInsets.zero : null);
+    final effectiveMinimumSize =
+        minimumSize ?? (clearPadding ? Size.zero : null);
+    final effectiveTapTargetSize = tapTargetSize ??
+        (clearPadding ? MaterialTapTargetSize.shrinkWrap : null);
+
+    final effectiveWidth = width ?? size;
+    final effectiveHeight = height ?? size;
+    final Size? effectiveSize = fixedSize ??
+        (effectiveWidth != null || effectiveHeight != null
+            ? Size(effectiveWidth ?? double.infinity,
+                effectiveHeight ?? double.infinity)
+            : null);
+    final OutlinedBorder? effectiveShape = shape ??
+        (borderRadius != null || radius != null
+            ? RoundedRectangleBorder(
+                borderRadius: borderRadius ?? BorderRadius.circular(radius!))
+            : null);
+
+    final effectiveSplashFactory = splashFactory ??
+        ((clearSplash ?? false) ? NoSplash.splashFactory : null);
+
     return copyWith(
       textStyle: ButtonStyleButton.allOrNull(textStyle) ?? this.textStyle,
-      backgroundColor:
-          ButtonStyleButton.allOrNull(backgroundColor) ?? this.backgroundColor,
-      foregroundColor:
-          ButtonStyleButton.allOrNull(foregroundColor) ?? this.foregroundColor,
-      overlayColor:
-          ButtonStyleButton.allOrNull(overlayColor) ?? this.overlayColor,
+      backgroundColor: backgroundColorProp ?? this.backgroundColor,
+      foregroundColor: foregroundColorProp ?? this.foregroundColor,
+      overlayColor: effectiveOverlayColor ?? this.overlayColor,
       shadowColor: ButtonStyleButton.allOrNull(shadowColor) ?? this.shadowColor,
       surfaceTintColor: ButtonStyleButton.allOrNull(surfaceTintColor) ??
           this.surfaceTintColor,
-      elevation: ButtonStyleButton.allOrNull(elevation) ?? this.elevation,
-      padding: ButtonStyleButton.allOrNull(padding) ?? this.padding,
-      minimumSize: ButtonStyleButton.allOrNull(minimumSize) ?? this.minimumSize,
-      fixedSize: ButtonStyleButton.allOrNull(fixedSize) ?? this.fixedSize,
+      elevation: elevationValue ?? this.elevation,
+      padding: ButtonStyleButton.allOrNull(effectivePadding) ?? this.padding,
+      minimumSize:
+          ButtonStyleButton.allOrNull(effectiveMinimumSize) ?? this.minimumSize,
+      fixedSize: ButtonStyleButton.allOrNull(effectiveSize) ?? this.fixedSize,
       maximumSize: ButtonStyleButton.allOrNull(maximumSize) ?? this.maximumSize,
-      iconColor: ButtonStyleButton.allOrNull(iconColor) ?? this.iconColor,
+      iconColor: iconColorProp ?? this.iconColor,
       iconSize: ButtonStyleButton.allOrNull(iconSize) ?? this.iconSize,
       side: ButtonStyleButton.allOrNull(side) ?? this.side,
-      shape: ButtonStyleButton.allOrNull(shape) ?? this.shape,
-      mouseCursor: ButtonStyleButton.allOrNull(mouseCursor) ?? this.mouseCursor,
+      shape: ButtonStyleButton.allOrNull(effectiveShape) ?? this.shape,
+      mouseCursor: ButtonStyleButton.allOrNull(mouseCursor) ??
+          effectiveMouseCursor ??
+          this.mouseCursor,
       visualDensity: visualDensity ?? this.visualDensity,
-      tapTargetSize: tapTargetSize ?? this.tapTargetSize,
+      tapTargetSize: effectiveTapTargetSize ?? this.tapTargetSize,
       animationDuration: animationDuration ?? this.animationDuration,
       enableFeedback: enableFeedback ?? this.enableFeedback,
       alignment: alignment ?? this.alignment,
-      splashFactory: splashFactory ?? this.splashFactory,
+      splashFactory: effectiveSplashFactory ?? this.splashFactory,
     );
   }
 }
@@ -812,31 +741,6 @@ EdgeInsetsGeometry _scaledPadding(
         const EdgeInsets.symmetric(horizontal: 4),
         effectiveTextScale,
       );
-  }
-}
-
-@immutable
-class _MElevatedButtonDefaultElevation extends MaterialStateProperty<double>
-    with Diagnosticable {
-  _MElevatedButtonDefaultElevation(this.elevation);
-
-  final double elevation;
-
-  @override
-  double resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return 0;
-    }
-    if (states.contains(MaterialState.pressed)) {
-      return elevation + 6;
-    }
-    if (states.contains(MaterialState.hovered)) {
-      return elevation + 2;
-    }
-    if (states.contains(MaterialState.focused)) {
-      return elevation + 2;
-    }
-    return elevation;
   }
 }
 
