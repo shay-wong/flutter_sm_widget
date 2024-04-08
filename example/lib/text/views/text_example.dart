@@ -6,7 +6,6 @@ class MTextExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('MText Example'),
@@ -177,8 +176,7 @@ class MTextExample extends StatelessWidget {
             ),
           ],
         );
-      }
-      ),
+      }),
     );
   }
 }

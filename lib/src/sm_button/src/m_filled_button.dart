@@ -89,7 +89,9 @@ class MFilledButton extends ButtonStyleButton {
   ButtonStyle defaultStyleOf(BuildContext context) {
     return MButtonStyle.defaultOf(
       context,
-      mode: _variant == _MFilledButtonVariant.filled ? MButtonMode.filled : MButtonMode.tonal,
+      mode: _variant == _MFilledButtonVariant.filled
+          ? MButtonMode.filled
+          : MButtonMode.tonal,
     );
   }
 
@@ -210,8 +212,11 @@ class _MFilledButtonWithIcon extends MFilledButton {
   ButtonStyle defaultStyleOf(BuildContext context) {
     final bool useMaterial3 = Theme.of(context).useMaterial3;
     final ButtonStyle buttonStyle = super.defaultStyleOf(context);
-    final double defaultFontSize = buttonStyle.textStyle?.resolve(const <MaterialState>{})?.fontSize ?? 14.0;
-    final double effectiveTextScale = MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
+    final double defaultFontSize =
+        buttonStyle.textStyle?.resolve(const <MaterialState>{})?.fontSize ??
+            14.0;
+    final double effectiveTextScale =
+        MediaQuery.textScalerOf(context).scale(defaultFontSize) / 14.0;
 
     final EdgeInsetsGeometry scaledPadding = useMaterial3
         ? ButtonStyleButton.scaledPadding(
@@ -243,7 +248,8 @@ class _MFilledButtonWithIconChild extends StatelessWidget {
     final double scale = MediaQuery.textScalerOf(context).textScaleFactor;
     // Adjust the gap based on the text scale factor. Start at 8, and lerp
     // to 4 based on how large the text is.
-    final double gap = scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1))!;
+    final double gap =
+        scale <= 1 ? 8 : lerpDouble(8, 4, math.min(scale - 1, 1))!;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[icon, SizedBox(width: gap), Flexible(child: label)],

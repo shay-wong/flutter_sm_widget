@@ -69,7 +69,8 @@ class _WidgetSpanDemoState extends State<WidgetSpanDemo> {
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.add),
                         onPressed: () {
-                          final TextSelection selection = controller.selection.copyWith();
+                          final TextSelection selection =
+                              controller.selection.copyWith();
                           showDialog<void>(
                               context: context,
                               barrierDismissible: true,
@@ -87,16 +88,22 @@ class _WidgetSpanDemoState extends State<WidgetSpanDemo> {
                                           children: <Widget>[
                                             TextButton(
                                                 onPressed: () {
-                                                  insertEmail('zmtzawqlp@live.com ', selection);
+                                                  insertEmail(
+                                                      'zmtzawqlp@live.com ',
+                                                      selection);
                                                   Navigator.pop(context);
                                                 },
-                                                child: const Text('zmtzawqlp@live.com')),
+                                                child: const Text(
+                                                    'zmtzawqlp@live.com')),
                                             TextButton(
                                                 onPressed: () {
-                                                  insertEmail('410496936@qq.com ', selection);
+                                                  insertEmail(
+                                                      '410496936@qq.com ',
+                                                      selection);
                                                   Navigator.pop(context);
                                                 },
-                                                child: const Text('410496936@qq.com')),
+                                                child: const Text(
+                                                    '410496936@qq.com')),
                                           ],
                                         ),
                                       )),
@@ -127,7 +134,8 @@ class _WidgetSpanDemoState extends State<WidgetSpanDemo> {
                 child: MTextField(
                   controller: controller1,
                   maxLines: null,
-                  decoration: const InputDecoration(border: InputBorder.none, hintText: 'input topic here'),
+                  decoration: const InputDecoration(
+                      border: InputBorder.none, hintText: 'input topic here'),
                 ),
               )
             ],
@@ -138,7 +146,8 @@ class _WidgetSpanDemoState extends State<WidgetSpanDemo> {
               controller: controller2,
               maxLines: null,
               specialTextSpanBuilder: MySpecialTextSpanBuilder(),
-              decoration: const InputDecoration(border: InputBorder.none, contentPadding: EdgeInsets.all(10)),
+              decoration: const InputDecoration(
+                  border: InputBorder.none, contentPadding: EdgeInsets.all(10)),
             ),
           )
         ],
@@ -165,10 +174,14 @@ class _WidgetSpanDemoState extends State<WidgetSpanDemo> {
         end = start;
       }
       controller.value = value.copyWith(
-          text: newText, selection: selection.copyWith(baseOffset: end + text.length, extentOffset: end + text.length));
+          text: newText,
+          selection: selection.copyWith(
+              baseOffset: end + text.length, extentOffset: end + text.length));
     } else {
-      controller.value =
-          TextEditingValue(text: text, selection: TextSelection.fromPosition(TextPosition(offset: text.length)));
+      controller.value = TextEditingValue(
+          text: text,
+          selection:
+              TextSelection.fromPosition(TextPosition(offset: text.length)));
     }
   }
 }

@@ -226,23 +226,32 @@ class MText extends StatelessWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('data', data, showName: false));
     if (textSpan != null) {
-      properties.add(textSpan!.toDiagnosticsNode(name: 'textSpan', style: DiagnosticsTreeStyle.transition));
+      properties.add(textSpan!.toDiagnosticsNode(
+          name: 'textSpan', style: DiagnosticsTreeStyle.transition));
     }
     style?.debugFillProperties(properties);
-    properties.add(EnumProperty<TextAlign>('textAlign', textAlign, defaultValue: null));
-    properties.add(EnumProperty<TextDirection>('textDirection', textDirection, defaultValue: null));
-    properties.add(DiagnosticsProperty<Locale>('locale', locale, defaultValue: null));
+    properties.add(
+        EnumProperty<TextAlign>('textAlign', textAlign, defaultValue: null));
+    properties.add(EnumProperty<TextDirection>('textDirection', textDirection,
+        defaultValue: null));
+    properties
+        .add(DiagnosticsProperty<Locale>('locale', locale, defaultValue: null));
     properties.add(FlagProperty('softWrap',
         value: softWrap,
         ifTrue: 'wrapping at box width',
         ifFalse: 'no wrapping except at line break characters',
         showName: true));
-    properties.add(EnumProperty<TextOverflow>('overflow', overflow, defaultValue: null));
-    properties.add(DoubleProperty('textScaleFactor', textScaleFactor, defaultValue: null));
+    properties.add(
+        EnumProperty<TextOverflow>('overflow', overflow, defaultValue: null));
+    properties.add(
+        DoubleProperty('textScaleFactor', textScaleFactor, defaultValue: null));
     properties.add(IntProperty('maxLines', maxLines, defaultValue: null));
-    properties.add(EnumProperty<TextWidthBasis>('textWidthBasis', textWidthBasis, defaultValue: null));
-    properties
-        .add(DiagnosticsProperty<ui.TextHeightBehavior>('textHeightBehavior', textHeightBehavior, defaultValue: null));
+    properties.add(EnumProperty<TextWidthBasis>(
+        'textWidthBasis', textWidthBasis,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<ui.TextHeightBehavior>(
+        'textHeightBehavior', textHeightBehavior,
+        defaultValue: null));
     if (semanticsLabel != null) {
       properties.add(StringProperty('semanticsLabel', semanticsLabel));
     }
@@ -283,7 +292,8 @@ class MText extends StatelessWidget {
         effectiveTextStyle = defaultTextStyle.style.merge(
           mStyle.copyWith(
             height: mStyle.height ??
-                (mStyle.lineHeight != null && defaultTextStyle.style.fontSize != null
+                (mStyle.lineHeight != null &&
+                        defaultTextStyle.style.fontSize != null
                     ? mStyle.lineHeight! / defaultTextStyle.style.fontSize!
                     : null),
           ),
@@ -300,7 +310,8 @@ class MText extends StatelessWidget {
         decoration: decoration ??
             (isDeleted
                 ? TextDecoration.lineThrough
-                : TextDecoration.none), // 默认 TextDecoration.none 是为了去除没有Scaffold 或者 material 时的文本下黄线
+                : TextDecoration
+                    .none), // 默认 TextDecoration.none 是为了去除没有Scaffold 或者 material 时的文本下黄线
         foreground: foreground,
         shadows: shadows,
         height: height ??
@@ -310,13 +321,15 @@ class MText extends StatelessWidget {
       );
     }
     if (MediaQuery.boldTextOf(context)) {
-      effectiveTextStyle = effectiveTextStyle!.merge(const TextStyle(fontWeight: FontWeight.bold));
+      effectiveTextStyle = effectiveTextStyle!
+          .merge(const TextStyle(fontWeight: FontWeight.bold));
     }
     final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
     final TextScaler textScaler = switch ((this.textScaler, textScaleFactor)) {
       (final TextScaler textScaler, _) => textScaler,
       // For unmigrated apps, fall back to textScaleFactor.
-      (null, final double textScaleFactor) => TextScaler.linear(textScaleFactor),
+      (null, final double textScaleFactor) =>
+        TextScaler.linear(textScaleFactor),
       (null, null) => MediaQuery.textScalerOf(context),
     };
 
@@ -325,12 +338,15 @@ class MText extends StatelessWidget {
       final mStrutStyle = strutStyle as MStrutStyle;
       effectiveStrutStyle = mStrutStyle.copyWith(
         height: mStrutStyle.height ??
-            (mStrutStyle.lineHeight != null && defaultTextStyle.style.fontSize != null
+            (mStrutStyle.lineHeight != null &&
+                    defaultTextStyle.style.fontSize != null
                 ? mStrutStyle.lineHeight! / defaultTextStyle.style.fontSize!
                 : null),
       );
     }
-    if (strutStyle == null && forceStrutHeight != null || strutHeight != null || strutLineHeight != null) {
+    if (strutStyle == null && forceStrutHeight != null ||
+        strutHeight != null ||
+        strutLineHeight != null) {
       effectiveStrutStyle = StrutStyle.fromTextStyle(
         effectiveTextStyle!,
         height: strutHeight ??
@@ -349,26 +365,31 @@ class MText extends StatelessWidget {
 
     Widget result = MRichText(
       textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
-      textDirection: textDirection, // RichText uses Directionality.of to obtain a default if this is null.
-      locale: locale, // RichText uses Localizations.localeOf to obtain a default if this is null
+      textDirection:
+          textDirection, // RichText uses Directionality.of to obtain a default if this is null.
+      locale:
+          locale, // RichText uses Localizations.localeOf to obtain a default if this is null
       softWrap: softWrap ?? defaultTextStyle.softWrap,
       overflow: finalOverflow,
       textScaler: textScaler,
       maxLines: maxLines ?? defaultTextStyle.maxLines,
       strutStyle: effectiveStrutStyle,
       textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
-      textHeightBehavior:
-          textHeightBehavior ?? defaultTextStyle.textHeightBehavior ?? DefaultTextHeightBehavior.maybeOf(context),
+      textHeightBehavior: textHeightBehavior ??
+          defaultTextStyle.textHeightBehavior ??
+          DefaultTextHeightBehavior.maybeOf(context),
       selectionRegistrar: registrar,
-      selectionColor:
-          selectionColor ?? DefaultSelectionStyle.of(context).selectionColor ?? DefaultSelectionStyle.defaultColor,
+      selectionColor: selectionColor ??
+          DefaultSelectionStyle.of(context).selectionColor ??
+          DefaultSelectionStyle.defaultColor,
       text: _buildTextSpan(effectiveTextStyle),
       overflowWidget: overflowWidget,
       canSelectPlaceholderSpan: canSelectPlaceholderSpan,
     );
     if (registrar != null) {
       result = MouseRegion(
-        cursor: DefaultSelectionStyle.of(context).mouseCursor ?? SystemMouseCursors.text,
+        cursor: DefaultSelectionStyle.of(context).mouseCursor ??
+            SystemMouseCursors.text,
         child: result,
       );
     }

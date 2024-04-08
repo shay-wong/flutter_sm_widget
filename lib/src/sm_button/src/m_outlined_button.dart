@@ -189,9 +189,12 @@ class _MOutlinedButtonWithIconChild extends StatelessWidget {
     final double scale = MediaQuery.textScalerOf(context).textScaleFactor;
     // [icon] 和 [label] 的默认间距
     final gap = alignment.isVertical ? 6.0 : 8.0;
-    final double effectiveGap = space ?? (scale <= 1 ? gap : lerpDouble(gap, gap / 2, math.min(scale - 1, 1))!);
+    final double effectiveGap = space ??
+        (scale <= 1 ? gap : lerpDouble(gap, gap / 2, math.min(scale - 1, 1))!);
     final effectiveIcon = Flexible(child: icon);
-    final effectiveSpace = alignment.isVertical ? SizedBox(height: effectiveGap) : SizedBox(width: effectiveGap);
+    final effectiveSpace = alignment.isVertical
+        ? SizedBox(height: effectiveGap)
+        : SizedBox(width: effectiveGap);
     final effectiveLabel = Flexible(child: label!);
 
     List<Widget> children = <Widget>[

@@ -1,7 +1,11 @@
 library sm_widget;
 
 export 'package:extended_text/extended_text.dart'
-    show TextOverflowWidget, TextOverflowAlign, TextOverflowPosition, TextOverflowClearType;
+    show
+        TextOverflowWidget,
+        TextOverflowAlign,
+        TextOverflowPosition,
+        TextOverflowClearType;
 export 'package:extended_text_field/extended_text_field.dart'
     show TextInputBinding, TextInputFocusNode, ExtendedEditableTextState;
 export 'package:extended_text_library/extended_text_library.dart';

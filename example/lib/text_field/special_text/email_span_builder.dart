@@ -13,13 +13,19 @@ class EmailSpanBuilder extends SpecialTextSpanBuilder {
   final BuildContext context;
   @override
   SpecialText? createSpecialText(String flag,
-      {TextStyle? textStyle, SpecialTextGestureTapCallback? onTap, int? index}) {
+      {TextStyle? textStyle,
+      SpecialTextGestureTapCallback? onTap,
+      int? index}) {
     if (flag == '') {
       return null;
     }
 
     if (!flag.startsWith(' ') && !flag.startsWith('@')) {
-      return EmailText(textStyle!, onTap, start: index, context: context, controller: controller, startFlag: flag);
+      return EmailText(textStyle!, onTap,
+          start: index,
+          context: context,
+          controller: controller,
+          startFlag: flag);
     }
     return null;
   }

@@ -3,7 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class DollarText extends SpecialText {
-  DollarText(TextStyle? textStyle, SpecialTextGestureTapCallback? onTap, {this.start})
+  DollarText(TextStyle? textStyle, SpecialTextGestureTapCallback? onTap,
+      {this.start})
       : super(flag, flag, textStyle, onTap: onTap);
   static const String flag = '\$';
   final int? start;

@@ -47,7 +47,8 @@ class ExtendedTextFieldCase extends StatefulWidget {
   State<ExtendedTextFieldCase> createState() => _ExtendedTextFieldCaseState();
 }
 
-class _ExtendedTextFieldCaseState extends State<ExtendedTextFieldCase> with CustomKeyboardShowStateMixin {
+class _ExtendedTextFieldCaseState extends State<ExtendedTextFieldCase>
+    with CustomKeyboardShowStateMixin {
   @override
   Widget build(BuildContext context) {
     return MTextField(
@@ -68,7 +69,8 @@ class TextFieldCase extends StatefulWidget {
   State<TextFieldCase> createState() => TextFieldCaseState();
 }
 
-class TextFieldCaseState extends State<TextFieldCase> with CustomKeyboardShowStateMixin {
+class TextFieldCaseState extends State<TextFieldCase>
+    with CustomKeyboardShowStateMixin {
   @override
   Widget build(BuildContext context) {
     return TextField(
@@ -94,8 +96,11 @@ mixin CustomKeyboardShowStateMixin<T extends StatefulWidget> on State<T> {
     // digit or decimal
     FilteringTextInputFormatter.allow(RegExp(r'[1-9]{1}[0-9.]*')),
     // only one decimal
-    TextInputFormatter.withFunction((TextEditingValue oldValue, TextEditingValue newValue) =>
-        newValue.text.indexOf('.') != newValue.text.lastIndexOf('.') ? oldValue : newValue),
+    TextInputFormatter.withFunction(
+        (TextEditingValue oldValue, TextEditingValue newValue) =>
+            newValue.text.indexOf('.') != newValue.text.lastIndexOf('.')
+                ? oldValue
+                : newValue),
   ];
 
   @override
@@ -129,7 +134,8 @@ mixin CustomKeyboardShowStateMixin<T extends StatefulWidget> on State<T> {
                   left: 10,
                   right: 10,
                   top: 20,
-                  bottom: mediaQueryData.viewPadding.bottom / mediaQueryData.devicePixelRatio,
+                  bottom: mediaQueryData.viewPadding.bottom /
+                      mediaQueryData.devicePixelRatio,
                 ),
                 child: IntrinsicHeight(
                   child: Row(
@@ -313,9 +319,13 @@ mixin CustomKeyboardShowStateMixin<T extends StatefulWidget> on State<T> {
 
       newValue = oldValue.copyWith(
           text: newText,
-          selection: oldValue.selection.copyWith(baseOffset: end + text.length, extentOffset: end + text.length));
+          selection: oldValue.selection.copyWith(
+              baseOffset: end + text.length, extentOffset: end + text.length));
     } else {
-      newValue = TextEditingValue(text: text, selection: TextSelection.fromPosition(TextPosition(offset: text.length)));
+      newValue = TextEditingValue(
+          text: text,
+          selection:
+              TextSelection.fromPosition(TextPosition(offset: text.length)));
     }
     for (final TextInputFormatter inputFormatter in _inputFormatters) {
       newValue = inputFormatter.formatEditUpdate(oldValue, newValue);
@@ -337,7 +347,8 @@ mixin CustomKeyboardShowStateMixin<T extends StatefulWidget> on State<T> {
     if (selection.isCollapsed && selection.start == 0) {
       return;
     }
-    final int start = selection.isCollapsed ? selection.start - 1 : selection.start;
+    final int start =
+        selection.isCollapsed ? selection.start - 1 : selection.start;
     final int end = selection.end;
 
     value = TextEditingValue(

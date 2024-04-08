@@ -14,7 +14,9 @@ class MySpecialTextSpanBuilder extends SpecialTextSpanBuilder {
 
   @override
   SpecialText? createSpecialText(String flag,
-      {TextStyle? textStyle, SpecialTextGestureTapCallback? onTap, int? index}) {
+      {TextStyle? textStyle,
+      SpecialTextGestureTapCallback? onTap,
+      int? index}) {
     if (flag == '') {
       return null;
     }
@@ -23,7 +25,8 @@ class MySpecialTextSpanBuilder extends SpecialTextSpanBuilder {
     if (isStart(flag, EmojiText.flag)) {
       return EmojiText(textStyle, start: index! - (EmojiText.flag.length - 1));
     } else if (isStart(flag, ImageText.flag)) {
-      return ImageText(textStyle, start: index! - (ImageText.flag.length - 1), onTap: onTap);
+      return ImageText(textStyle,
+          start: index! - (ImageText.flag.length - 1), onTap: onTap);
     } else if (isStart(flag, AtText.flag)) {
       return AtText(
         textStyle,
@@ -34,7 +37,8 @@ class MySpecialTextSpanBuilder extends SpecialTextSpanBuilder {
     } else if (isStart(flag, EmojiText.flag)) {
       return EmojiText(textStyle, start: index! - (EmojiText.flag.length - 1));
     } else if (isStart(flag, DollarText.flag)) {
-      return DollarText(textStyle, onTap, start: index! - (DollarText.flag.length - 1));
+      return DollarText(textStyle, onTap,
+          start: index! - (DollarText.flag.length - 1));
     }
     return null;
   }

@@ -149,16 +149,23 @@ class MIconButton extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Widget>('icon', icon, showName: false));
-    properties.add(StringProperty('tooltip', tooltip, defaultValue: null, quoted: false));
-    properties.add(ObjectFlagProperty<VoidCallback>('onPressed', onPressed, ifNull: 'disabled'));
+    properties.add(
+        StringProperty('tooltip', tooltip, defaultValue: null, quoted: false));
+    properties.add(ObjectFlagProperty<VoidCallback>('onPressed', onPressed,
+        ifNull: 'disabled'));
     properties.add(ColorProperty('color', color, defaultValue: null));
-    properties.add(ColorProperty('disabledColor', disabledColor, defaultValue: null));
+    properties
+        .add(ColorProperty('disabledColor', disabledColor, defaultValue: null));
     properties.add(ColorProperty('focusColor', focusColor, defaultValue: null));
     properties.add(ColorProperty('hoverColor', hoverColor, defaultValue: null));
-    properties.add(ColorProperty('highlightColor', highlightColor, defaultValue: null));
-    properties.add(ColorProperty('splashColor', splashColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding, defaultValue: null));
-    properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode, defaultValue: null));
+    properties.add(
+        ColorProperty('highlightColor', highlightColor, defaultValue: null));
+    properties
+        .add(ColorProperty('splashColor', splashColor, defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding,
+        defaultValue: null));
+    properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode,
+        defaultValue: null));
   }
 
   static ButtonStyle styleFrom({
@@ -245,8 +252,12 @@ class MIconButton extends StatelessWidget {
 
     // Material 3
     if (theme.useMaterial3) {
-      final Size? minSize = constraints == null ? null : Size(constraints!.minWidth, constraints!.minHeight);
-      final Size? maxSize = constraints == null ? null : Size(constraints!.maxWidth, constraints!.maxHeight);
+      final Size? minSize = constraints == null
+          ? null
+          : Size(constraints!.minWidth, constraints!.minHeight);
+      final Size? maxSize = constraints == null
+          ? null
+          : Size(constraints!.maxWidth, constraints!.maxHeight);
 
       final mode = switch (_variant) {
         _MIconButtonVariant.filled => MButtonMode.iconFilled,
@@ -310,7 +321,8 @@ class MIconButton extends StatelessWidget {
       currentColor = disabledColor ?? theme.disabledColor;
     }
 
-    final VisualDensity effectiveVisualDensity = visualDensity ?? theme.visualDensity;
+    final VisualDensity effectiveVisualDensity =
+        visualDensity ?? theme.visualDensity;
 
     final Size? minSize = style?.minimumSize?.resolve(const <MaterialState>{});
     final Size? maxSize = style?.maximumSize?.resolve(const <MaterialState>{});
@@ -322,11 +334,15 @@ class MIconButton extends StatelessWidget {
           maxWidth: maxSize?.width ?? double.infinity,
           maxHeight: maxSize?.height ?? double.infinity,
         );
-    final BoxConstraints adjustedConstraints = effectiveVisualDensity.effectiveConstraints(unadjustedConstraints);
-    final double effectiveIconSize =
-        iconSize ?? style?.iconSize?.resolve(const <MaterialState>{}) ?? IconTheme.of(context).size ?? 24.0;
-    final EdgeInsetsGeometry effectivePadding =
-        padding ?? style?.padding?.resolve(const <MaterialState>{}) ?? const EdgeInsets.all(8.0);
+    final BoxConstraints adjustedConstraints =
+        effectiveVisualDensity.effectiveConstraints(unadjustedConstraints);
+    final double effectiveIconSize = iconSize ??
+        style?.iconSize?.resolve(const <MaterialState>{}) ??
+        IconTheme.of(context).size ??
+        24.0;
+    final EdgeInsetsGeometry effectivePadding = padding ??
+        style?.padding?.resolve(const <MaterialState>{}) ??
+        const EdgeInsets.all(8.0);
     final AlignmentGeometry effectiveAlignment = alignment ?? Alignment.center;
     final bool effectiveEnableFeedback = enableFeedback ?? true;
 
@@ -366,7 +382,10 @@ class MIconButton extends StatelessWidget {
         autofocus: autofocus,
         canRequestFocus: onPressed != null,
         onTap: onPressed,
-        mouseCursor: mouseCursor ?? (onPressed == null ? SystemMouseCursors.basic : SystemMouseCursors.click),
+        mouseCursor: mouseCursor ??
+            (onPressed == null
+                ? SystemMouseCursors.basic
+                : SystemMouseCursors.click),
         enableFeedback: effectiveEnableFeedback,
         focusColor: focusColor ?? theme.focusColor,
         hoverColor: hoverColor ?? theme.hoverColor,
@@ -378,7 +397,10 @@ class MIconButton extends StatelessWidget {
               MaterialState.disabled,
             }) ??
             theme.highlightColor,
-        splashColor: splashColor ?? (style?.splashFactory == NoSplash.splashFactory ? null : theme.splashColor),
+        splashColor: splashColor ??
+            (style?.splashFactory == NoSplash.splashFactory
+                ? null
+                : theme.splashColor),
         splashFactory: style?.splashFactory,
         radius: splashRadius ??
             (style?.splashFactory == NoSplash.splashFactory &&
@@ -397,7 +419,10 @@ class MIconButton extends StatelessWidget {
                 ? 0.0
                 : math.max(
                     Material.defaultSplashRadius,
-                    (effectiveIconSize + math.min(effectivePadding.horizontal, effectivePadding.vertical)) * 0.7,
+                    (effectiveIconSize +
+                            math.min(effectivePadding.horizontal,
+                                effectivePadding.vertical)) *
+                        0.7,
                     // x 0.5 for diameter -> radius and + 40% overflow derived from other Material apps.
                   )),
         child: result,
@@ -416,7 +441,11 @@ class _MIconButtonM3 extends ButtonStyleButton {
     required this.variant,
     required this.isSelected,
     required Widget super.child,
-  }) : super(onLongPress: null, onHover: null, onFocusChange: null, clipBehavior: Clip.none);
+  }) : super(
+            onLongPress: null,
+            onHover: null,
+            onFocusChange: null,
+            clipBehavior: Clip.none);
 
   final bool? isSelected;
   final _MIconButtonVariant variant;
@@ -425,13 +454,17 @@ class _MIconButtonM3 extends ButtonStyleButton {
   ButtonStyle defaultStyleOf(BuildContext context) {
     switch (variant) {
       case _MIconButtonVariant.filled:
-        return MButtonStyle.defaultOf(context, isSelected: isSelected, mode: MButtonMode.iconFilled);
+        return MButtonStyle.defaultOf(context,
+            isSelected: isSelected, mode: MButtonMode.iconFilled);
       case _MIconButtonVariant.filledTonal:
-        return MButtonStyle.defaultOf(context, isSelected: isSelected, mode: MButtonMode.iconTonal);
+        return MButtonStyle.defaultOf(context,
+            isSelected: isSelected, mode: MButtonMode.iconTonal);
       case _MIconButtonVariant.outlined:
-        return MButtonStyle.defaultOf(context, isSelected: isSelected, mode: MButtonMode.iconOutlined);
+        return MButtonStyle.defaultOf(context,
+            isSelected: isSelected, mode: MButtonMode.iconOutlined);
       case _MIconButtonVariant.standard:
-        return MButtonStyle.defaultOf(context, isSelected: isSelected, mode: MButtonMode.iconStandard);
+        return MButtonStyle.defaultOf(context,
+            isSelected: isSelected, mode: MButtonMode.iconStandard);
     }
   }
 
@@ -448,14 +481,16 @@ class _MIconButtonM3 extends ButtonStyleButton {
     }
 
     final bool isDefaultColor = isIconThemeDefault(iconTheme.color);
-    final bool isDefaultSize = iconTheme.size == const IconThemeData.fallback().size;
+    final bool isDefaultSize =
+        iconTheme.size == const IconThemeData.fallback().size;
 
     final ButtonStyle iconThemeStyle = MIconButton.styleFrom(
       foregroundColor: isDefaultColor ? null : iconTheme.color,
       iconSize: isDefaultSize ? null : iconTheme.size,
     );
 
-    return IconButtonTheme.of(context).style?.merge(iconThemeStyle) ?? iconThemeStyle;
+    return IconButtonTheme.of(context).style?.merge(iconThemeStyle) ??
+        iconThemeStyle;
   }
 }
 
@@ -511,7 +546,8 @@ class _SelectableMIconButtonState extends State<_SelectableMIconButton> {
     if (widget.isSelected == null) {
       statesController = MaterialStatesController();
     } else {
-      statesController = MaterialStatesController(<MaterialState>{if (widget.isSelected!) MaterialState.selected});
+      statesController = MaterialStatesController(
+          <MaterialState>{if (widget.isSelected!) MaterialState.selected});
     }
   }
 

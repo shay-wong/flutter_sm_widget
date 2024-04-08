@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ToggleButton extends StatefulWidget {
-  const ToggleButton({super.key, this.activeWidget, this.unActiveWidget, this.activeChanged, this.active = false});
+  const ToggleButton(
+      {super.key,
+      this.activeWidget,
+      this.unActiveWidget,
+      this.activeChanged,
+      this.active = false});
   final Widget? activeWidget;
   final Widget? unActiveWidget;
   final bool active;

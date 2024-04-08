@@ -11,7 +11,8 @@ class TextCustomOverflowExample extends StatefulWidget {
   const TextCustomOverflowExample({super.key});
 
   @override
-  State<TextCustomOverflowExample> createState() => _TextCustomOverflowExampleState();
+  State<TextCustomOverflowExample> createState() =>
+      _TextCustomOverflowExampleState();
 }
 
 class _TextCustomOverflowExampleState extends State<TextCustomOverflowExample> {
@@ -106,7 +107,8 @@ class _TextCustomOverflowExampleState extends State<TextCustomOverflowExample> {
                                 'more',
                               ),
                               onTap: () {
-                                launchUrl(Uri.parse('https://github.com/fluttercandies/extended_text'));
+                                launchUrl(Uri.parse(
+                                    'https://github.com/fluttercandies/extended_text'));
                               },
                             )
                           ],

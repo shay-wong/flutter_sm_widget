@@ -17,8 +17,10 @@ class CustomToolBar extends StatefulWidget {
 }
 
 class _CustomToolBarState extends State<CustomToolBar> {
-  final MyTextSelectionControls _myExtendedMaterialTextSelectionControls = MyTextSelectionControls();
-  final MySpecialTextSpanBuilder _mySpecialTextSpanBuilder = MySpecialTextSpanBuilder();
+  final MyTextSelectionControls _myExtendedMaterialTextSelectionControls =
+      MyTextSelectionControls();
+  final MySpecialTextSpanBuilder _mySpecialTextSpanBuilder =
+      MySpecialTextSpanBuilder();
   TextEditingController controller = TextEditingController()
     ..text =
         '[33]Extended text field help you to build rich text quickly. any special text you will have with extended text. this is demo to show how to create custom toolbar and handles.'
@@ -37,7 +39,8 @@ class _CustomToolBarState extends State<CustomToolBar> {
           child: MTextField(
             selectionControls: _myExtendedMaterialTextSelectionControls,
             specialTextSpanBuilder: _mySpecialTextSpanBuilder,
-            contextMenuBuilder: MyTextSelectionControls.defaultContextMenuBuilder,
+            contextMenuBuilder:
+                MyTextSelectionControls.defaultContextMenuBuilder,
             controller: controller,
             maxLines: null,
             // StrutStyle get strutStyle {

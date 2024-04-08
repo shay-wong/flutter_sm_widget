@@ -6,7 +6,8 @@ import 'package:html/parser.dart';
 import 'package:sm_widget/sm_widget.dart';
 
 class ImageText extends SpecialText {
-  ImageText(TextStyle? textStyle, {this.start, SpecialTextGestureTapCallback? onTap})
+  ImageText(TextStyle? textStyle,
+      {this.start, SpecialTextGestureTapCallback? onTap})
       : super(
           ImageText.flag,
           '/>',

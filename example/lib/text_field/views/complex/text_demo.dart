@@ -24,9 +24,12 @@ class TextDemo extends StatefulWidget {
 
 class _TextDemoState extends State<TextDemo> {
   final TextEditingController _textEditingController = TextEditingController();
-  final MyTextSelectionControls _myExtendedMaterialTextSelectionControls = MyTextSelectionControls();
-  final MySpecialTextSpanBuilder _mySpecialTextSpanBuilder = MySpecialTextSpanBuilder();
-  final StreamController<void> _gridBuilderController = StreamController<void>.broadcast();
+  final MyTextSelectionControls _myExtendedMaterialTextSelectionControls =
+      MyTextSelectionControls();
+  final MySpecialTextSpanBuilder _mySpecialTextSpanBuilder =
+      MySpecialTextSpanBuilder();
+  final StreamController<void> _gridBuilderController =
+      StreamController<void>.broadcast();
 
   late void Function(
     TextPosition position, {
@@ -36,7 +39,8 @@ class _TextDemoState extends State<TextDemo> {
   final FocusNode _focusNode = FocusNode();
   double _keyboardHeight = 300;
   double _preKeyboardHeight = 0;
-  bool get showCustomKeyBoard => activeEmojiGird || activeAtGrid || activeDollarGrid;
+  bool get showCustomKeyBoard =>
+      activeEmojiGird || activeAtGrid || activeDollarGrid;
   bool activeEmojiGird = false;
   bool activeAtGrid = false;
   bool activeDollarGrid = false;
@@ -57,7 +61,8 @@ class _TextDemoState extends State<TextDemo> {
 
     final bool showingKeyboard = keyboardHeight > _preKeyboardHeight;
     _preKeyboardHeight = keyboardHeight;
-    if ((keyboardHeight > 0 && keyboardHeight >= _keyboardHeight) || showingKeyboard) {
+    if ((keyboardHeight > 0 && keyboardHeight >= _keyboardHeight) ||
+        showingKeyboard) {
       activeEmojiGird = activeAtGrid = activeDollarGrid = false;
       _gridBuilderController.add(null);
     }
@@ -84,7 +89,8 @@ class _TextDemoState extends State<TextDemo> {
           children: <Widget>[
             Expanded(
                 child: ExtendedListView.builder(
-              extendedListDelegate: const ExtendedListDelegate(closeToTrailing: true),
+              extendedListDelegate:
+                  const ExtendedListDelegate(closeToTrailing: true),
               itemBuilder: (BuildContext context, int index) {
                 final bool left = index % 2 == 0;
                 final Image logo = Image.asset(
@@ -146,15 +152,20 @@ class _TextDemoState extends State<TextDemo> {
               ),
               controller: _textEditingController,
               selectionControls: _myExtendedMaterialTextSelectionControls,
-              contextMenuBuilder: MyTextSelectionControls.defaultContextMenuBuilder,
+              contextMenuBuilder:
+                  MyTextSelectionControls.defaultContextMenuBuilder,
               focusNode: _focusNode,
               decoration: InputDecoration(
                   suffixIcon: GestureDetector(
                     onTap: () {
                       setState(() {
                         sessions.insert(0, _textEditingController.text);
-                        _textEditingController.value = _textEditingController.value.copyWith(
-                            text: '', selection: const TextSelection.collapsed(offset: 0), composing: TextRange.empty);
+                        _textEditingController.value =
+                            _textEditingController.value.copyWith(
+                                text: '',
+                                selection:
+                                    const TextSelection.collapsed(offset: 0),
+                                composing: TextRange.empty);
                       });
                     },
                     child: const Icon(Icons.send),
@@ -177,9 +188,11 @@ class _TextDemoState extends State<TextDemo> {
                               Icons.sentiment_very_satisfied,
                               color: Colors.orange,
                             ),
-                            unActiveWidget: const Icon(Icons.sentiment_very_satisfied),
+                            unActiveWidget:
+                                const Icon(Icons.sentiment_very_satisfied),
                             activeChanged: (bool active) {
-                              onToolbarButtonActiveChanged(keyboardHeight, active, () {
+                              onToolbarButtonActiveChanged(
+                                  keyboardHeight, active, () {
                                 activeEmojiGird = active;
                               });
                             },
@@ -201,11 +214,14 @@ class _TextDemoState extends State<TextDemo> {
                                 padding: EdgeInsets.only(bottom: 5.0),
                                 child: Text(
                                   '@',
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0),
                                 ),
                               ),
                               activeChanged: (bool active) {
-                                onToolbarButtonActiveChanged(keyboardHeight, active, () {
+                                onToolbarButtonActiveChanged(
+                                    keyboardHeight, active, () {
                                   activeAtGrid = active;
                                 });
                               },
@@ -217,7 +233,8 @@ class _TextDemoState extends State<TextDemo> {
                               ),
                               unActiveWidget: const Icon(Icons.attach_money),
                               activeChanged: (bool active) {
-                                onToolbarButtonActiveChanged(keyboardHeight, active, () {
+                                onToolbarButtonActiveChanged(
+                                    keyboardHeight, active, () {
                                   activeDollarGrid = active;
                                 });
                               },
@@ -242,8 +259,10 @@ class _TextDemoState extends State<TextDemo> {
               stream: _gridBuilderController.stream,
               builder: (BuildContext b, AsyncSnapshot<void> d) {
                 return SizedBox(
-                    height:
-                        showCustomKeyBoard ? _keyboardHeight - (Platform.isIOS ? mediaQueryData.padding.bottom : 0) : 0,
+                    height: showCustomKeyBoard
+                        ? _keyboardHeight -
+                            (Platform.isIOS ? mediaQueryData.padding.bottom : 0)
+                        : 0,
                     child: buildCustomKeyBoard());
               },
             ),
@@ -262,7 +281,8 @@ class _TextDemoState extends State<TextDemo> {
     );
   }
 
-  void onToolbarButtonActiveChanged(double keyboardHeight, bool active, Function activeOne) {
+  void onToolbarButtonActiveChanged(
+      double keyboardHeight, bool active, Function activeOne) {
     if (keyboardHeight > 0) {
       // make sure grid height = keyboardHeight
       _keyboardHeight = keyboardHeight;
@@ -308,7 +328,8 @@ class _TextDemoState extends State<TextDemo> {
           onTap: () {
             insertText('[${index + 1}]');
           },
-          child: Image.asset(emoji.EmojiUitl.instance.emojiMap['[${index + 1}]']!),
+          child:
+              Image.asset(emoji.EmojiUitl.instance.emojiMap['[${index + 1}]']!),
         );
       },
       itemCount: emoji.EmojiUitl.instance.emojiMap.length,
@@ -379,10 +400,13 @@ class _TextDemoState extends State<TextDemo> {
 
       _textEditingController.value = value.copyWith(
           text: newText,
-          selection: value.selection.copyWith(baseOffset: end + text.length, extentOffset: end + text.length));
+          selection: value.selection.copyWith(
+              baseOffset: end + text.length, extentOffset: end + text.length));
     } else {
-      _textEditingController.value =
-          TextEditingValue(text: text, selection: TextSelection.fromPosition(TextPosition(offset: text.length)));
+      _textEditingController.value = TextEditingValue(
+          text: text,
+          selection:
+              TextSelection.fromPosition(TextPosition(offset: text.length)));
     }
 
     SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
@@ -405,14 +429,17 @@ class _TextDemoState extends State<TextDemo> {
       return;
     }
 
-    final int start = selection.isCollapsed ? selection.start - 1 : selection.start;
+    final int start =
+        selection.isCollapsed ? selection.start - 1 : selection.start;
     final int end = selection.end;
     // improve the case of emoji
     // https://github.com/dart-lang/sdk/issues/35798
-    final CharacterRange characterRange = CharacterRange.at(actualText, start, end);
+    final CharacterRange characterRange =
+        CharacterRange.at(actualText, start, end);
     value = TextEditingValue(
       text: characterRange.stringBefore + characterRange.stringAfter,
-      selection: TextSelection.collapsed(offset: characterRange.stringBefore.length),
+      selection:
+          TextSelection.collapsed(offset: characterRange.stringBefore.length),
     );
 
     final TextSpan oldTextSpan = _mySpecialTextSpanBuilder.build(value0.text);

@@ -224,7 +224,8 @@ class _MTextFieldState extends State<MTextField> {
   }
 
   // 自定义方法
-  TextStyle _hintStyle(BuildContext context) => MaterialStateTextStyle.resolveWith(
+  TextStyle _hintStyle(BuildContext context) =>
+      MaterialStateTextStyle.resolveWith(
         (Set<MaterialState> states) {
           if (states.contains(MaterialState.disabled)) {
             return TextStyle(color: Theme.of(context).disabledColor);
@@ -236,7 +237,10 @@ class _MTextFieldState extends State<MTextField> {
   @override
   Widget build(BuildContext context) {
     final effectiveStyle = widget.style ??
-        (widget.color != null || widget.fontSize != null || widget.fontWeight != null || widget.isBold
+        (widget.color != null ||
+                widget.fontSize != null ||
+                widget.fontWeight != null ||
+                widget.isBold
             ? MTextStyle(
                 color: widget.color,
                 fontSize: widget.fontSize,

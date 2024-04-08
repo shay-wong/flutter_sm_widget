@@ -15,7 +15,10 @@ class EmailText extends SpecialText {
     final int index = value.indexOf('@');
     final int index1 = value.indexOf('.');
 
-    return index >= 0 && index1 >= 0 && index1 > index + 1 && super.isEnd(value);
+    return index >= 0 &&
+        index1 >= 0 &&
+        index1 > index + 1 &&
+        super.isEnd(value);
   }
 
   @override
@@ -52,8 +55,10 @@ class EmailText extends SpecialText {
                       ),
                       onTap: () {
                         controller!.value = controller!.value.copyWith(
-                            text: controller!.text.replaceRange(start!, start! + text.length, ''),
-                            selection: TextSelection.fromPosition(TextPosition(offset: start!)));
+                            text: controller!.text
+                                .replaceRange(start!, start! + text.length, ''),
+                            selection: TextSelection.fromPosition(
+                                TextPosition(offset: start!)));
                       },
                     )
                   ],
@@ -65,7 +70,8 @@ class EmailText extends SpecialText {
               context: context!,
               barrierDismissible: true,
               builder: (BuildContext c) {
-                final TextEditingController textEditingController = TextEditingController()..text = text.trim();
+                final TextEditingController textEditingController =
+                    TextEditingController()..text = text.trim();
                 return Column(
                   children: <Widget>[
                     Expanded(
@@ -81,10 +87,15 @@ class EmailText extends SpecialText {
                           child: const Text('OK'),
                           onPressed: () {
                             controller!.value = controller!.value.copyWith(
-                                text: controller!.text
-                                    .replaceRange(start!, start! + text.length, '${textEditingController.text} '),
+                                text: controller!.text.replaceRange(
+                                    start!,
+                                    start! + text.length,
+                                    '${textEditingController.text} '),
                                 selection: TextSelection.fromPosition(
-                                    TextPosition(offset: start! + ('${textEditingController.text} ').length)));
+                                    TextPosition(
+                                        offset: start! +
+                                            ('${textEditingController.text} ')
+                                                .length)));
 
                             Navigator.pop(context!);
                           },
