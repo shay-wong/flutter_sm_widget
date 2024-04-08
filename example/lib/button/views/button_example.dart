@@ -132,7 +132,6 @@ class MButtonExample extends StatelessWidget {
             children: [
               for (int i = 0; i < 4; i++)
                 MButton.icon(
-                  onPressed: () {},
                   icon: const Icon(
                     Icons.location_on_outlined,
                     color: Color(0xFF46D7B7),
@@ -140,18 +139,40 @@ class MButtonExample extends StatelessWidget {
                   ),
                   label: const MText(
                     '杭州',
+                    color: Color(0xFF353C47),
                     fontSize: 12,
                     fontWeight: MFontWeight.semiBold,
-                    // forceStrutHeight: true,
+                    forceStrutHeight: true,
                   ),
                   style: MButtonStyle.from(
                     backgroundColor: const Color(0xFFDBFFF5),
                     clearPadding: true,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
+                    minimumSize: const Size(50, 22),
+                    maximumSize: const Size.fromHeight(22),
+                    padding: const EdgeInsets.only(left: 5, right: 10),
                   ),
-                  space: 10,
+                  space: 2,
                 ),
+              MButton.icon(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.location_on_outlined,
+                  color: Color(0xFF46D7B7),
+                  size: 12,
+                ),
+                label: const MText(
+                  '杭州',
+                  fontSize: 12,
+                  fontWeight: MFontWeight.semiBold,
+                  // forceStrutHeight: true,
+                ),
+                style: MButtonStyle.from(
+                  backgroundColor: const Color(0xFFDBFFF5),
+                  clearPadding: true,
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                ),
+                space: 10,
+              ),
             ],
           ),
           const SizedBox(height: 20),

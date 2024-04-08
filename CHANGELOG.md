@@ -1,5 +1,9 @@
 # sm_widget
 
+## 0.0.4+1
+
+* fix bugs.
+
 ## 0.0.4
 
 * update text and button.
