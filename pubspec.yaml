@@ -1,7 +1,7 @@
 name: sm_widget
 description: "A Flutter package with widgets, containing implementations of
   commonly used Flutter widgets."
-version: 0.0.3
+version: 0.0.4
 homepage: "https://github.com/shay-wong/flutter_sm_widget"
 repository: "https://github.com/shay-wong/flutter_sm_widget"
 issue_tracker: "https://github.com/shay-wong/flutter_sm_widget/issues"
@@ -20,6 +20,7 @@ dependencies:
   extended_text: ^13.0.0
   extended_text_field: ^14.0.0
   extended_text_library: ^12.0.0
+  sm_logger: ^0.0.7
 
 dev_dependencies:
   flutter_lints: ^3.0.2

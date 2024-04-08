@@ -5,6 +5,7 @@ import 'dart:ui' as ui show TextHeightBehavior;
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sm_widget/src/sm_text/src/m_text_style.dart';
 
 import 'm_rich_text.dart';
 import 'm_text_span.dart';
@@ -19,13 +20,15 @@ class MText extends StatelessWidget {
     this.fontSize,
     this.fontStyle,
     this.fontWeight,
-    this.forceStrutHeight = false,
+    this.forceStrutHeight,
     this.foreground,
     this.isBold = false,
     this.isDeleted = false,
     this.isItalic = false,
     this.height,
     this.lineHeight,
+    this.strutHeight,
+    this.strutLineHeight,
     this.locale,
     this.maxLines,
     this.overflow,
@@ -75,6 +78,8 @@ class MText extends StatelessWidget {
     this.isItalic = false,
     this.height,
     this.lineHeight,
+    this.strutHeight,
+    this.strutLineHeight,
     this.locale,
     this.maxLines,
     this.overflow,
@@ -142,12 +147,12 @@ class MText extends StatelessWidget {
   final FontWeight? fontWeight;
 
   /// 是否强制使用高度
-  final bool forceStrutHeight;
+  final bool? forceStrutHeight;
 
   /// 前景
   final Paint? foreground;
 
-  /// [StrutStyle.height] 文本垂直支撑的最小高度，是对应 [fontSize] 的倍数。
+  /// [TextStyle.height] 文本的最小高度，是对应 [fontSize] 的倍数。
   final double? height;
 
   /// 是否加粗
@@ -166,7 +171,7 @@ class MText extends StatelessWidget {
   ///
   final bool joinZeroWidthSpace;
 
-  /// [StrutStyle.height] 行高, 自动除以 [fontSize] 来计算, 如果设置 [height] 则会忽略此值.
+  /// [TextStyle.height] 行高, 自动除以 [fontSize] 来计算, 如果设置 [height] 则会忽略此值.
   final double? lineHeight;
 
   /// 文本最大行数
@@ -184,6 +189,12 @@ class MText extends StatelessWidget {
 
   /// build your ccustom text span
   final SpecialTextSpanBuilder? specialTextSpanBuilder;
+
+  /// [StrutStyle.height] 文本段落最小行高，是对应 [fontSize] 的倍数。
+  final double? strutHeight;
+
+  /// [StrutStyle.height] 文本段落最小行高, 自动除以 [fontSize] 来计算, 如果设置 [strutHeight] 则会忽略此值.
+  final double? strutLineHeight;
 
   /// 文本支撑样式, 定义文本的垂直布局属性
   final StrutStyle? strutStyle;
@@ -215,32 +226,23 @@ class MText extends StatelessWidget {
     super.debugFillProperties(properties);
     properties.add(StringProperty('data', data, showName: false));
     if (textSpan != null) {
-      properties.add(textSpan!.toDiagnosticsNode(
-          name: 'textSpan', style: DiagnosticsTreeStyle.transition));
+      properties.add(textSpan!.toDiagnosticsNode(name: 'textSpan', style: DiagnosticsTreeStyle.transition));
     }
     style?.debugFillProperties(properties);
-    properties.add(
-        EnumProperty<TextAlign>('textAlign', textAlign, defaultValue: null));
-    properties.add(EnumProperty<TextDirection>('textDirection', textDirection,
-        defaultValue: null));
-    properties
-        .add(DiagnosticsProperty<Locale>('locale', locale, defaultValue: null));
+    properties.add(EnumProperty<TextAlign>('textAlign', textAlign, defaultValue: null));
+    properties.add(EnumProperty<TextDirection>('textDirection', textDirection, defaultValue: null));
+    properties.add(DiagnosticsProperty<Locale>('locale', locale, defaultValue: null));
     properties.add(FlagProperty('softWrap',
         value: softWrap,
         ifTrue: 'wrapping at box width',
         ifFalse: 'no wrapping except at line break characters',
         showName: true));
-    properties.add(
-        EnumProperty<TextOverflow>('overflow', overflow, defaultValue: null));
-    properties.add(
-        DoubleProperty('textScaleFactor', textScaleFactor, defaultValue: null));
+    properties.add(EnumProperty<TextOverflow>('overflow', overflow, defaultValue: null));
+    properties.add(DoubleProperty('textScaleFactor', textScaleFactor, defaultValue: null));
     properties.add(IntProperty('maxLines', maxLines, defaultValue: null));
-    properties.add(EnumProperty<TextWidthBasis>(
-        'textWidthBasis', textWidthBasis,
-        defaultValue: null));
-    properties.add(DiagnosticsProperty<ui.TextHeightBehavior>(
-        'textHeightBehavior', textHeightBehavior,
-        defaultValue: null));
+    properties.add(EnumProperty<TextWidthBasis>('textWidthBasis', textWidthBasis, defaultValue: null));
+    properties
+        .add(DiagnosticsProperty<ui.TextHeightBehavior>('textHeightBehavior', textHeightBehavior, defaultValue: null));
     if (semanticsLabel != null) {
       properties.add(StringProperty('semanticsLabel', semanticsLabel));
     }
@@ -276,6 +278,17 @@ class MText extends StatelessWidget {
     TextStyle? effectiveTextStyle = style;
     if (style == null || style!.inherit) {
       effectiveTextStyle = defaultTextStyle.style.merge(style);
+      if (style is MTextStyle) {
+        final mStyle = style as MTextStyle;
+        effectiveTextStyle = defaultTextStyle.style.merge(
+          mStyle.copyWith(
+            height: mStyle.height ??
+                (mStyle.lineHeight != null && defaultTextStyle.style.fontSize != null
+                    ? mStyle.lineHeight! / defaultTextStyle.style.fontSize!
+                    : null),
+          ),
+        );
+      }
     }
     if (style == null) {
       effectiveTextStyle = effectiveTextStyle?.copyWith(
@@ -287,41 +300,47 @@ class MText extends StatelessWidget {
         decoration: decoration ??
             (isDeleted
                 ? TextDecoration.lineThrough
-                : TextDecoration
-                    .none), // 默认 TextDecoration.none 是为了去除没有Scaffold 或者 material 时的文本下黄线
+                : TextDecoration.none), // 默认 TextDecoration.none 是为了去除没有Scaffold 或者 material 时的文本下黄线
         foreground: foreground,
         shadows: shadows,
+        height: height ??
+            (lineHeight != null && effectiveTextStyle.fontSize != null
+                ? lineHeight! / effectiveTextStyle.fontSize!
+                : null),
       );
     }
     if (MediaQuery.boldTextOf(context)) {
-      effectiveTextStyle = effectiveTextStyle!
-          .merge(const TextStyle(fontWeight: FontWeight.bold));
+      effectiveTextStyle = effectiveTextStyle!.merge(const TextStyle(fontWeight: FontWeight.bold));
     }
     final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
     final TextScaler textScaler = switch ((this.textScaler, textScaleFactor)) {
       (final TextScaler textScaler, _) => textScaler,
       // For unmigrated apps, fall back to textScaleFactor.
-      (null, final double textScaleFactor) =>
-        TextScaler.linear(textScaleFactor),
+      (null, final double textScaleFactor) => TextScaler.linear(textScaleFactor),
       (null, null) => MediaQuery.textScalerOf(context),
     };
 
     StrutStyle? effectiveStrutStyle = strutStyle;
-    if (strutStyle == null && forceStrutHeight ||
-        lineHeight != null ||
-        height != null) {
-      var effectiveHeight = height;
-      if (lineHeight != null && effectiveTextStyle!.fontSize != null) {
-        effectiveHeight = lineHeight! / effectiveTextStyle.fontSize!;
-      }
+    if (strutStyle is MStrutStyle) {
+      final mStrutStyle = strutStyle as MStrutStyle;
+      effectiveStrutStyle = mStrutStyle.copyWith(
+        height: mStrutStyle.height ??
+            (mStrutStyle.lineHeight != null && defaultTextStyle.style.fontSize != null
+                ? mStrutStyle.lineHeight! / defaultTextStyle.style.fontSize!
+                : null),
+      );
+    }
+    if (strutStyle == null && forceStrutHeight != null || strutHeight != null || strutLineHeight != null) {
       effectiveStrutStyle = StrutStyle.fromTextStyle(
         effectiveTextStyle!,
-        height: effectiveHeight,
-        forceStrutHeight: true,
+        height: strutHeight ??
+            (strutLineHeight != null && effectiveTextStyle.fontSize != null
+                ? strutLineHeight! / effectiveTextStyle.fontSize!
+                : null),
+        forceStrutHeight: forceStrutHeight,
       );
     }
 
-    // OPTIMIZE: Flutter 不允许修改省略号的位置, 有时间自己处理
     // 当 [overflow] 为空 [maxLines] 不为空时, 默认使用 [TextOverflow.ellipsis]
     final finalOverflow = overflow ??
         (maxLines != null ? TextOverflow.ellipsis : null) ??
@@ -330,31 +349,26 @@ class MText extends StatelessWidget {
 
     Widget result = MRichText(
       textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
-      textDirection:
-          textDirection, // RichText uses Directionality.of to obtain a default if this is null.
-      locale:
-          locale, // RichText uses Localizations.localeOf to obtain a default if this is null
+      textDirection: textDirection, // RichText uses Directionality.of to obtain a default if this is null.
+      locale: locale, // RichText uses Localizations.localeOf to obtain a default if this is null
       softWrap: softWrap ?? defaultTextStyle.softWrap,
       overflow: finalOverflow,
       textScaler: textScaler,
       maxLines: maxLines ?? defaultTextStyle.maxLines,
       strutStyle: effectiveStrutStyle,
       textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
-      textHeightBehavior: textHeightBehavior ??
-          defaultTextStyle.textHeightBehavior ??
-          DefaultTextHeightBehavior.maybeOf(context),
+      textHeightBehavior:
+          textHeightBehavior ?? defaultTextStyle.textHeightBehavior ?? DefaultTextHeightBehavior.maybeOf(context),
       selectionRegistrar: registrar,
-      selectionColor: selectionColor ??
-          DefaultSelectionStyle.of(context).selectionColor ??
-          DefaultSelectionStyle.defaultColor,
+      selectionColor:
+          selectionColor ?? DefaultSelectionStyle.of(context).selectionColor ?? DefaultSelectionStyle.defaultColor,
       text: _buildTextSpan(effectiveTextStyle),
       overflowWidget: overflowWidget,
       canSelectPlaceholderSpan: canSelectPlaceholderSpan,
     );
     if (registrar != null) {
       result = MouseRegion(
-        cursor: DefaultSelectionStyle.of(context).mouseCursor ??
-            SystemMouseCursors.text,
+        cursor: DefaultSelectionStyle.of(context).mouseCursor ?? SystemMouseCursors.text,
         child: result,
       );
     }

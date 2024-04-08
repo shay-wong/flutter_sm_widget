@@ -277,17 +277,19 @@ class MTextFieldExample extends StatelessWidget {
                       suffixIcon: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const MIconButton(
-                            clearPadding: true,
-                            padding: EdgeInsets.symmetric(
+                          MIconButton(
+                            style: MButtonStyle.from(
+                              clearPadding: true,
+                              noSplash: true,
+                              noOverlay: true,
+                            ),
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 8.5),
-                            icon: MImage(
+                            icon: const MImage(
                               'assets/images/avatar1.png',
                               package: 'example_package',
                               size: 23,
                             ),
-                            noSplash: true,
-                            noHighlight: true,
                           ),
                           MIconButton(
                             onPressed: () async {},
@@ -296,11 +298,13 @@ class MTextFieldExample extends StatelessWidget {
                               package: 'example_package',
                               size: 23,
                             ),
-                            clearPadding: true,
+                            style: MButtonStyle.from(
+                              clearPadding: true,
+                              noSplash: true,
+                              noOverlay: true,
+                            ),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 8.5),
-                            noSplash: true,
-                            noHighlight: true,
                           ),
                         ],
                       ),

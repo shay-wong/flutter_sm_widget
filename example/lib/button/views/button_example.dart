@@ -18,12 +18,14 @@ class MButtonExample extends StatelessWidget {
             children: [
               MButton(
                 onPressed: () {},
-                clearPadding: true,
-                width: 100,
-                height: 50,
-                radius: 10,
-                // noSplash: true,
-                // noHighlight: true,
+                style: MButtonStyle.from(
+                  clearPadding: true,
+                  width: 100,
+                  height: 50,
+                  radius: 20,
+                  noSplash: true,
+                  noOverlay: true,
+                ),
                 child: const MText('这是一个按钮'),
               ),
               MButton.icon(
@@ -31,6 +33,10 @@ class MButtonExample extends StatelessWidget {
                 onPressed: () {},
               ),
               MIconButton(
+                icon: const Icon(Icons.face),
+                onPressed: () {},
+              ),
+              IconButton(
                 icon: const Icon(Icons.face),
                 onPressed: () {},
               ),
@@ -57,19 +63,24 @@ class MButtonExample extends StatelessWidget {
                 onPressed: () {},
                 icon: const Icon(
                   Icons.face,
-                  size: 50,
                 ),
-                clearPadding: true,
-                // noSplash: true,
-                // noHighlight: true,
-                backgroundColor: Colors.amber,
+                iconSize: 50,
+                padding: EdgeInsets.zero,
+                style: IconButton.styleFrom(
+                  // clearPadding: true,
+                  padding: EdgeInsets.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  minimumSize: Size.zero,
+                  backgroundColor: Colors.amber,
+                ),
               ),
               IconButton(
                 onPressed: () {},
                 icon: const Icon(
                   Icons.face,
-                  size: 50,
                 ),
+                iconSize: 50,
+                padding: EdgeInsets.zero,
                 style: IconButton.styleFrom(
                   padding: EdgeInsets.zero,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -85,10 +96,13 @@ class MButtonExample extends StatelessWidget {
                   size: 50,
                 ),
                 iconSize: 50,
-                clearPadding: true,
-                // noSplash: true,
-                noHighlight: true,
-                backgroundColor: Colors.amber,
+                style: MButtonStyle.from(
+                  clearPadding: true,
+                  // noSplash: true,
+                  noOverlay: true,
+                  backgroundColor: Colors.amber,
+                  overlayHighlightColor: Colors.blue,
+                ),
               ),
               IconButton(
                 onPressed: () {},
@@ -98,6 +112,7 @@ class MButtonExample extends StatelessWidget {
                   size: 50,
                 ),
                 iconSize: 50,
+                padding: EdgeInsets.zero,
                 style: IconButton.styleFrom(
                   padding: EdgeInsets.zero,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -129,11 +144,12 @@ class MButtonExample extends StatelessWidget {
                     fontWeight: MFontWeight.semiBold,
                     // forceStrutHeight: true,
                   ),
-                  backgroundColor: const Color(0xFFDBFFF5),
-                  clearPadding: true,
+                  style: MButtonStyle.from(
+                    backgroundColor: const Color(0xFFDBFFF5),
+                    clearPadding: true,
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  ),
                   space: 10,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 ),
             ],
           ),

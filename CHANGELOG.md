@@ -1,5 +1,9 @@
 # sm_widget
 
+## 0.0.4
+
+* update text and button.
+
 ## 0.0.3
 
 * update text and text field.

@@ -1,14 +1,63 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/painting.dart';
 
-const String _kColorBackgroundWarning =
-    'Cannot provide both a backgroundColor and a background\n'
+const String _kColorBackgroundWarning = 'Cannot provide both a backgroundColor and a background\n'
     'The backgroundColor argument is just a shorthand for "background: Paint()..color = color".';
 
-const String _kColorForegroundWarning =
-    'Cannot provide both a color and a foreground\n'
+const String _kColorForegroundWarning = 'Cannot provide both a color and a foreground\n'
     'The color argument is just a shorthand for "foreground: Paint()..color = color".';
 
 const String _kDefaultDebugLabel = 'unknown';
+
+class MStrutStyle extends StrutStyle {
+  const MStrutStyle({
+    super.fontFamily,
+    super.fontFamilyFallback,
+    super.fontSize,
+    double? height,
+    this.lineHeight,
+    super.leadingDistribution,
+    super.leading,
+    super.fontWeight,
+    super.fontStyle,
+    super.forceStrutHeight,
+    super.debugLabel,
+    super.package,
+  }) : super(height: height ?? (lineHeight != null && fontSize != null ? lineHeight / fontSize : null));
+
+  /// [StrutStyle.height] 文本段落行高, 自动除以 [fontSize] 来计算, 如果设置 [height] 则会忽略此值.
+  /// 如果传递给 [MText] 会除以默认的 [fontSize],
+  /// 如果传递给 [Text] 则必须设置 [fontSize], 否则不生效.
+  final double? lineHeight;
+
+  MStrutStyle copyWith({
+    String? fontFamily,
+    List<String>? fontFamilyFallback,
+    double? fontSize,
+    double? height,
+    double? lineHeight,
+    TextLeadingDistribution? leadingDistribution,
+    double? leading,
+    FontWeight? fontWeight,
+    FontStyle? fontStyle,
+    bool? forceStrutHeight,
+    String? debugLabel,
+  }) {
+    return MStrutStyle(
+      fontFamily: fontFamily ?? this.fontFamily,
+      fontFamilyFallback: fontFamilyFallback ?? this.fontFamilyFallback,
+      fontSize: fontSize ?? this.fontSize,
+      height: height ?? this.height,
+      lineHeight: lineHeight ?? this.lineHeight,
+      leadingDistribution: leadingDistribution ?? this.leadingDistribution,
+      leading: leading ?? this.leading,
+      fontWeight: fontWeight ?? this.fontWeight,
+      fontStyle: fontStyle ?? this.fontStyle,
+      forceStrutHeight: forceStrutHeight ?? this.forceStrutHeight,
+      debugLabel: debugLabel ?? this.debugLabel,
+    );
+  }
+}
 
 class MTextStyle extends TextStyle {
   const MTextStyle({
@@ -21,7 +70,8 @@ class MTextStyle extends TextStyle {
     super.letterSpacing,
     super.wordSpacing,
     super.textBaseline,
-    super.height,
+    double? height,
+    this.lineHeight,
     super.leadingDistribution,
     super.locale,
     super.foreground,
@@ -42,14 +92,19 @@ class MTextStyle extends TextStyle {
     bool isDeleted = false,
     bool isItalic = false,
   }) : super(
+          height: height ?? (lineHeight != null && fontSize != null ? lineHeight / fontSize : null),
           fontWeight: fontWeight ?? (isBold ? FontWeight.bold : null),
           fontStyle: fontStyle ?? (isItalic ? FontStyle.italic : null),
           decoration: decoration ??
               (isDeleted
                   ? TextDecoration.lineThrough
-                  : TextDecoration
-                      .none), // 默认 TextDecoration.none 是为了去除没有Scaffold 或者 material 时的文本下黄线
+                  : TextDecoration.none), // 默认 TextDecoration.none 是为了去除没有Scaffold 或者 material 时的文本下黄线
         );
+
+  /// [TextStyle.height] 文本行高, 自动除以 [fontSize] 来计算, 如果设置 [height] 则会忽略此值.
+  /// 如果传递给 [MText] 会除以默认的 [fontSize],
+  /// 如果传递给 [Text] 则必须设置 [fontSize], 否则不生效.
+  final double? lineHeight;
 }
 
 extension MFontWeight on FontWeight {
@@ -145,8 +200,7 @@ extension TextStyleEx on TextStyle {
     TextOverflow? overflow,
   }) {
     assert(color == null || foreground == null, _kColorForegroundWarning);
-    assert(backgroundColor == null || background == null,
-        _kColorBackgroundWarning);
+    assert(backgroundColor == null || background == null, _kColorBackgroundWarning);
     String? newDebugLabel;
     assert(() {
       if (this.debugLabel != null) {

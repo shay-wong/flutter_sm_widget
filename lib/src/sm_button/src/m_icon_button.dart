@@ -3,295 +3,11 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'm_button_style.dart';
+
 const double _kMinButtonSize = kMinInteractiveDimension;
 
 enum _MIconButtonVariant { standard, filled, filledTonal, outlined }
-
-class _FilledMIconButtonDefaultsM3 extends ButtonStyle {
-  _FilledMIconButtonDefaultsM3(this.context, this.toggleable)
-      : super(
-          animationDuration: kThemeChangeDuration,
-          enableFeedback: true,
-          alignment: Alignment.center,
-        );
-
-  final BuildContext context;
-  final bool toggleable;
-
-  late final ColorScheme _colors = Theme.of(context).colorScheme;
-
-  // No default text style
-
-  @override
-  MaterialStateProperty<Color?>? get backgroundColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return _colors.onSurface.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.selected)) {
-          return _colors.primary;
-        }
-        if (toggleable) {
-          // toggleable but unselected case
-          return _colors.surfaceVariant;
-        }
-        return _colors.primary;
-      });
-
-  @override
-  MaterialStateProperty<double>? get elevation =>
-      const MaterialStatePropertyAll<double>(0.0);
-
-  @override
-  MaterialStateProperty<Color?>? get foregroundColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return _colors.onSurface.withOpacity(0.38);
-        }
-        if (states.contains(MaterialState.selected)) {
-          return _colors.onPrimary;
-        }
-        if (toggleable) {
-          // toggleable but unselected case
-          return _colors.primary;
-        }
-        return _colors.onPrimary;
-      });
-
-  @override
-  MaterialStateProperty<double>? get iconSize =>
-      const MaterialStatePropertyAll<double>(24.0);
-
-  // No default fixedSize
-
-  @override
-  MaterialStateProperty<Size>? get maximumSize =>
-      const MaterialStatePropertyAll<Size>(Size.infinite);
-
-  @override
-  MaterialStateProperty<Size>? get minimumSize =>
-      const MaterialStatePropertyAll<Size>(Size(40.0, 40.0));
-
-  @override
-  MaterialStateProperty<MouseCursor?>? get mouseCursor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return SystemMouseCursors.basic;
-        }
-        return SystemMouseCursors.click;
-      });
-
-  @override
-  MaterialStateProperty<Color?>? get overlayColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          if (states.contains(MaterialState.pressed)) {
-            return _colors.onPrimary.withOpacity(0.12);
-          }
-          if (states.contains(MaterialState.hovered)) {
-            return _colors.onPrimary.withOpacity(0.08);
-          }
-          if (states.contains(MaterialState.focused)) {
-            return _colors.onPrimary.withOpacity(0.12);
-          }
-        }
-        if (toggleable) {
-          // toggleable but unselected case
-          if (states.contains(MaterialState.pressed)) {
-            return _colors.primary.withOpacity(0.12);
-          }
-          if (states.contains(MaterialState.hovered)) {
-            return _colors.primary.withOpacity(0.08);
-          }
-          if (states.contains(MaterialState.focused)) {
-            return _colors.primary.withOpacity(0.12);
-          }
-        }
-        if (states.contains(MaterialState.pressed)) {
-          return _colors.onPrimary.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.hovered)) {
-          return _colors.onPrimary.withOpacity(0.08);
-        }
-        if (states.contains(MaterialState.focused)) {
-          return _colors.onPrimary.withOpacity(0.12);
-        }
-        return Colors.transparent;
-      });
-
-  @override
-  MaterialStateProperty<EdgeInsetsGeometry>? get padding =>
-      const MaterialStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(8.0));
-
-  @override
-  MaterialStateProperty<Color>? get shadowColor =>
-      const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialStateProperty<OutlinedBorder>? get shape =>
-      const MaterialStatePropertyAll<OutlinedBorder>(StadiumBorder());
-
-  @override
-  MaterialStateProperty<BorderSide?>? get side => null;
-
-  @override
-  InteractiveInkFeatureFactory? get splashFactory =>
-      Theme.of(context).splashFactory;
-
-  @override
-  MaterialStateProperty<Color>? get surfaceTintColor =>
-      const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialTapTargetSize? get tapTargetSize =>
-      Theme.of(context).materialTapTargetSize;
-
-  @override
-  VisualDensity? get visualDensity => VisualDensity.standard;
-}
-
-class _FilledTonalMIconButtonDefaultsM3 extends ButtonStyle {
-  _FilledTonalMIconButtonDefaultsM3(this.context, this.toggleable)
-      : super(
-          animationDuration: kThemeChangeDuration,
-          enableFeedback: true,
-          alignment: Alignment.center,
-        );
-
-  final BuildContext context;
-  final bool toggleable;
-
-  late final ColorScheme _colors = Theme.of(context).colorScheme;
-
-  // No default text style
-
-  @override
-  MaterialStateProperty<Color?>? get backgroundColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return _colors.onSurface.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.selected)) {
-          return _colors.secondaryContainer;
-        }
-        if (toggleable) {
-          // toggleable but unselected case
-          return _colors.surfaceVariant;
-        }
-        return _colors.secondaryContainer;
-      });
-
-  @override
-  MaterialStateProperty<double>? get elevation =>
-      const MaterialStatePropertyAll<double>(0.0);
-
-  @override
-  MaterialStateProperty<Color?>? get foregroundColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return _colors.onSurface.withOpacity(0.38);
-        }
-        if (states.contains(MaterialState.selected)) {
-          return _colors.onSecondaryContainer;
-        }
-        if (toggleable) {
-          // toggleable but unselected case
-          return _colors.onSurfaceVariant;
-        }
-        return _colors.onSecondaryContainer;
-      });
-
-  @override
-  MaterialStateProperty<double>? get iconSize =>
-      const MaterialStatePropertyAll<double>(24.0);
-
-  // No default fixedSize
-
-  @override
-  MaterialStateProperty<Size>? get maximumSize =>
-      const MaterialStatePropertyAll<Size>(Size.infinite);
-
-  @override
-  MaterialStateProperty<Size>? get minimumSize =>
-      const MaterialStatePropertyAll<Size>(Size(40.0, 40.0));
-
-  @override
-  MaterialStateProperty<MouseCursor?>? get mouseCursor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return SystemMouseCursors.basic;
-        }
-        return SystemMouseCursors.click;
-      });
-
-  @override
-  MaterialStateProperty<Color?>? get overlayColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          if (states.contains(MaterialState.pressed)) {
-            return _colors.onSecondaryContainer.withOpacity(0.12);
-          }
-          if (states.contains(MaterialState.hovered)) {
-            return _colors.onSecondaryContainer.withOpacity(0.08);
-          }
-          if (states.contains(MaterialState.focused)) {
-            return _colors.onSecondaryContainer.withOpacity(0.12);
-          }
-        }
-        if (toggleable) {
-          // toggleable but unselected case
-          if (states.contains(MaterialState.pressed)) {
-            return _colors.onSurfaceVariant.withOpacity(0.12);
-          }
-          if (states.contains(MaterialState.hovered)) {
-            return _colors.onSurfaceVariant.withOpacity(0.08);
-          }
-          if (states.contains(MaterialState.focused)) {
-            return _colors.onSurfaceVariant.withOpacity(0.12);
-          }
-        }
-        if (states.contains(MaterialState.pressed)) {
-          return _colors.onSecondaryContainer.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.hovered)) {
-          return _colors.onSecondaryContainer.withOpacity(0.08);
-        }
-        if (states.contains(MaterialState.focused)) {
-          return _colors.onSecondaryContainer.withOpacity(0.12);
-        }
-        return Colors.transparent;
-      });
-
-  @override
-  MaterialStateProperty<EdgeInsetsGeometry>? get padding =>
-      const MaterialStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(8.0));
-
-  @override
-  MaterialStateProperty<Color>? get shadowColor =>
-      const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialStateProperty<OutlinedBorder>? get shape =>
-      const MaterialStatePropertyAll<OutlinedBorder>(StadiumBorder());
-
-  @override
-  MaterialStateProperty<BorderSide?>? get side => null;
-
-  @override
-  InteractiveInkFeatureFactory? get splashFactory =>
-      Theme.of(context).splashFactory;
-
-  @override
-  MaterialStateProperty<Color>? get surfaceTintColor =>
-      const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialTapTargetSize? get tapTargetSize =>
-      Theme.of(context).materialTapTargetSize;
-
-  @override
-  VisualDensity? get visualDensity => VisualDensity.standard;
-}
 
 class MIconButton extends StatelessWidget {
   const MIconButton({
@@ -318,20 +34,6 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
-    this.backgroundColor,
-    this.clearPadding = false,
-    this.elevation,
-    this.size,
-    this.maximumSize,
-    this.minimumSize,
-    this.noHighlight = false,
-    this.noSplash = false,
-    this.overlayColor,
-    this.shadowColor,
-    this.shape,
-    this.side,
-    this.splashFactory,
-    this.tapTargetSize,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.standard;
 
@@ -359,20 +61,6 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
-    this.backgroundColor,
-    this.clearPadding = false,
-    this.elevation,
-    this.size,
-    this.maximumSize,
-    this.minimumSize,
-    this.noHighlight = false,
-    this.noSplash = false,
-    this.overlayColor,
-    this.shadowColor,
-    this.shape,
-    this.side,
-    this.splashFactory,
-    this.tapTargetSize,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.filled;
 
@@ -400,20 +88,6 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
-    this.backgroundColor,
-    this.clearPadding = false,
-    this.elevation,
-    this.size,
-    this.maximumSize,
-    this.minimumSize,
-    this.noHighlight = false,
-    this.noSplash = false,
-    this.overlayColor,
-    this.shadowColor,
-    this.shape,
-    this.side,
-    this.splashFactory,
-    this.tapTargetSize,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.filledTonal;
 
@@ -441,20 +115,6 @@ class MIconButton extends StatelessWidget {
     this.isSelected,
     this.selectedIcon,
     required this.icon,
-    this.backgroundColor,
-    this.clearPadding = false,
-    this.elevation,
-    this.size,
-    this.maximumSize,
-    this.minimumSize,
-    this.noHighlight = false,
-    this.noSplash = false,
-    this.overlayColor,
-    this.shadowColor,
-    this.shape,
-    this.side,
-    this.splashFactory,
-    this.tapTargetSize,
   })  : assert(splashRadius == null || splashRadius > 0),
         _variant = _MIconButtonVariant.outlined;
 
@@ -462,7 +122,6 @@ class MIconButton extends StatelessWidget {
   final bool autofocus;
   final BoxConstraints? constraints;
   final Color? disabledColor;
-  final double? elevation;
   final bool? enableFeedback;
   final Color? focusColor;
   final FocusNode? focusNode;
@@ -473,62 +132,16 @@ class MIconButton extends StatelessWidget {
   final bool? isSelected;
   final MouseCursor? mouseCursor;
   final VoidCallback? onPressed;
+  final EdgeInsetsGeometry? padding;
   final Widget? selectedIcon;
   final Color? splashColor;
+  final double? splashRadius;
   final ButtonStyle? style;
   final String? tooltip;
   final VisualDensity? visualDensity;
 
-  /// 背景颜色, 只在 Material 3 生效
-  final Color? backgroundColor;
-
-  /// 是否去除边距
-  final bool clearPadding;
-
-  /// 即 foregroundColor
+  /// 即 [ButtonStyle.foregroundColor]
   final Color? color;
-
-  /// 限制大小
-  final double? size;
-
-  /// 最大尺寸
-  /// !!!: 注意 [Material 3] 下 [minimumSize] 默认为 40x40.
-  /// !!!: 如果设置了 [maximumSize] 不设置 [minimumSize], 并且 [maximumSize] 小于 [minimumSize], 则会导致约束冲突.
-  /// BoxConstraints has both width and height constraints non-normalized.
-  final Size? maximumSize;
-
-  /// 最小尺寸
-  final Size? minimumSize;
-
-  /// 只去除默认的高亮颜色, 如果设置了 [highlightColor] 或 [overlayColor] 则 [noHighlight] 无效
-  final bool noHighlight;
-
-  /// 只去除默认的飞溅效果, 如果设置了 [splashColor] 或 [splashFactory] 则 [noSplash] 无效
-  final bool noSplash;
-
-  /// 如果设置了 [overlayColor] 则 [noHighlight] 无效
-  final Color? overlayColor;
-
-  /// 如果设置了 [padding] 则 [clearPadding] 无效
-  final EdgeInsetsGeometry? padding;
-
-  /// 只在 Material 3 生效
-  final Color? shadowColor;
-
-  /// 只在 Material 3 生效
-  final OutlinedBorder? shape;
-
-  /// 只在 Material 3 生效
-  final BorderSide? side;
-
-  /// 如果设置了 [splashFactory] 则 [noSplash] 无效
-  final InteractiveInkFeatureFactory? splashFactory;
-
-  /// 只在 Material 2 生效
-  final double? splashRadius;
-
-  /// 只在 Material 3 生效
-  final MaterialTapTargetSize? tapTargetSize;
 
   final _MIconButtonVariant _variant;
 
@@ -536,24 +149,16 @@ class MIconButton extends StatelessWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<Widget>('icon', icon, showName: false));
-    properties.add(
-        StringProperty('tooltip', tooltip, defaultValue: null, quoted: false));
-    properties.add(ObjectFlagProperty<VoidCallback>('onPressed', onPressed,
-        ifNull: 'disabled'));
+    properties.add(StringProperty('tooltip', tooltip, defaultValue: null, quoted: false));
+    properties.add(ObjectFlagProperty<VoidCallback>('onPressed', onPressed, ifNull: 'disabled'));
     properties.add(ColorProperty('color', color, defaultValue: null));
-    properties
-        .add(ColorProperty('disabledColor', disabledColor, defaultValue: null));
+    properties.add(ColorProperty('disabledColor', disabledColor, defaultValue: null));
     properties.add(ColorProperty('focusColor', focusColor, defaultValue: null));
     properties.add(ColorProperty('hoverColor', hoverColor, defaultValue: null));
-    properties.add(
-        ColorProperty('highlightColor', highlightColor, defaultValue: null));
-    properties
-        .add(ColorProperty('splashColor', splashColor, defaultValue: null));
-    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding,
-        defaultValue: null));
-    properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode,
-        defaultValue: null));
-    // TODO: add custom properties
+    properties.add(ColorProperty('highlightColor', highlightColor, defaultValue: null));
+    properties.add(ColorProperty('splashColor', splashColor, defaultValue: null));
+    properties.add(DiagnosticsProperty<EdgeInsetsGeometry>('padding', padding, defaultValue: null));
+    properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode, defaultValue: null));
   }
 
   static ButtonStyle styleFrom({
@@ -583,50 +188,54 @@ class MIconButton extends StatelessWidget {
     AlignmentGeometry? alignment,
     InteractiveInkFeatureFactory? splashFactory,
     Color? overlayColor,
+    BorderRadius? borderRadius,
+    double? radius,
+    bool? clearPadding,
+    bool? noOverlay,
+    bool? noSplash,
+    double? width,
+    double? height,
+    double? size,
+    bool? useMaterial3,
+    MButtonMode? mode,
   }) {
-    final MaterialStateProperty<Color?>? buttonBackgroundColor =
-        (backgroundColor == null && disabledBackgroundColor == null)
-            ? null
-            : _MIconButtonDefaultBackground(
-                backgroundColor, disabledBackgroundColor);
-    final MaterialStateProperty<Color?>? buttonForegroundColor =
-        (foregroundColor == null && disabledForegroundColor == null)
-            ? null
-            : _MIconButtonDefaultForeground(
-                foregroundColor, disabledForegroundColor);
-    final MaterialStateProperty<Color?>? effectiveOverlayColor =
-        (overlayColor == null &&
-                foregroundColor == null &&
-                hoverColor == null &&
-                focusColor == null &&
-                highlightColor == null)
-            ? null
-            : _MIconButtonDefaultOverlay(foregroundColor, focusColor,
-                hoverColor, highlightColor, overlayColor);
-    final MaterialStateProperty<MouseCursor?> mouseCursor =
-        _MIconButtonDefaultMouseCursor(enabledMouseCursor, disabledMouseCursor);
-
-    return ButtonStyle(
-      backgroundColor: buttonBackgroundColor,
-      foregroundColor: buttonForegroundColor,
-      overlayColor: effectiveOverlayColor,
-      shadowColor: ButtonStyleButton.allOrNull<Color>(shadowColor),
-      surfaceTintColor: ButtonStyleButton.allOrNull<Color>(surfaceTintColor),
-      elevation: ButtonStyleButton.allOrNull<double>(elevation),
-      padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(padding),
-      minimumSize: ButtonStyleButton.allOrNull<Size>(minimumSize),
-      fixedSize: ButtonStyleButton.allOrNull<Size>(fixedSize),
-      maximumSize: ButtonStyleButton.allOrNull<Size>(maximumSize),
-      iconSize: ButtonStyleButton.allOrNull<double>(iconSize),
-      side: ButtonStyleButton.allOrNull<BorderSide>(side),
-      shape: ButtonStyleButton.allOrNull<OutlinedBorder>(shape),
-      mouseCursor: mouseCursor,
+    return MButtonStyle.from(
+      foregroundColor: foregroundColor,
+      backgroundColor: backgroundColor,
+      disabledForegroundColor: disabledForegroundColor,
+      disabledBackgroundColor: disabledBackgroundColor,
+      shadowColor: shadowColor,
+      surfaceTintColor: surfaceTintColor,
+      iconSize: iconSize,
+      elevation: elevation,
+      padding: padding,
+      minimumSize: minimumSize,
+      fixedSize: fixedSize,
+      maximumSize: maximumSize,
+      side: side,
+      shape: shape,
+      enabledMouseCursor: enabledMouseCursor,
+      disabledMouseCursor: disabledMouseCursor,
       visualDensity: visualDensity,
       tapTargetSize: tapTargetSize,
       animationDuration: animationDuration,
       enableFeedback: enableFeedback,
       alignment: alignment,
       splashFactory: splashFactory,
+      borderRadius: borderRadius,
+      radius: radius,
+      clearPadding: clearPadding,
+      overlayColor: overlayColor,
+      overlayFocusColor: focusColor,
+      overlayHoverColor: hoverColor,
+      overlayHighlightColor: highlightColor,
+      noOverlay: noOverlay,
+      noSplash: noSplash,
+      width: width,
+      height: height,
+      size: size,
+      useMaterial3: useMaterial3,
+      mode: mode ?? MButtonMode.iconStandard,
     );
   }
 
@@ -634,13 +243,17 @@ class MIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
+    // Material 3
     if (theme.useMaterial3) {
-      final Size? minSize = constraints == null
-          ? minimumSize
-          : Size(constraints!.minWidth, constraints!.minHeight);
-      final Size? maxSize = constraints == null
-          ? maximumSize
-          : Size(constraints!.maxWidth, constraints!.maxHeight);
+      final Size? minSize = constraints == null ? null : Size(constraints!.minWidth, constraints!.minHeight);
+      final Size? maxSize = constraints == null ? null : Size(constraints!.maxWidth, constraints!.maxHeight);
+
+      final mode = switch (_variant) {
+        _MIconButtonVariant.filled => MButtonMode.iconFilled,
+        _MIconButtonVariant.filledTonal => MButtonMode.iconTonal,
+        _MIconButtonVariant.outlined => MButtonMode.iconOutlined,
+        _MIconButtonVariant.standard => MButtonMode.iconStandard,
+      };
 
       ButtonStyle adjustedStyle = styleFrom(
         visualDensity: visualDensity,
@@ -649,26 +262,15 @@ class MIconButton extends StatelessWidget {
         focusColor: focusColor,
         hoverColor: hoverColor,
         highlightColor: highlightColor,
-        padding: padding ?? (clearPadding ? EdgeInsets.zero : null),
-        minimumSize: minSize ?? (clearPadding ? Size.zero : null),
+        padding: padding,
+        minimumSize: minSize,
         maximumSize: maxSize,
         iconSize: iconSize,
         alignment: alignment,
         enabledMouseCursor: mouseCursor,
         disabledMouseCursor: mouseCursor,
         enableFeedback: enableFeedback,
-        backgroundColor: backgroundColor,
-        elevation: elevation,
-        fixedSize: size == null ? null : Size(size!, size!),
-        shape: shape,
-        shadowColor: shadowColor,
-        side: side,
-        splashFactory:
-            splashFactory ?? (noSplash ? NoSplash.splashFactory : null),
-        tapTargetSize: tapTargetSize ??
-            (clearPadding ? MaterialTapTargetSize.shrinkWrap : null),
-        overlayColor: overlayColor ??
-            (noHighlight ? Colors.transparent : null), // TODO: 没有高亮暂时用透明色
+        mode: mode,
       );
       if (style != null) {
         adjustedStyle = style!.merge(adjustedStyle);
@@ -697,6 +299,8 @@ class MIconButton extends StatelessWidget {
         child: iconButton,
       );
     }
+
+    // Material 2
     assert(debugCheckHasMaterial(context));
 
     Color? currentColor;
@@ -706,22 +310,23 @@ class MIconButton extends StatelessWidget {
       currentColor = disabledColor ?? theme.disabledColor;
     }
 
-    final VisualDensity effectiveVisualDensity =
-        visualDensity ?? theme.visualDensity;
+    final VisualDensity effectiveVisualDensity = visualDensity ?? theme.visualDensity;
+
+    final Size? minSize = style?.minimumSize?.resolve(const <MaterialState>{});
+    final Size? maxSize = style?.maximumSize?.resolve(const <MaterialState>{});
 
     final BoxConstraints unadjustedConstraints = constraints ??
         BoxConstraints(
-          minWidth: minimumSize?.width ?? _kMinButtonSize,
-          minHeight: minimumSize?.height ?? _kMinButtonSize,
-          maxWidth: maximumSize?.width ?? double.infinity,
-          maxHeight: maximumSize?.height ?? double.infinity,
+          minWidth: minSize?.width ?? _kMinButtonSize,
+          minHeight: minSize?.height ?? _kMinButtonSize,
+          maxWidth: maxSize?.width ?? double.infinity,
+          maxHeight: maxSize?.height ?? double.infinity,
         );
-    final BoxConstraints adjustedConstraints =
-        effectiveVisualDensity.effectiveConstraints(unadjustedConstraints);
+    final BoxConstraints adjustedConstraints = effectiveVisualDensity.effectiveConstraints(unadjustedConstraints);
     final double effectiveIconSize =
-        iconSize ?? size ?? IconTheme.of(context).size ?? 24.0;
+        iconSize ?? style?.iconSize?.resolve(const <MaterialState>{}) ?? IconTheme.of(context).size ?? 24.0;
     final EdgeInsetsGeometry effectivePadding =
-        padding ?? (clearPadding ? EdgeInsets.zero : const EdgeInsets.all(8.0));
+        padding ?? style?.padding?.resolve(const <MaterialState>{}) ?? const EdgeInsets.all(8.0);
     final AlignmentGeometry effectiveAlignment = alignment ?? Alignment.center;
     final bool effectiveEnableFeedback = enableFeedback ?? true;
 
@@ -761,265 +366,44 @@ class MIconButton extends StatelessWidget {
         autofocus: autofocus,
         canRequestFocus: onPressed != null,
         onTap: onPressed,
-        mouseCursor: mouseCursor ??
-            (onPressed == null
-                ? SystemMouseCursors.basic
-                : SystemMouseCursors.click),
+        mouseCursor: mouseCursor ?? (onPressed == null ? SystemMouseCursors.basic : SystemMouseCursors.click),
         enableFeedback: effectiveEnableFeedback,
         focusColor: focusColor ?? theme.focusColor,
         hoverColor: hoverColor ?? theme.hoverColor,
-        highlightColor:
-            highlightColor ?? (noHighlight ? null : theme.highlightColor),
-        splashColor: splashColor ?? (noSplash ? null : theme.splashColor),
-        splashFactory:
-            splashFactory ?? (noSplash ? NoSplash.splashFactory : null),
+        highlightColor: highlightColor ??
+            style?.overlayColor?.resolve({
+              MaterialState.pressed,
+              MaterialState.focused,
+              MaterialState.hovered,
+              MaterialState.disabled,
+            }) ??
+            theme.highlightColor,
+        splashColor: splashColor ?? (style?.splashFactory == NoSplash.splashFactory ? null : theme.splashColor),
+        splashFactory: style?.splashFactory,
         radius: splashRadius ??
-            (noSplash &&
-                    noHighlight &&
+            (style?.splashFactory == NoSplash.splashFactory &&
+                    style?.overlayColor?.resolve({
+                          MaterialState.pressed,
+                          MaterialState.focused,
+                          MaterialState.hovered,
+                          MaterialState.disabled,
+                        }) ==
+                        null &&
                     highlightColor == null &&
                     splashColor == null &&
-                    splashFactory == null &&
+                    style?.splashFactory == null &&
                     focusColor == null &&
                     hoverColor == null
                 ? 0.0
                 : math.max(
                     Material.defaultSplashRadius,
-                    (effectiveIconSize +
-                            math.min(effectivePadding.horizontal,
-                                effectivePadding.vertical)) *
-                        0.7,
+                    (effectiveIconSize + math.min(effectivePadding.horizontal, effectivePadding.vertical)) * 0.7,
                     // x 0.5 for diameter -> radius and + 40% overflow derived from other Material apps.
                   )),
         child: result,
       ),
     );
   }
-}
-
-@immutable
-class _MIconButtonDefaultBackground extends MaterialStateProperty<Color?> {
-  _MIconButtonDefaultBackground(this.background, this.disabledBackground);
-
-  final Color? background;
-  final Color? disabledBackground;
-
-  @override
-  Color? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return disabledBackground;
-    }
-    return background;
-  }
-
-  @override
-  String toString() {
-    return '{disabled: $disabledBackground, otherwise: $background}';
-  }
-}
-
-@immutable
-class _MIconButtonDefaultForeground extends MaterialStateProperty<Color?> {
-  _MIconButtonDefaultForeground(
-      this.foregroundColor, this.disabledForegroundColor);
-
-  final Color? disabledForegroundColor;
-  final Color? foregroundColor;
-
-  @override
-  Color? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return disabledForegroundColor;
-    }
-    return foregroundColor;
-  }
-
-  @override
-  String toString() {
-    return '{disabled: $disabledForegroundColor, otherwise: $foregroundColor}';
-  }
-}
-
-@immutable
-class _MIconButtonDefaultMouseCursor extends MaterialStateProperty<MouseCursor?>
-    with Diagnosticable {
-  _MIconButtonDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
-
-  final MouseCursor? disabledCursor;
-  final MouseCursor? enabledCursor;
-
-  @override
-  MouseCursor? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return disabledCursor;
-    }
-    return enabledCursor;
-  }
-}
-
-@immutable
-class _MIconButtonDefaultOverlay extends MaterialStateProperty<Color?> {
-  _MIconButtonDefaultOverlay(
-    this.foregroundColor,
-    this.focusColor,
-    this.hoverColor,
-    this.highlightColor,
-    this.overlayColor,
-  );
-
-  final Color? focusColor;
-  final Color? foregroundColor;
-  final Color? highlightColor;
-  final Color? hoverColor;
-  final Color? overlayColor;
-
-  @override
-  Color? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.selected)) {
-      if (states.contains(MaterialState.pressed)) {
-        return highlightColor ??
-            overlayColor ??
-            foregroundColor?.withOpacity(0.12);
-      }
-      if (states.contains(MaterialState.hovered)) {
-        return hoverColor ?? overlayColor ?? foregroundColor?.withOpacity(0.08);
-      }
-      if (states.contains(MaterialState.focused)) {
-        return focusColor ?? overlayColor ?? foregroundColor?.withOpacity(0.12);
-      }
-    }
-    if (states.contains(MaterialState.pressed)) {
-      return highlightColor ??
-          overlayColor ??
-          foregroundColor?.withOpacity(0.12);
-    }
-    if (states.contains(MaterialState.hovered)) {
-      return hoverColor ?? overlayColor ?? foregroundColor?.withOpacity(0.08);
-    }
-    if (states.contains(MaterialState.focused)) {
-      return focusColor ?? overlayColor ?? foregroundColor?.withOpacity(0.08);
-    }
-    return null;
-  }
-
-  @override
-  String toString() {
-    return '{hovered: $hoverColor, focused: $focusColor, pressed: $highlightColor, otherwise: null}';
-  }
-}
-
-class _MIconButtonDefaultsM3 extends ButtonStyle {
-  _MIconButtonDefaultsM3(this.context, this.toggleable)
-      : super(
-          animationDuration: kThemeChangeDuration,
-          enableFeedback: true,
-          alignment: Alignment.center,
-        );
-
-  final BuildContext context;
-  final bool toggleable;
-
-  late final ColorScheme _colors = Theme.of(context).colorScheme;
-
-  // No default text style
-
-  @override
-  MaterialStateProperty<Color?>? get backgroundColor =>
-      const MaterialStatePropertyAll<Color?>(Colors.transparent);
-
-  @override
-  MaterialStateProperty<double>? get elevation =>
-      const MaterialStatePropertyAll<double>(0.0);
-
-  @override
-  MaterialStateProperty<Color?>? get foregroundColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return _colors.onSurface.withOpacity(0.38);
-        }
-        if (states.contains(MaterialState.selected)) {
-          return _colors.primary;
-        }
-        return _colors.onSurfaceVariant;
-      });
-
-  @override
-  MaterialStateProperty<double>? get iconSize =>
-      const MaterialStatePropertyAll<double>(24.0);
-
-  // No default fixedSize
-
-  @override
-  MaterialStateProperty<Size>? get maximumSize =>
-      const MaterialStatePropertyAll<Size>(Size.infinite);
-
-  @override
-  MaterialStateProperty<Size>? get minimumSize =>
-      const MaterialStatePropertyAll<Size>(Size(40.0, 40.0));
-
-  @override
-  MaterialStateProperty<MouseCursor?>? get mouseCursor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return SystemMouseCursors.basic;
-        }
-        return SystemMouseCursors.click;
-      });
-
-  @override
-  MaterialStateProperty<Color?>? get overlayColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          if (states.contains(MaterialState.pressed)) {
-            return _colors.primary.withOpacity(0.12);
-          }
-          if (states.contains(MaterialState.hovered)) {
-            return _colors.primary.withOpacity(0.08);
-          }
-          if (states.contains(MaterialState.focused)) {
-            return _colors.primary.withOpacity(0.12);
-          }
-        }
-        if (states.contains(MaterialState.pressed)) {
-          return _colors.onSurfaceVariant.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.hovered)) {
-          return _colors.onSurfaceVariant.withOpacity(0.08);
-        }
-        if (states.contains(MaterialState.focused)) {
-          return _colors.onSurfaceVariant.withOpacity(0.12);
-        }
-        return Colors.transparent;
-      });
-
-  @override
-  MaterialStateProperty<EdgeInsetsGeometry>? get padding =>
-      const MaterialStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(8.0));
-
-  @override
-  MaterialStateProperty<Color>? get shadowColor =>
-      const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialStateProperty<OutlinedBorder>? get shape =>
-      const MaterialStatePropertyAll<OutlinedBorder>(StadiumBorder());
-
-  @override
-  MaterialStateProperty<BorderSide?>? get side => null;
-
-  @override
-  InteractiveInkFeatureFactory? get splashFactory =>
-      Theme.of(context).splashFactory;
-
-  @override
-  MaterialStateProperty<Color>? get surfaceTintColor =>
-      const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialTapTargetSize? get tapTargetSize =>
-      Theme.of(context).materialTapTargetSize;
-
-  @override
-  VisualDensity? get visualDensity => VisualDensity.standard;
 }
 
 class _MIconButtonM3 extends ButtonStyleButton {
@@ -1030,28 +414,24 @@ class _MIconButtonM3 extends ButtonStyleButton {
     super.autofocus = false,
     super.statesController,
     required this.variant,
-    required this.toggleable,
+    required this.isSelected,
     required Widget super.child,
-  }) : super(
-            onLongPress: null,
-            onHover: null,
-            onFocusChange: null,
-            clipBehavior: Clip.none);
+  }) : super(onLongPress: null, onHover: null, onFocusChange: null, clipBehavior: Clip.none);
 
-  final bool toggleable;
+  final bool? isSelected;
   final _MIconButtonVariant variant;
 
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
     switch (variant) {
       case _MIconButtonVariant.filled:
-        return _FilledMIconButtonDefaultsM3(context, toggleable);
+        return MButtonStyle.defaultOf(context, isSelected: isSelected, mode: MButtonMode.iconFilled);
       case _MIconButtonVariant.filledTonal:
-        return _FilledTonalMIconButtonDefaultsM3(context, toggleable);
+        return MButtonStyle.defaultOf(context, isSelected: isSelected, mode: MButtonMode.iconTonal);
       case _MIconButtonVariant.outlined:
-        return _OutlinedMIconButtonDefaultsM3(context, toggleable);
+        return MButtonStyle.defaultOf(context, isSelected: isSelected, mode: MButtonMode.iconOutlined);
       case _MIconButtonVariant.standard:
-        return _MIconButtonDefaultsM3(context, toggleable);
+        return MButtonStyle.defaultOf(context, isSelected: isSelected, mode: MButtonMode.iconStandard);
     }
   }
 
@@ -1068,153 +448,15 @@ class _MIconButtonM3 extends ButtonStyleButton {
     }
 
     final bool isDefaultColor = isIconThemeDefault(iconTheme.color);
-    final bool isDefaultSize =
-        iconTheme.size == const IconThemeData.fallback().size;
+    final bool isDefaultSize = iconTheme.size == const IconThemeData.fallback().size;
 
     final ButtonStyle iconThemeStyle = MIconButton.styleFrom(
       foregroundColor: isDefaultColor ? null : iconTheme.color,
       iconSize: isDefaultSize ? null : iconTheme.size,
     );
 
-    return IconButtonTheme.of(context).style?.merge(iconThemeStyle) ??
-        iconThemeStyle;
+    return IconButtonTheme.of(context).style?.merge(iconThemeStyle) ?? iconThemeStyle;
   }
-}
-
-class _OutlinedMIconButtonDefaultsM3 extends ButtonStyle {
-  _OutlinedMIconButtonDefaultsM3(this.context, this.toggleable)
-      : super(
-          animationDuration: kThemeChangeDuration,
-          enableFeedback: true,
-          alignment: Alignment.center,
-        );
-
-  final BuildContext context;
-  final bool toggleable;
-
-  late final ColorScheme _colors = Theme.of(context).colorScheme;
-
-  // No default text style
-
-  @override
-  MaterialStateProperty<Color?>? get backgroundColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          if (states.contains(MaterialState.selected)) {
-            return _colors.onSurface.withOpacity(0.12);
-          }
-          return Colors.transparent;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return _colors.inverseSurface;
-        }
-        return Colors.transparent;
-      });
-
-  @override
-  MaterialStateProperty<double>? get elevation =>
-      const MaterialStatePropertyAll<double>(0.0);
-
-  @override
-  MaterialStateProperty<Color?>? get foregroundColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return _colors.onSurface.withOpacity(0.38);
-        }
-        if (states.contains(MaterialState.selected)) {
-          return _colors.onInverseSurface;
-        }
-        return _colors.onSurfaceVariant;
-      });
-
-  @override
-  MaterialStateProperty<double>? get iconSize =>
-      const MaterialStatePropertyAll<double>(24.0);
-
-  // No default fixedSize
-
-  @override
-  MaterialStateProperty<Size>? get maximumSize =>
-      const MaterialStatePropertyAll<Size>(Size.infinite);
-
-  @override
-  MaterialStateProperty<Size>? get minimumSize =>
-      const MaterialStatePropertyAll<Size>(Size(40.0, 40.0));
-
-  @override
-  MaterialStateProperty<MouseCursor?>? get mouseCursor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return SystemMouseCursors.basic;
-        }
-        return SystemMouseCursors.click;
-      });
-
-  @override
-  MaterialStateProperty<Color?>? get overlayColor =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          if (states.contains(MaterialState.pressed)) {
-            return _colors.onInverseSurface.withOpacity(0.12);
-          }
-          if (states.contains(MaterialState.hovered)) {
-            return _colors.onInverseSurface.withOpacity(0.08);
-          }
-          if (states.contains(MaterialState.focused)) {
-            return _colors.onInverseSurface.withOpacity(0.08);
-          }
-        }
-        if (states.contains(MaterialState.pressed)) {
-          return _colors.onSurface.withOpacity(0.12);
-        }
-        if (states.contains(MaterialState.hovered)) {
-          return _colors.onSurfaceVariant.withOpacity(0.08);
-        }
-        if (states.contains(MaterialState.focused)) {
-          return _colors.onSurfaceVariant.withOpacity(0.08);
-        }
-        return Colors.transparent;
-      });
-
-  @override
-  MaterialStateProperty<EdgeInsetsGeometry>? get padding =>
-      const MaterialStatePropertyAll<EdgeInsetsGeometry>(EdgeInsets.all(8.0));
-
-  @override
-  MaterialStateProperty<Color>? get shadowColor =>
-      const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialStateProperty<OutlinedBorder>? get shape =>
-      const MaterialStatePropertyAll<OutlinedBorder>(StadiumBorder());
-
-  @override
-  MaterialStateProperty<BorderSide?>? get side =>
-      MaterialStateProperty.resolveWith((Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          return null;
-        } else {
-          if (states.contains(MaterialState.disabled)) {
-            return BorderSide(color: _colors.onSurface.withOpacity(0.12));
-          }
-          return BorderSide(color: _colors.outline);
-        }
-      });
-
-  @override
-  InteractiveInkFeatureFactory? get splashFactory =>
-      Theme.of(context).splashFactory;
-
-  @override
-  MaterialStateProperty<Color>? get surfaceTintColor =>
-      const MaterialStatePropertyAll<Color>(Colors.transparent);
-
-  @override
-  MaterialTapTargetSize? get tapTargetSize =>
-      Theme.of(context).materialTapTargetSize;
-
-  @override
-  VisualDensity? get visualDensity => VisualDensity.standard;
 }
 
 class _SelectableMIconButton extends StatefulWidget {
@@ -1269,15 +511,12 @@ class _SelectableMIconButtonState extends State<_SelectableMIconButton> {
     if (widget.isSelected == null) {
       statesController = MaterialStatesController();
     } else {
-      statesController = MaterialStatesController(
-          <MaterialState>{if (widget.isSelected!) MaterialState.selected});
+      statesController = MaterialStatesController(<MaterialState>{if (widget.isSelected!) MaterialState.selected});
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool toggleable = widget.isSelected != null;
-
     return _MIconButtonM3(
       statesController: statesController,
       style: widget.style,
@@ -1285,7 +524,7 @@ class _SelectableMIconButtonState extends State<_SelectableMIconButton> {
       focusNode: widget.focusNode,
       onPressed: widget.onPressed,
       variant: widget.variant,
-      toggleable: toggleable,
+      isSelected: widget.isSelected,
       child: Semantics(
         selected: widget.isSelected,
         child: widget.child,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sm_widget/sm_widget.dart';
 
-import 'button_example.dart';
+import 'button/button_example_list.dart';
 import 'circle_avatar_example.dart';
 import 'container_example.dart';
 import 'dialog_example.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   List<Widget> get itemList => [
         const MContainerExample(),
         const MTextExampleList(),
-        const MButtonExample(),
+        const MButtonExampleList(),
         const MCircleAvatarExample(),
         const MDialogExample(),
         const MCupertinoDialogExample(),
