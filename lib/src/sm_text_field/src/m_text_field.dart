@@ -127,7 +127,6 @@ class MTextField extends StatefulWidget {
   final bool obscureText;
   final String obscuringCharacter;
   final AppPrivateCommandCallback? onAppPrivateCommand;
-  final ValueChanged<String>? onChanged;
   final VoidCallback? onEditingComplete;
   final ValueChanged<String>? onSubmitted;
   final GestureTapCallback? onTap;
@@ -170,6 +169,9 @@ class MTextField extends StatefulWidget {
   /// 是否为粗体
   final bool isBold;
 
+  /// !!!: 不要在 [onChanged] 中对 [TextEditingController.text] 进行赋值, 在 iOS 原生键盘下会有问题.
+  final ValueChanged<String>? onChanged;
+
   /// build your ccustom text span
   final SpecialTextSpanBuilder? specialTextSpanBuilder;
 
@@ -195,13 +197,6 @@ class MTextField extends StatefulWidget {
 class _MTextFieldState extends State<MTextField> {
   GlobalKey<ExtendedTextFieldState>? _key;
 
-  void bringIntoView(
-    TextPosition position, {
-    double offset = 0,
-  }) {
-    _key?.currentState?.bringIntoView(position, offset: offset);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -210,6 +205,13 @@ class _MTextFieldState extends State<MTextField> {
       _key = GlobalKey<ExtendedTextFieldState>();
       widget.bringIntoView?.call(bringIntoView);
     }
+  }
+
+  void bringIntoView(
+    TextPosition position, {
+    double offset = 0,
+  }) {
+    _key?.currentState?.bringIntoView(position, offset: offset);
   }
 
   // 默认装饰

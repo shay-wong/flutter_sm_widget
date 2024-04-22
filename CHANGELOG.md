@@ -1,5 +1,9 @@
 # sm_widget
 
+## 0.0.6
+
+* remove refresh.
+
 ## 0.0.5
 
 * fix bugs.
