@@ -1,5 +1,9 @@
 # sm_widget
 
+## 0.0.7
+
+* update pubspec.
+
 ## 0.0.6
 
 * remove refresh.

@@ -325,10 +325,10 @@ class MInputDecoration extends InputDecoration {
   /// 固定宽度
   final double? width;
 
-  InputDecoration generateInputDecoration(
+  InputDecoration generate({
     TextStyle? hintTheme,
     double? fontSize,
-  ) {
+  }) {
     final defaultHintStyle = hintTheme?.copyWith(
       fontSize: fontSize,
       color: hintColor,
@@ -380,8 +380,7 @@ class MInputDecoration extends InputDecoration {
     bool isBorder = false,
   }) {
     if (borderRadius != null || radius != null || side != null) {
-      final effectiveBorderRadius =
-          borderRadius ?? BorderRadius.circular(radius ?? 0);
+      final effectiveBorderRadius = borderRadius ?? BorderRadius.circular(radius ?? 0);
       // 默认无边框.
       // NOTE: 如果使用 [BorderSide.none] 在 UnderlineInputBorder 下也会展示出黑线, 因为 [BorderSide] 的 color 默认是黑色, 可能是 flutter 的 bug? 所以这里直接把颜色设置为透明.
       final borderSide = side ??
