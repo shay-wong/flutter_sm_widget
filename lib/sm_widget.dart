@@ -10,7 +10,6 @@ export 'package:extended_text_field/extended_text_field.dart'
     show TextInputBinding, TextInputFocusNode, ExtendedEditableTextState;
 export 'package:extended_text_library/extended_text_library.dart';
 export 'package:sm_image/sm_image.dart';
-export 'package:sm_network/sm_network.dart';
 
 export 'src/cupertion/m_dialog.dart';
 export 'src/generated/locales.g.dart' show SMWidgetAppTranslation;
